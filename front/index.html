@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldSkills Bank</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="hover-effects.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="images/" alt="Logo">
+                <h1>\</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#services">Сервисы</a></li>
+                    <li><a href="#products">Продукты</a></li>
+                    <li><a href="#mobile-app">Мобильное приложение</a></li>
+                    <li>
+                        <a href="#" id="account-link" class="user-icon">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="user-name">Личный кабинет</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="main-content">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h2>WorldSkills Bank</h2>
+                        <p>Ваш надёжный финансовый партнёр</p>
+                    </div>
+                    <div class="hero-text">
+                        <h3>Ещё не с нами?</h3>
+                            <div class="hero-buttons">
+                                <button class="btn login">Войти</button>
+                                <button class="btn register">Зарегистрироваться</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wave-container">
+                <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" 
+                        fill="white"></path>
+                </svg>
+            </div>
+            <div class="wave-container2">
+                <svg class="wave2" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" 
+                        fill="white"></path>
+                </svg>
+            </div>
+
+            <div class="noname">
+                <h2>че тут написать/сделать</h2>
+            </div>
+        </section>
+
+        <section class="services" id="services">
+            <div class="container">
+                <h3>Сервисы</h3>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <img src="images/exchange.png" alt="Курсы валют" class="service-img">
+                        </div>
+                        <h4>Курсы валют</h4>
+                        <p>Актуальные курсы валют</p>
+                        <button class="btn outline">Показать курсы</button>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <img src="images/map.png" alt="Отделения" class="service-img">
+                        </div>
+                        <h4>Отделения и банкоматы</h4>
+                        <p>Найдите ближайшее отделение или банкомат</p>
+                        <button class="btn outline">Найти на карте</button>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon deposit">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h4>Рассчитать вклад</h4>
+                        <p>Калькулятор доходности по вкладам</p>
+                        <button class="btn outline">Рассчитать</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="products" id="products">
+            <div class="container">
+                <h3>Что мы предлагаем?</h3>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="default-content">
+                            <div class="product-icon card">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <h4>Дебетовая карта</h4>
+                        </div>
+                        <div class="product-description">
+                            <h4>Дебетовая карта</h4>
+                            <p>Повышенный кэшбек до 10% в выбранных категориях, бесплатное обслуживание до 1 года, бесплатные переводы и снятие наличных в любых банкоматах мира.</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="default-content">
+                            <div class="product-icon credit">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <h4>Кредитная карта</h4>
+                        </div>
+                        <div class="product-description">
+                            <h4>Кредитная карта</h4>
+                            <p>Кредитный лимит до 1 000 000₽, льготный период до 120 дней, кэшбек до 5% на все покупки, бесплатное обслуживание при выполнении условий.</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="default-content">
+                            <div class="product-icon deposit">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <h4>Вклады</h4>
+                        </div>
+                        <div class="product-description">
+                            <h4>Вклады</h4>
+                            <p>Доходность до 19% годовых, возможность пополнения и частичного снятия без потери процентов, капитализация процентов ежемесячно.</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="default-content">
+                            <div class="product-icon investments">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Инвестиции</h4>
+                        </div>
+                        <div class="product-description">
+                            <h4>Инвестиции</h4>
+                            <p>Доступ к фондовому рынку с минимальной комиссией, индивидуальные инвестиционные рекомендации, готовые портфели для разных уровней риска.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </section>
+    </main>
+
+    <footer id="mobile-app">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col about">
+                    <h4>О WorldSkills Bank</h4>
+                    <p>Современный банк, предлагающий инновационные финансовые решения с 2025 года.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Личный кабинет</h4>
+                    <ul>
+                        <li><a href="#" class="login-link">Вход</a></li>
+                        <li><a href="#" class="register-link">Регистрация</a></li>
+                        <li><a href="#" class="recovery-link">Восстановление доступа</a></li>
+                    </ul>
+                </div>         
+                <div class="footer-col">
+                    <h4>Мобильное приложение</h4>
+                    <div class="app-stores">
+                        <a href="#" class="app-store-link">
+                            <i class="fab fa-apple"></i>
+                            <span>App Store</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-chat">
+                    <h5>Хотите что-то уточнить?</h5>
+                    <ul>
+                        <li><a href="#">Чат поддержки</a></li>
+                    </ul>
+                </div>
+                <p>&copy; 2025 WorldSkills Bank. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- модальные окна -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Вход</button>
+                <button class="tab-btn" data-tab="register">Регистрация</button>
+            </div>
+            
+            <div id="login-tab" class="auth-tab-content active">
+                <h3>Вход</h3>
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="login-username" placeholder="Логин" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="login-password" placeholder="Пароль" required>
+                    </div>
+                    <a href="#" class="forgot-password" id="forgot-password">Забыли пароль?</a>
+                    <button type="submit" class="btn primary">Войти</button>
+                </form>
+                <p class="switch-tab">Ещё нет аккаунта? <a href="#" class="switch-to-register">Зарегистрируйтесь</a></p>
+            </div>
+            
+            <div id="register-tab" class="auth-tab-content">
+                <h3>Регистрация</h3>
+                <form id="register-form">
+                    <div class="form-group">
+                        <input type="text" id="register-name" placeholder="Имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="register-surname" placeholder="Фамилия" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="register-patronymic" placeholder="Отчество">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="register-phone" placeholder="Номер телефона" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-password" placeholder="Пароль" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-confirm-password" placeholder="Повторите пароль" required>
+                    </div>
+                    <button type="submit" class="btn primary">Зарегистрироваться</button>
+                </form>
+                <p class="switch-tab">Уже есть аккаунт? <a href="#" class="switch-to-login">Войдите</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="password-recovery-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Восстановление пароля</h3>
+            <form id="recovery-form">
+                <div class="form-group">
+                    <input type="tel" id="recovery-phone" placeholder="Номер телефона" required>
+                </div>
+                <button type="submit" class="btn primary">Восстановить пароль</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- калькулятор вклада -->
+    <div class="modal" id="deposit-calculator-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Калькулятор вклада</h3>
+            
+            <div class="calculator-form">
+                <div class="form-group">
+                    <label>Срок вклада (месяцы)</label>
+                    <div class="slider-container">
+                        <input type="range" id="deposit-term" min="1" max="24" value="12" class="slider">
+                        <div class="slider-labels">
+                            <span>1</span>
+                            <span>24</span>
+                        </div>
+                        <div class="slider-value">
+                            <span id="term-value">12</span> 
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Сумма вклада (в рублях)</label>
+                    <div class="slider-container">
+                        <input type="range" id="deposit-amount" min="50000" max="10000000" step="10000" value="500000" class="slider">
+                        <div class="slider-labels">
+                            <span>50 000</span>
+                            <span>10 000 000</span>
+                        </div>
+                        <div class="slider-value">
+                            <span id="amount-value">500 000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="non-replenishable" checked>
+                    <label for="non-replenishable">Непополняемый вклад</label>
+                    <div class="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                        <span class="tooltip-text">
+                            При непополняемом вкладе ставка повышенная (19%).<br>
+                            Можно пополнить в течение месяца после открытия.<br>
+                            При пополняемом вкладе ставка обычная (17%).
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="calculation-results">
+                    <div class="result-item">
+                        <span>Процентная ставка</span>
+                        <span id="interest-rate">19%</span>
+                    </div>
+                    <div class="result-item total">
+                        <span>Сумма в конце срока</span>
+                        <div class="total-amount">
+                            <span id="total-amount">595 000</span>
+                            <div class="profit">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="profit-amount">+95 000</span> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="calculator.js"></script>
+</body>
+</html>

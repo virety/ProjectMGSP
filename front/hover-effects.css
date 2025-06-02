@@ -1,0 +1,77 @@
+.product-card:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(31, 14, 71, 0.3) !important;
+}
+
+.product-card .product-description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--primary-color);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    width: 240px;  
+    height: 250px;
+    border-radius: 30%;
+    text-align: center;
+    overflow: auto;
+}
+
+.product-card:hover .product-description {
+    opacity: 1;
+}
+
+.product-card .default-content {
+    transition: opacity 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card:hover .default-content {
+    opacity: 0;
+}
+
+/* Стили для заголовков в описании */
+.product-description h4 {
+    color: white !important; 
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.product-description p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    flex-grow: 1; 
+    overflow-y: auto;
+    padding: 5px 0;
+}
+
+.product-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: var(--white);
+    background-color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.product-card:hover .product-icon {
+    transform: scale(1.1);
+}
