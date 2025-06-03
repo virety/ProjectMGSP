@@ -25,16 +25,29 @@ struct FinancialTransaction: Identifiable {
     let amount: String
 }
 
+
 // MARK: - Главный TabView
 struct MainTabView: View {
+    @State private var selectedTab: Tab = .home
+    @ViewBuilder
+    var selectedView: some View {
+        switch selectedTab {
+        case .home:
+            BankHomeView()
+        case .terminals:
+            TerminalsView(selectedTab: $selectedTab)
+        case .cards:
+            CardsMainView()
+        case .profile:
+            ProfileMainView()
+        }
+    }
     enum Tab {
         case home
         case terminals  // Было transactions
         case cards
         case profile
     }
-    
-    @State private var selectedTab: Tab = .home
     
     var body: some View {
         ZStack {
@@ -51,27 +64,14 @@ struct MainTabView: View {
             .ignoresSafeArea()
             
             // Контент текущей вкладки
-            Group {
-                switch selectedTab {
-                case .home:
-                    BankHomeView()
-                case .terminals:  // Было transactions
-                    TerminalsView()
-                case .cards:
-                    CardsMainView()
-                case .profile:
-                    ProfileMainView()
-                }
-        
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            selectedView
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             // Кастомный TabBar
             CustomTabBar(selectedTab: $selectedTab)
         }
     }
 }
-
 // MARK: - Компоненты TabBar
 struct CustomTabBar: View {
     @Binding var selectedTab: MainTabView.Tab
@@ -237,16 +237,6 @@ struct WithdrawMoneyView: View {
     }
 }
 
-struct MoreActionsView: View {
-    var body: some View {
-        VStack {
-            Text("Другие действия")
-                .font(.title)
-        }
-        .navigationTitle("Другое")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
 
 // MARK: - Bank Home View
 struct BankHomeView: View {
@@ -569,14 +559,22 @@ struct AllTransactionsView: View {
     let transactions: [FinancialTransaction]  // Те же данные, что и в TransactionHistoryView
     
     var body: some View {
-        List(transactions) { transaction in
-            TransactionRowView(transaction: transaction)
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
+            
+            ScrollView {
+                ForEach(transactions) { transaction in
+                    TransactionRowView(transaction: transaction)
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                }
+            }
         }
         .navigationTitle("Все операции")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 // MARK: - Preview
 #Preview {
     MainTabView()
-} 
+}

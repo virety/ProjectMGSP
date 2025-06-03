@@ -18,8 +18,9 @@ struct Terminal: Identifiable {
 }
 
 struct TerminalsView: View {
-    @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var selectedTab: MainTabView.Tab
+    @State private var selectedTerminalID: UUID? = nil
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 43.1155, longitude: 131.8855),
         span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)
@@ -62,7 +63,9 @@ struct TerminalsView: View {
                         VStack {
                             Image(systemName: terminal.isATM ? "banknote" : "creditcard.fill")
                                 .padding(8)
-                                .background(Color.blue)
+                                .background(
+                                    terminal.id == selectedTerminalID ? Color.green : Color.blue
+                                )
                                 .foregroundColor(.white)
                                 .clipShape(Circle())
                             Text(terminal.name)
@@ -76,24 +79,42 @@ struct TerminalsView: View {
                 .padding()
                 
                 List(terminals) { terminal in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(terminal.name)
-                                .font(.headline)
-                            Text(terminal.address)
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
+                    Button(action: {
+                        selectedTerminalID = terminal.id
+                        withAnimation {
+                            region = MKCoordinateRegion(
+                                center: terminal.coordinates,
+                                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                            )
                         }
-                        Spacer()
-                        VStack(alignment: .trailing) {
-                            Text(terminal.distance)
-                                .font(.subheadline)
-                            Image(systemName: terminal.isATM ? "banknote" : "creditcard.fill")
-                                .foregroundColor(terminal.isATM ? .green : .blue)
+                    }) {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(terminal.name)
+                                    .font(.headline)
+                                Text(terminal.address)
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                            Spacer()
+                            VStack(alignment: .trailing) {
+                                Text(terminal.distance)
+                                    .font(.subheadline)
+                                Image(systemName: terminal.isATM ? "banknote" : "creditcard.fill")
+                                    .foregroundColor(terminal.isATM ? .green : .blue)
+                            }
                         }
+                        .padding(.vertical, 8)
+                        .background(
+                            selectedTerminalID == terminal.id
+                                ? Color.blue.opacity(0.1)
+                                : Color.clear
+                        )
+                        .cornerRadius(8)
                     }
-                    .padding(.vertical, 8)
+                    .buttonStyle(PlainButtonStyle())
                 }
+
                 .listStyle(PlainListStyle())
                 .background(Color.white.opacity(0.9))
                 .cornerRadius(12)
@@ -122,43 +143,61 @@ struct TerminalsView: View {
     }
     
     private func headerView() -> some View {
-        ZStack {
-            Rectangle()
-                .fill(Color.white.opacity(0.1))
-                .ignoresSafeArea(edges: .top)
-                .frame(height: 56)
-            
-            HStack(spacing: 6) {
-                Image(systemName: "map.fill")
-                    .font(.system(size: 18))
-                Text("Терминалы")
-                    .font(.system(size: 16, weight: .semibold))
-            }
-            .foregroundColor(.white)
-            
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(8)
+            ZStack {
+                Rectangle()
+                    .fill(Color.white.opacity(0.1))
+                    .ignoresSafeArea(edges: .top)
+                    .frame(height: 56)
+                
+                HStack(spacing: 6) {
+                    Image(systemName: "map.fill")
+                        .font(.system(size: 18))
+                    Text("Терминалы")
+                        .font(.system(size: 16, weight: .semibold))
                 }
-                Spacer()
+                .foregroundColor(.white)
+                
+                HStack {
+                    Button(action: {
+                        // Возвращаем на предыдущий экран или на вкладку home
+                        if presentationMode.wrappedValue.isPresented {
+                            presentationMode.wrappedValue.dismiss()
+                        } else {
+                            selectedTab = .home
+                        }
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(8)
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
+            .frame(height: 56)
         }
-        .frame(height: 56)
-    }
-    
-    // Функция сортировки по расстоянию
     private func sortTerminalsByDistance() {
         terminals.sort {
             $0.distanceValue < $1.distanceValue
         }
+
+        if let nearest = terminals.first {
+            selectedTerminalID = nearest.id
+            withAnimation {
+                region = MKCoordinateRegion(
+                    center: nearest.coordinates,
+                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                )
+            }
+        }
     }
 }
+    
+    // Функция сортировки по расстоянию
+
 
 // MARK: - Вспомогательное вычисляемое свойство для Terminal
 extension Terminal {

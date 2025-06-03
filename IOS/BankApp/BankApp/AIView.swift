@@ -1,3 +1,10 @@
+//
+//  AIView.swift
+//  BankApp
+//
+//  Created by Вадим Семибратов on 02.06.2025.
+//
+
 import SwiftUI
 import Speech
 import AVFoundation
@@ -5,7 +12,7 @@ import OpenAISwift
 
 // 1. Безопасное хранение ключа (в реальном проекте используйте Keychain)
 struct Secrets {
-    static let openAIKey = "ааааа" // Замените на свой ключ
+    static let openAIKey = "key" // Замените на свой ключ
 }
 
 
