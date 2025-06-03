@@ -241,6 +241,8 @@ struct WithdrawMoneyView: View {
 // MARK: - Bank Home View
 struct BankHomeView: View {
     @State private var showAIView = false
+    @State private var isMoreActionsPresented = false
+
     
     let sampleCards: [BankCard] = [
         BankCard(
@@ -370,14 +372,15 @@ struct BankHomeView: View {
                                 }
                                 .buttonStyle(PlainButtonStyle())
 
-                                NavigationLink {
-                                    MoreActionsView()
+                                Button {
+                                    isMoreActionsPresented = true
                                 } label: {
-                                    ActionButtonView(icon: "ellipsis",
-                                                    title: "Ещё",
-                                                    color: Color.orange)
+                                    ActionButtonView(icon: "ellipsis", title: "Ещё", color: Color.orange)
                                 }
                                 .buttonStyle(PlainButtonStyle())
+                                .fullScreenCover(isPresented: $isMoreActionsPresented) {
+                                    MoreActionsView()
+                                }
                             }
                             .padding(.horizontal)
                         }

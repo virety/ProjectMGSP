@@ -15,9 +15,12 @@ struct CurrencyRate: Identifiable {
     let history: [Double]
 }
 
+
 struct MoreActionsView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var selectedCurrencyId: UUID? = nil
     @State private var selectedPointIndex: Int? = nil
+    @State private var showPredictView = false // Состояние для отображения PredictView
     
     private let currencies: [CurrencyRate] = [
         CurrencyRate(flag: "🇺🇸", currency: "USD", rate: 89.25, change: -0.15, history: [88.7, 88.9, 89.0, 89.3, 89.25, 89.1, 89.4, 89.25]),
@@ -31,13 +34,13 @@ struct MoreActionsView: View {
     var topGainers: [CurrencyRate] {
         currencies.sorted { $0.change > $1.change }.prefix(3).map { $0 }
     }
-
+    
     var topLosers: [CurrencyRate] {
         currencies.sorted { $0.change < $1.change }.prefix(3).map { $0 }
     }
-
     var body: some View {
-        ZStack {
+        NavigationStack {
+            ZStack(alignment: .top) {
             // Градиентный фон
             LinearGradient(
                 gradient: Gradient(colors: [
@@ -49,54 +52,106 @@ struct MoreActionsView: View {
                 endPoint: .bottom
             )
             .ignoresSafeArea()
-
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("Курсы валют")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-
-                    ForEach(currencies) { currency in
-                        CurrencyCardView(
-                            currency: currency,
-                            isSelected: selectedCurrencyId == currency.id,
-                            selectedPointIndex: selectedPointIndex,
-                            onSelect: { index in
-                                selectedCurrencyId = currency.id
-                                selectedPointIndex = index
-                            },
-                            onDeselect: {
-                                selectedCurrencyId = nil
-                                selectedPointIndex = nil
-                            }
+            
+            VStack(spacing: 0) {
+                // Фиксированный заголовок
+                headerView()
+                
+                // Скроллируемый контент
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        ForEach(currencies) { currency in
+                            CurrencyCardView(
+                                currency: currency,
+                                isSelected: selectedCurrencyId == currency.id,
+                                selectedPointIndex: selectedPointIndex,
+                                onSelect: { index in
+                                    selectedCurrencyId = currency.id
+                                    selectedPointIndex = index
+                                },
+                                onDeselect: {
+                                    selectedCurrencyId = nil
+                                    selectedPointIndex = nil
+                                }
+                            )
+                        }
+                        
+                        TopCurrenciesView(
+                            title: "📈 Топ рост",
+                            currencies: topGainers,
+                            gradientColors: [Color.green.opacity(0.4)]
                         )
+                        .padding(.horizontal)
+                        
+                        TopCurrenciesView(
+                            title: "📉 Топ падение",
+                            currencies: topLosers,
+                            gradientColors: [Color.red.opacity(0.4)]
+                        )
+                        .padding(.horizontal)
+                        
+                        // Кнопка "Прогноз цен"
+                        Button(action: {
+                            showPredictView = true
+                        }) {
+                            HStack {
+                                Image(systemName: "chart.line.uptrend.xyaxis")
+                                Text("Прогноз цен")
+                                    .fontWeight(.medium)
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue.opacity(0.7))
+                            .cornerRadius(12)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 20)
                     }
-
-                    // Топ ↑
-                    TopCurrenciesView(
-                        title: "📈 Топ рост",
-                        currencies: topGainers,
-                        gradientColors: [Color.green.opacity(0.4)]
-                    )
-                    .padding(.horizontal)
-
-                    // Топ ↓
-                    TopCurrenciesView(
-                        title: "📉 Топ падение",
-                        currencies: topLosers,
-                        gradientColors: [Color.red.opacity(0.4)]
-                    )
-                    .padding(.horizontal)
+                    .padding(.top)
                 }
-                .padding(.top)
+            }
+            }
+            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $showPredictView) {
+                PredictView()
             }
         }
-        .navigationTitle("Другое")
-        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private func headerView() -> some View {
+        ZStack {
+            Rectangle()
+                .fill(Color.white.opacity(0.1))
+                .ignoresSafeArea(edges: .top)
+                .frame(height: 56)
+            HStack(spacing: 6) {
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.system(size: 18))
+                Text("Курсы валют")
+                    .font(.system(size: 16, weight: .semibold))
+            }
+            .foregroundColor(.white)
+            
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(8)
+                        .background(Color.white.opacity(0.2))
+                        .cornerRadius(8)
+                }
+                Spacer()
+            }
+            .padding(.horizontal)
+        }
+        .frame(height: 56)
     }
 }
+
+
 
 struct CurrencyCardView: View {
     let currency: CurrencyRate
