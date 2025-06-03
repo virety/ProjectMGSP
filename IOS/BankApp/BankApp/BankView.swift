@@ -29,7 +29,7 @@ struct FinancialTransaction: Identifiable {
 struct MainTabView: View {
     enum Tab {
         case home
-        case transactions
+        case terminals  // Было transactions
         case cards
         case profile
     }
@@ -55,13 +55,14 @@ struct MainTabView: View {
                 switch selectedTab {
                 case .home:
                     BankHomeView()
-                case .transactions:
-                    TransactionsListView()
+                case .terminals:  // Было transactions
+                    TerminalsView()
                 case .cards:
                     CardsMainView()
                 case .profile:
                     ProfileMainView()
                 }
+        
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
@@ -74,38 +75,41 @@ struct MainTabView: View {
 // MARK: - Компоненты TabBar
 struct CustomTabBar: View {
     @Binding var selectedTab: MainTabView.Tab
-    
+
     var body: some View {
-        VStack {
-            Spacer()
-            
-            HStack {
-                tabBarButton(tab: .home, systemImage: "house.fill", label: "Главная")
-                tabBarButton(tab: .transactions, systemImage: "arrow.left.arrow.right", label: "Операции")
-                tabBarButton(tab: .cards, systemImage: "creditcard.fill", label: "Карта")
-                tabBarButton(tab: .profile, systemImage: "person.fill", label: "Профиль")
-            }
-            .padding(.vertical, 12)
-            .padding(.horizontal, 30)
-            .frame(maxWidth: .infinity)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color(hex: "B2F7FF").opacity(0.6),
-                        Color(hex: "5E60BB").opacity(0.6),
-                        Color(hex: "B2F7FF").opacity(0.6)
-                    ]),
-                    startPoint: .leading,
-                    endPoint: .trailing
+        // ❗️Скрываем весь TabBar, если выбран Terminals
+        if selectedTab != .terminals {
+            VStack {
+                Spacer()
+                
+                HStack {
+                    tabBarButton(tab: .home, systemImage: "house.fill", label: "Главная")
+                    tabBarButton(tab: .terminals, systemImage: "map.fill", label: "Терминалы")
+                    tabBarButton(tab: .cards, systemImage: "creditcard.fill", label: "Карта")
+                    tabBarButton(tab: .profile, systemImage: "person.fill", label: "Профиль")
+                }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 30)
+                .frame(maxWidth: .infinity)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color(hex: "B2F7FF").opacity(0.6),
+                            Color(hex: "5E60BB").opacity(0.6),
+                            Color(hex: "B2F7FF").opacity(0.6)
+                        ]),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .cornerRadius(28)
+                    .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 4)
                 )
-                .cornerRadius(28)
-                .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 4)
-            )
-            .padding(.horizontal, 16)
-            .padding(.bottom, 12)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+            }
         }
     }
-    
+
     private func tabBarButton(tab: MainTabView.Tab, systemImage: String, label: String) -> some View {
         Button(action: {
             selectedTab = tab
@@ -310,7 +314,11 @@ struct BankHomeView: View {
                             Spacer()
                             
                             // NavigationLink вместо Button
-                            NavigationLink(destination: AIView()) {
+                            // Вместо NavigationLink используйте:
+                            Button(action: {
+                                // Показываем AIView как модальное окно на весь экран
+                                showAIView  = true
+                            }) {
                                 HStack(spacing: 4) {
                                     Image(systemName: "brain.head.profile")
                                         .font(.system(size: 18))
@@ -321,6 +329,9 @@ struct BankHomeView: View {
                                 .padding(8)
                                 .background(Color.green.opacity(0.2))
                                 .cornerRadius(8)
+                            }
+                            .fullScreenCover(isPresented: $showAIView ) {
+                                AIView()
                             }
                         }
                         .padding(.horizontal)
@@ -554,7 +565,17 @@ extension Color {
         self.init(red: r, green: g, blue: b)
     }
 }
-
+struct AllTransactionsView: View {
+    let transactions: [FinancialTransaction]  // Те же данные, что и в TransactionHistoryView
+    
+    var body: some View {
+        List(transactions) { transaction in
+            TransactionRowView(transaction: transaction)
+        }
+        .navigationTitle("Все операции")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
 // MARK: - Preview
 #Preview {
     MainTabView()

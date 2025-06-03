@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9C84574D2DEEB09700413525 /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9C84574C2DEEB09700413525 /* OpenAISwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9C28F9A82DEC8CBF0093AEC3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C84574D2DEEB09700413525 /* OpenAISwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = BankApp;
 			packageProductDependencies = (
+				9C84574C2DEEB09700413525 /* OpenAISwift */,
 			);
 			productName = BankApp;
 			productReference = 9C28F99A2DEC8CBD0093AEC3 /* BankApp.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 9C28F9912DEC8CBD0093AEC3;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9C84574B2DEEAF8800413525 /* XCRemoteSwiftPackageReference "OpenAISwift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9C28F99B2DEC8CBD0093AEC3 /* Products */;
 			projectDirPath = "";
@@ -550,6 +559,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9C84574B2DEEAF8800413525 /* XCRemoteSwiftPackageReference "OpenAISwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/adamrushy/OpenAISwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9C84574C2DEEB09700413525 /* OpenAISwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C84574B2DEEAF8800413525 /* XCRemoteSwiftPackageReference "OpenAISwift" */;
+			productName = OpenAISwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9C28F9922DEC8CBD0093AEC3 /* Project object */;
 }
