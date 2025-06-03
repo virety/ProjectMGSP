@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CardDetailView: View {
-    let card: Card
+    let card: BankCard
 
     var body: some View {
         VStack(spacing: 20) {
