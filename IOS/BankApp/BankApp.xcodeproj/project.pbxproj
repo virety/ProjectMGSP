@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9C84574D2DEEB09700413525 /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9C84574C2DEEB09700413525 /* OpenAISwift */; };
+		9C8457A72DF02C5500413525 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 9C8457A62DF02C5500413525 /* SwiftSoup */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C84574D2DEEB09700413525 /* OpenAISwift in Frameworks */,
+				9C8457A72DF02C5500413525 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +120,7 @@
 			name = BankApp;
 			packageProductDependencies = (
 				9C84574C2DEEB09700413525 /* OpenAISwift */,
+				9C8457A62DF02C5500413525 /* SwiftSoup */,
 			);
 			productName = BankApp;
 			productReference = 9C28F99A2DEC8CBD0093AEC3 /* BankApp.app */;
@@ -203,6 +206,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				9C84574B2DEEAF8800413525 /* XCRemoteSwiftPackageReference "OpenAISwift" */,
+				9C8457A52DF02C5500413525 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9C28F99B2DEC8CBD0093AEC3 /* Products */;
@@ -313,6 +317,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = SU3K852VAB;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -376,6 +381,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = SU3K852VAB;
+				"DEVELOPMENT_TEAM[sdk=*]" = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -569,6 +576,14 @@
 				minimumVersion = 1.4.1;
 			};
 		};
+		9C8457A52DF02C5500413525 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.7;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -576,6 +591,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9C84574B2DEEAF8800413525 /* XCRemoteSwiftPackageReference "OpenAISwift" */;
 			productName = OpenAISwift;
+		};
+		9C8457A62DF02C5500413525 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C8457A52DF02C5500413525 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

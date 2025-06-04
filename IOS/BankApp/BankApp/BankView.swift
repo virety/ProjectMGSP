@@ -37,9 +37,9 @@ struct MainTabView: View {
         case .terminals:
             TerminalsView(selectedTab: $selectedTab)
         case .cards:
-            CardsMainView()
+            CardsMainView(selectedTab: $selectedTab)
         case .profile:
-            ProfileMainView()
+            ProfileMainView(selectedTab: $selectedTab)
         }
     }
     enum Tab {
@@ -78,14 +78,14 @@ struct CustomTabBar: View {
 
     var body: some View {
         // ❗️Скрываем весь TabBar, если выбран Terminals
-        if selectedTab != .terminals {
+        if selectedTab != .terminals && selectedTab != .cards && selectedTab != .profile{
             VStack {
                 Spacer()
                 
                 HStack {
                     tabBarButton(tab: .home, systemImage: "house.fill", label: "Главная")
                     tabBarButton(tab: .terminals, systemImage: "map.fill", label: "Терминалы")
-                    tabBarButton(tab: .cards, systemImage: "creditcard.fill", label: "Карта")
+                    tabBarButton(tab: .cards, systemImage: "lock.shield.fill", label: "Вклад")
                     tabBarButton(tab: .profile, systemImage: "person.fill", label: "Профиль")
                 }
                 .padding(.vertical, 12)
@@ -226,22 +226,13 @@ struct ReceiveMoneyView: View {
     }
 }
 
-struct WithdrawMoneyView: View {
-    var body: some View {
-        VStack {
-            Text("Снятие наличных")
-                .font(.title)
-        }
-        .navigationTitle("Снятие")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
 
 
 // MARK: - Bank Home View
 struct BankHomeView: View {
     @State private var showAIView = false
     @State private var isMoreActionsPresented = false
+    @State private var isActionButtonView = false
 
     
     let sampleCards: [BankCard] = [
@@ -363,15 +354,18 @@ struct BankHomeView: View {
                                 }
                                 .buttonStyle(PlainButtonStyle())
 
-                                NavigationLink {
-                                    WithdrawMoneyView()
+                                // Кнопка "Сканировать QR"
+                                Button {
+                                    isActionButtonView = true
                                 } label: {
-                                    ActionButtonView(icon: "arrowshape.turn.up.backward.fill",
-                                                    title: "Снять",
-                                                    color: Color.purple)
+                                    ActionButtonView(icon: "qrcode.viewfinder", title: "Сканировать", color: Color.purple)
                                 }
                                 .buttonStyle(PlainButtonStyle())
+                                .fullScreenCover(isPresented: $isActionButtonView) {
+                                    QRScannerView() // здесь должно быть именно QRScannerView
+                                }
 
+                                // Кнопка "Ещё"
                                 Button {
                                     isMoreActionsPresented = true
                                 } label: {
