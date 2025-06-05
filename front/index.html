@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorldSkills Bank</title>
+    <title>Nyota Bank</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="hover-effects.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -12,8 +12,8 @@
     <header>
         <div class="container">
             <div class="logo">
-                <img src="images/" alt="Logo">
-                <h1>\</h1>
+                <img src="images/logo.png" alt="Nyota Logo" style="width:48px;height:48px;">
+                <h1><span class="nyota-accent">Nyota Bank</span></h1>
             </div>
             <nav>
                 <ul>
@@ -35,36 +35,16 @@
     <main class="main-content">
         <section class="hero">
             <div class="container">
-                <div class="hero-content">
+                <div class="hero-content cosmic-hero">
                     <div class="hero-text">
-                        <h2>WorldSkills Bank</h2>
-                        <p>Ваш надёжный финансовый партнёр</p>
+                        <h2><span class="nyota-accent">Nyota Bank</span> </h2>
+                        <p>Откройте для себя космический уровень финансовых возможностей</p>
                     </div>
-                    <div class="hero-text">
-                        <h3>Ещё не с нами?</h3>
-                            <div class="hero-buttons">
-                                <button class="btn login">Войти</button>
-                                <button class="btn register">Зарегистрироваться</button>
-                            </div>
+                    <div class="hero-buttons">
+                        <button class="btn login">Войти</button>
+                        <button class="btn register">Зарегистрироваться</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="wave-container">
-                <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" 
-                        fill="white"></path>
-                </svg>
-            </div>
-            <div class="wave-container2">
-                <svg class="wave2" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" 
-                        fill="white"></path>
-                </svg>
-            </div>
-
-            <div class="noname">
-                <h2>че тут написать/сделать</h2>
             </div>
         </section>
 
@@ -73,16 +53,16 @@
                 <h3>Сервисы</h3>
                 <div class="services-grid">
                     <div class="service-card">
-                        <div class="service-icon">
-                            <img src="images/exchange.png" alt="Курсы валют" class="service-img">
+                        <div class="service-icon exchange">
+                            <i class="fa fa-exchange"></i>
                         </div>
                         <h4>Курсы валют</h4>
                         <p>Актуальные курсы валют</p>
                         <button class="btn outline">Показать курсы</button>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">
-                            <img src="images/map.png" alt="Отделения" class="service-img">
+                        <div class="service-icon atm">
+                            <i class="fa fa-money-check"></i>
                         </div>
                         <h4>Отделения и банкоматы</h4>
                         <p>Найдите ближайшее отделение или банкомат</p>
@@ -100,13 +80,15 @@
             </div>
         </section>
 
-        <section class="products" id="products">
+        <div class="cosmic-divider"></div>
+
+        <section class="products cosmic-products" id="products">
             <div class="container">
-                <h3>Что мы предлагаем?</h3>
-                <div class="products-grid">
-                    <div class="product-card">
+                <h3 class="cosmic-heading">Что мы предлагаем?</h3>
+                <div class="products-grid cosmic-products-grid">
+                    <div class="product-card cosmic-product-card">
                         <div class="default-content">
-                            <div class="product-icon card">
+                            <div class="product-icon card cosmic-product-icon">
                                 <i class="fas fa-credit-card"></i>
                             </div>
                             <h4>Дебетовая карта</h4>
@@ -116,9 +98,9 @@
                             <p>Повышенный кэшбек до 10% в выбранных категориях, бесплатное обслуживание до 1 года, бесплатные переводы и снятие наличных в любых банкоматах мира.</p>
                         </div>
                     </div>
-                    <div class="product-card">
+                    <div class="product-card cosmic-product-card">
                         <div class="default-content">
-                            <div class="product-icon credit">
+                            <div class="product-icon credit cosmic-product-icon">
                                 <i class="fas fa-id-card"></i>
                             </div>
                             <h4>Кредитная карта</h4>
@@ -128,9 +110,9 @@
                             <p>Кредитный лимит до 1 000 000₽, льготный период до 120 дней, кэшбек до 5% на все покупки, бесплатное обслуживание при выполнении условий.</p>
                         </div>
                     </div>
-                    <div class="product-card">
+                    <div class="product-card cosmic-product-card">
                         <div class="default-content">
-                            <div class="product-icon deposit">
+                            <div class="product-icon deposit cosmic-product-icon">
                                 <i class="fas fa-money-bill-wave"></i>
                             </div>
                             <h4>Вклады</h4>
@@ -140,9 +122,9 @@
                             <p>Доходность до 19% годовых, возможность пополнения и частичного снятия без потери процентов, капитализация процентов ежемесячно.</p>
                         </div>
                     </div>
-                    <div class="product-card">
+                    <div class="product-card cosmic-product-card">
                         <div class="default-content">
-                            <div class="product-icon investments">
+                            <div class="product-icon investments cosmic-product-icon">
                                 <i class="fas fa-chart-line"></i>
                             </div>
                             <h4>Инвестиции</h4>
@@ -161,7 +143,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col about">
-                    <h4>О WorldSkills Bank</h4>
+                    <h4>О Nyota Bank</h4>
                     <p>Современный банк, предлагающий инновационные финансовые решения с 2025 года.</p>
                 </div>
                 <div class="footer-col">
@@ -189,7 +171,7 @@
                         <li><a href="#">Чат поддержки</a></li>
                     </ul>
                 </div>
-                <p>&copy; 2025 WorldSkills Bank. Все права защищены.</p>
+                <p>&copy; 2025 Nyota Bank. Все права защищены.</p>
             </div>
         </div>
     </footer>

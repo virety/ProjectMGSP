@@ -18,9 +18,9 @@
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-    width: 240px;  
-    height: 250px;
-    border-radius: 30%;
+    width: 260px;  
+    height: 280px;
+    border-radius: 9%;
     text-align: center;
     overflow: auto;
 }

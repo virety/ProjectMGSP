@@ -1,22 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
 /* Global Styles */
 :root {
     --primary-color: #5757AA;
     --primary-dark: #18114D;
     --primary-light: #524CA1;
     --white: #ffffff;
-    --text-color: #1F175E;
+    --text-color: #f9f9f9;
     --background-light: #f9f9f9;
     --wave-color: #473f83;
     --start: #524CA1;
     --end: #18114D;
     --c1: #5E60B5;
     --c2: #1F175E;
-    --back: linear-gradient(to bottom, #524CA1, #1a144b);
+    --i: rgb(179, 202, 235);
+    --nyota-gradient: linear-gradient(135deg, #18114D 0%, #524CA1 100%);
 }
 
 .main-content {
-    background: var(--back);
-    background-size: cover;
+    background: transparent;
     padding-top: 60px;
 }
 
@@ -25,20 +27,23 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Century gothic', sans-serif;
 }
 
 body {
     color: var(--text-color);
     line-height: 1.6;
-    background-color: white;
+    background: linear-gradient(135deg, #0e0a2b 0%, #18114D 40%, #524CA1 100%), url('https://www.transparenttextures.com/patterns/stardust.png');
+    background-blend-mode: lighten;
+    background-size: cover, auto;
+    background-attachment: fixed;
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
+    width: 92%;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 18px;
 }
 
 .btn {
@@ -86,17 +91,20 @@ body {
 
 h1, h2, h3, h4 {
     margin-bottom: 15px;
-    color: white;
+    color: var(--white);
+    text-shadow: 0 2px 12px rgba(31, 23, 94, 0.18);
+    letter-spacing: 1px;
 }
 
 /* Header Styles */
 header {
-    background: white;
+    background: rgba(24, 17, 77, 0.98);
+    box-shadow: 0 2px 16px 0 rgba(87, 87, 170, 0.18);
+    border-bottom: 2px solid var(--primary-color);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 header .container {
@@ -119,10 +127,14 @@ header .container {
 
 .logo h1 {
     color: var(--primary-color);
-    margin-top: 15px;
-    font-size: 30px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
 }
 
+.logo h1 span {
+    color: var(--c1);
+}
 
 nav ul {
     display: flex;
@@ -138,13 +150,10 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: var(--text-color);
-    padding: 8px 12px; /* Уменьшаем padding */
+    color: var(--white);
     font-weight: 500;
-    transition: color 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-size: 1.2rem;
+    transition: color 0.2s;
 }
 
 /* Стили для обычных пунктов меню (не иконки) */
@@ -181,7 +190,7 @@ nav ul li:not(.user-icon) a {
 }
 
 .user-name {
-    font-size: 11px; /* Уменьшаем размер текста */
+    font-size: 20px; /* Уменьшаем размер текста */
     font-weight: 500;
     white-space: nowrap;
 }
@@ -248,39 +257,80 @@ nav ul li a:hover {
     transition: all 0.3s ease;
 }
 
+.hero.cosmic-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    background: none;
+    text-align: center;
+    position: relative;
+}
+
+.hero.cosmic-hero h2 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 2px;
+    text-shadow: 0 0 16px var(--primary-color), 0 2px 12px rgba(31, 23, 94, 0.18);
+}
+
+.hero.cosmic-hero h2 span {
+    color: var(--c1);
+    text-shadow: 0 0 8px var(--c1);
+}
+
+.hero.cosmic-hero p {
+    font-size: 1.4rem;
+    color: var(--c1);
+    margin-bottom: 2.2rem;
+    text-shadow: 0 0 8px var(--primary-color);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
 
 /* Services Section */
 .services {
     padding: 150px 0;
+    position: relative;
+    z-index: 1;
 }
 
 .services h3 {
     text-align: center;
-    font-size: 32px;
+    font-size: 38px;
     margin-bottom: 50px;
 }
 
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    gap: 40px;
     opacity: 0.9;
 }
 
 .service-card {
-    background-color: var(--white);
+    background: rgba(24, 17, 77, 0.92);
     padding: 30px 20px;
-    border-radius: 70px;
+    border-radius: 28px;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    left: 16px;
+    box-shadow: 0 8px 32px 0 rgba(87, 87, 170, 0.22);
+    transition: transform 0.2s, box-shadow 0.2s;
     width: 350px;
-    opacity: 0.9;
+    opacity: 1;
+    border: 2px solid var(--primary-color);
+    position: relative;
+    z-index: 2;
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(24, 15, 75, 0.2);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 16px 48px 0 rgba(87, 87, 170, 0.28);
 }
 
 .service-icon {
@@ -293,30 +343,36 @@ nav ul li a:hover {
     justify-content: center;
     font-size: 30px;
     color: var(--white);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--c1) 100%);
+    box-shadow: 0 2px 12px 0 rgba(87, 87, 170, 0.22);
 }
 
-.service-img {
-    width: 55px;
-    height: 55px;
+.service-icon.exchange {
+    color: var(--i);
+    font-size: 34px;
 }
-
 .service-icon.deposit {
-    color: var(--primary-color);
+    color: var(--i);
     font-size: 45px;
+}
+
+.service-icon.atm {
+    color: var(--i);
+    font-size: 42px;
 }
 
 /* Products Section */
 .products {
     padding: 80px 0;
-    background-color: var(--back);
+    background: transparent !important;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .products h3 {
     text-align: center;
-    font-size: 32px;
-    margin-bottom: 50px;
+    font-size: 40px;
+    margin-bottom: 90px;
     position: relative;
     z-index: 1;
 }
@@ -324,7 +380,7 @@ nav ul li a:hover {
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    gap: 40px;
     position: relative;
     z-index: 1;
     opacity: 0.9;
@@ -335,17 +391,20 @@ nav ul li a:hover {
 }
 
 .product-card {
-    background-color: var(--white);
+    background: rgba(24, 17, 77, 0.92);
     padding: 30px 20px;
-    border-radius: 10px;
+    border-radius: 28px;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px 0 rgba(87, 87, 170, 0.22);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid var(--primary-color);
+    position: relative;
+    z-index: 2;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(87, 74, 96, 0.2);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 16px 48px 0 rgba(87, 87, 170, 0.28);
 }
 
 .product-icon {
@@ -358,80 +417,16 @@ nav ul li a:hover {
     justify-content: center;
     font-size: 30px;
     color: var(--white);
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--c1) 100%);
+    box-shadow: 0 2px 12px 0 rgba(87, 87, 170, 0.22);
 }
 
-.noname h2{
-    text-align: center;
-    position: relative; 
-    top: 108px;
-    color: #271f60;
-    rotate: 11deg;
-}
-
-
-/* Wave styles */
-.wave-container {
-    position: absolute;
-    bottom: 170.9999px;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(0deg);
-    z-index: 0;
-}
-
-.wave {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 150px;
-
-}
-
-.wave-container2 {
-    position: absolute;
-    bottom: 300.80px;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(-180deg);
-    z-index: 0;
-    
-}
-
-.wave2 {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 150px;
-}
-
-
-
-
-.products h3 {
-    text-align: center;
-    font-size: 32px;
-    margin-bottom: 50px;
-    position: relative;
-    z-index: 1;
-}
-
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    position: relative;
-    z-index: 1;
-}
 
 .product-card {
     background-color: rgba(255, 255, 255, 0.85);
     padding: 30px 20px;
-    width: 240px;  
-    height: 250px;
+    width: 260px;  
+    height: 280px;
     border-radius: 30%;
     text-align: center;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
@@ -443,9 +438,11 @@ nav ul li a:hover {
 
 /* Footer Styles */
 footer {
-    background-color: #171144;
-    color: var(--white);
+    background: rgba(24, 17, 77, 0.98);
+    color: var(--text-color);
     padding: 60px 0 0;
+    box-shadow: 0 -2px 16px 0 rgba(87, 87, 170, 0.18);
+    border-top: 1.5px solid var(--primary-color);
 }
 
 .footer-grid {
@@ -551,14 +548,15 @@ footer {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background: rgba(24, 17, 77, 0.98);
     margin: 10% auto;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 18px;
     width: 100%;
     max-width: 400px;
     position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 32px 0 rgba(87, 87, 170, 0.22);
+    color: var(--white);
 }
 
 .close-modal {
@@ -713,9 +711,14 @@ footer {
     }
 }
 
-
-
-
+@media (max-width: 900px) {
+    .services-grid, .products-grid {
+        gap: 20px;
+    }
+    .container {
+        padding: 0 6px;
+    }
+}
 
 /* калькулятор */
 #deposit-calculator-modal .modal-content {
@@ -869,27 +872,6 @@ footer {
     margin-right: 4px;
 }
 
-
-
-
-
-
-
-
-
-.modal-content {
-    background-color: #fff;
-    margin: auto; /* Центрирование с отступом сверху */
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    top: 50%; /* Центрирование по вертикали */
-    transform: translateY(-50%); /* Смещение на половину высоты */
-}
-
 /* Блокировка прокрутки страницы */
 body.modal-open {
     overflow: hidden;
@@ -897,7 +879,6 @@ body.modal-open {
     width: 100%;
     height: 100%;
 }
-
 
 /* Добавим в конец файла */
 .account-dashboard {
@@ -995,4 +976,162 @@ nav ul li a.user-icon:hover {
 nav ul li a.user-icon:hover .user-avatar {
     background-color: var(--primary-dark);
     transform: scale(1.1);
+}
+
+section, .services, .products {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Optional: add a subtle glowing effect to buttons */
+.btn, .btn.primary, .btn.register {
+    border-radius: 30px !important;
+    background: linear-gradient(90deg, var(--c1), var(--primary-color));
+    color: var(--white) !important;
+    box-shadow: 0 0 16px 0 var(--primary-color), 0 2px 8px 0 rgba(87, 87, 170, 0.18);
+    border: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: background 0.3s, transform 0.2s;
+}
+.btn:hover, .btn.primary:hover, .btn.register:hover {
+    background: linear-gradient(90deg, var(--primary-color), var(--c1));
+    transform: translateY(-2px) scale(1.06);
+}
+
+.btn.outline {
+    background: transparent !important;
+    border: 2px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    box-shadow: none;
+}
+.btn.outline:hover {
+    background: var(--primary-color) !important;
+    color: var(--white) !important;
+}
+
+/* Card icon cosmic accent */
+.product-icon, .service-icon {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--c1) 100%);
+    color: var(--white);
+    box-shadow: 0 2px 12px 0 rgba(87, 87, 170, 0.22);
+    border-radius: 50%;
+}
+
+/* Remove opacity from cards for more contrast */
+.service-card, .product-card {
+    opacity: 1 !important;
+}
+
+/* Cosmic divider */
+.cosmic-divider {
+    width: 100%;
+    height: 4px;
+    margin: 60px 0 40px 0;
+    background: linear-gradient(90deg, transparent, var(--primary-color) 40%, var(--c1) 60%, transparent);
+    box-shadow: 0 0 24px 0 var(--primary-color);
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+.cosmic-products {
+    position: relative;
+    background: none;
+    z-index: 1;
+    padding-bottom: 80px;
+}
+.cosmic-products::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 90%;
+    height: 100%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at 50% 0%, rgba(87,87,170,0.10) 0%, transparent 80%);
+    z-index: 0;
+    pointer-events: none;
+}
+.cosmic-heading {
+    font-size: 2.4rem;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 2.5rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 18px var(--primary-color), 0 2px 12px rgba(31, 23, 94, 0.18);
+}
+.cosmic-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 48px;
+    position: relative;
+    z-index: 1;
+}
+.cosmic-product-card {
+    background: rgba(24, 17, 77, 0.97);
+    border: 2.5px solid var(--c1);
+    border-radius: 32px;
+    box-shadow: 0 8px 40px 0 rgba(87, 87, 170, 0.28), 0 0 24px 0 var(--primary-color);
+    color: var(--white);
+    transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+    padding: 36px 24px 28px 24px;
+    position: relative;
+    z-index: 2;
+}
+.cosmic-product-card:hover {
+    transform: translateY(-8px) scale(1.04);
+    box-shadow: 0 16px 64px 0 rgba(87, 87, 170, 0.38), 0 0 32px 0 var(--c1);
+    border: 2.5px solid var(--primary-color);
+}
+.cosmic-product-icon {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 22px auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--c1) 100%);
+    color: var(--white);
+    box-shadow: 0 0 24px 0 var(--primary-color), 0 2px 12px 0 rgba(87, 87, 170, 0.22);
+    border: 2px solid var(--c1);
+}
+.cosmic-product-card h4 {
+    color: var(--c1);
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+    letter-spacing: 1px;
+}
+.cosmic-product-card .product-description h4 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+.cosmic-product-card .product-description p {
+    color: var(--white);
+    opacity: 0.92;
+    font-size: 1rem;
+}
+
+.logo h1, .logo h1 span, .hero h2, .cosmic-heading {
+    font-family: 'Orbitron', Arial, sans-serif !important;
+}
+
+.nyota-accent {
+    color: #5E60B5;
+    text-shadow: 0 0 12px #5E60B5, 0 0 24px #524CA1;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.space-object {
+    width: 100%;
+    height: 120px;
+    background: url('https://pngimg.com/d/milky_way_PNG6.png') center/contain no-repeat;
+    margin: 0 auto 40px auto;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 32px #5E60B5);
+    display: block;
 }
