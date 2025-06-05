@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой аккаунт - WorldSkills Bank</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="images/museum.png" alt="WorldSkills Bank Logo">
+                <h1>WorldSkills Bank</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#services">Сервисы</a></li>
+                    <li><a href="index.html#products">Продукты</a></li>
+                    <li><a href="index.html#mobile-app">Мобильное приложение</a></li>
+                    <li>
+                        <a href="#" id="user-account" class="user-icon">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="user-name" id="account-username">Иван</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="account-dashboard">
+        <div class="container">
+            <h2>Мои карты</h2>
+            <div class="cards-grid">
+                <div class="card-item">
+                    <div class="card-type debit">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Дебетовая карта</h3>
+                    <p>**** **** **** 1234</p>
+                    <div class="card-balance">
+                        <span>Баланс:</span>
+                        <span class="amount">45,678.90 ₽</span>
+                    </div>
+                </div>
+                <div class="card-item">
+                    <div class="card-type credit">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Кредитная карта</h3>
+                    <p>**** **** **** 5678</p>
+                    <div class="card-balance">
+                        <span>Лимит:</span>
+                        <span class="amount">150,000.00 ₽</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                const firstName = user.split(' ')[0];
+                document.getElementById('account-username').textContent = firstName;
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
