@@ -240,6 +240,19 @@ struct BankHomeView: View {
     @State private var showAIView = false
     @State private var isMoreActionsPresented = false
     @State private var isActionButtonView = false
+    @State private var loanAmount: Double = 0
+    @State private var loanTermMonths: Int = 12
+    @State private var loanInterestRate: Double = 12.0
+    
+    @State private var depositAmount: Double = 0
+    @State private var depositTermMonths: Int = 12
+    @State private var depositInterestRate: Double = 5.0
+    
+    @State private var showDepositSheet = false
+    @State private var showLoanSheet = false
+    @State private var showSuccessAlert = false
+    @State private var successMessage = ""
+    
     private func currentUserName() -> String {
         // Возьмём первого пользователя из Core Data
         if let user = users.first {
@@ -351,6 +364,7 @@ struct BankHomeView: View {
                         // Действия
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
+
                                 NavigationLink {
                                     SendMoneyView()
                                 } label: {
@@ -377,7 +391,7 @@ struct BankHomeView: View {
                                 }
                                 .buttonStyle(PlainButtonStyle())
                                 .fullScreenCover(isPresented: $isActionButtonView) {
-                                    QRScannerView() // здесь должно быть именно QRScannerView
+                                    QRScannerView()
                                 }
 
                                 // Кнопка "Ещё"
@@ -403,6 +417,46 @@ struct BankHomeView: View {
             }
         }
         
+    }
+    
+    private func calculateLoan(amount: Double, termMonths: Int, rate: Double) -> (monthlyPayment: Double, totalAmount: Double) {
+        let monthlyRate = rate / 12 / 100
+        let numberOfPayments = Double(termMonths)
+        
+        let monthlyPayment = amount * (monthlyRate * pow(1 + monthlyRate, numberOfPayments)) / (pow(1 + monthlyRate, numberOfPayments) - 1)
+        let totalAmount = monthlyPayment * numberOfPayments
+        
+        return (monthlyPayment, totalAmount)
+    }
+    
+    private func saveLoan() {
+        let loanDetails = calculateLoan(amount: loanAmount, termMonths: loanTermMonths, rate: loanInterestRate)
+        CoreDataManager.shared.saveLoan(
+            amount: loanAmount,
+            termMonths: loanTermMonths,
+            rate: loanInterestRate,
+            monthlyPayment: loanDetails.monthlyPayment,
+            totalAmount: loanDetails.totalAmount
+        )
+    }
+    
+    private func calculateDeposit(amount: Double, termMonths: Int, rate: Double) -> Double {
+        let monthlyRate = rate / 12 / 100
+        let numberOfMonths = Double(termMonths)
+        
+        // Simple interest calculation
+        let totalInterest = amount * monthlyRate * numberOfMonths
+        return totalInterest
+    }
+    
+    private func saveDeposit() {
+        let totalInterest = calculateDeposit(amount: depositAmount, termMonths: depositTermMonths, rate: depositInterestRate)
+        CoreDataManager.shared.saveDeposit(
+            amount: depositAmount,
+            termMonths: depositTermMonths,
+            interestRate: depositInterestRate,
+            totalInterest: totalInterest
+        )
     }
 }
 

@@ -480,7 +480,7 @@ struct ChatBubbleView: View {
                     .padding(12)
                     .background(
                         LinearGradient(
-                            colors: [Color(hex: "5E60BB"), Color(hex: "B2F7FF")],
+                            colors: [Color("5E60BB"), Color("B2F7FF")],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )

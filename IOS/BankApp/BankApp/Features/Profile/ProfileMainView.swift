@@ -7,6 +7,16 @@ struct ProfileMainView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Mortgage.date, ascending: false)],
         animation: .default)
     private var mortgages: FetchedResults<Mortgage>
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Loan.date, ascending: false)],
+        animation: .default)
+    private var loans: FetchedResults<Loan>
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Deposit.date, ascending: false)],
+        animation: .default)
+    private var deposits: FetchedResults<Deposit>
 
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
@@ -16,33 +26,64 @@ struct ProfileMainView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var selectedTab: MainTabView.Tab
     
-    
     @State private var showLogin = false
     @State private var showLogoutConfirm = false
     @State private var showPinPad = false
     @State private var enteredPin = ""
     @State private var currentUser: CDUser?
-    
-    @State private var depositsCount = 2
-    @State private var depositsSum: Double = 15768
-    @State private var depositsPercent: Double = 3.04
-    @State private var creditsCount = 1
-    @State private var creditsRemainingDebt: Double = 32000
-    @State private var nextPaymentDate = "17 мая"
-    @State private var nextPaymentAmount: Double = 2000
     @State private var selectedItem: PhotosPickerItem? = nil
+
+    // Computed properties for mortgages
     private var mortgagesCount: Int {
         mortgages.count
     }
-
-    // Предположим, что mortgages — это массив Mortgage:
+    
     private var mortgagesTotalAmount: Double {
         mortgages.reduce(0) { $0 + ($1.amount) }
     }
 
-
-
+    // Computed properties for loans
+    private var loansCount: Int {
+        loans.count
+    }
     
+    private var totalRemainingDebt: Double {
+        loans.reduce(0) { $0 + ($1.remainingDebt) }
+    }
+    
+    // Находим кредит с ближайшей будущей датой платежа
+    private var nextLoanPayment: (date: Date?, amount: Double) {
+        let now = Date()
+        let futureLoans = loans.filter { loan in
+            if let date = loan.nextPaymentDate {
+                return date >= now
+            }
+            return false
+        }
+        let nearestLoan = futureLoans.min { ($0.nextPaymentDate ?? Date.distantFuture) < ($1.nextPaymentDate ?? Date.distantFuture) }
+        
+        if let loan = nearestLoan {
+            return (loan.nextPaymentDate, loan.nextPaymentAmount)
+        } else {
+            return (nil, 0)
+        }
+    }
+    
+    // Computed properties for deposits
+    private var depositsCount: Int {
+        deposits.count
+    }
+    
+    private var totalDepositsAmount: Double {
+        deposits.reduce(0) { $0 + ($1.amount) }
+    }
+    
+    private var averageDepositRate: Double {
+        guard !deposits.isEmpty else { return 0 }
+        let totalRate = deposits.reduce(0) { $0 + ($1.interestRate) }
+        return totalRate / Double(deposits.count)
+    }
+
     var body: some View {
         ZStack {
             // Градиентный фон
@@ -130,10 +171,10 @@ struct ProfileMainView: View {
                     Text("\(depositsCount)")
                         .font(.system(size: 18, weight: .bold))
                         .foregroundColor(.white)
-                    Text("+\(formatCurrency(depositsSum)) ₽")
+                    Text("+\(formatCurrency(totalDepositsAmount)) ₽")
                         .font(.system(size: 14))
                         .foregroundColor(.white.opacity(0.8))
-                    Text(String(format: "%.2f%%", depositsPercent))
+                    Text(String(format: "%.2f%%", averageDepositRate))
                         .font(.system(size: 14))
                         .foregroundColor(.green)
                 }
@@ -152,7 +193,7 @@ struct ProfileMainView: View {
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
                     Spacer()
-                    Text("\(creditsCount)")
+                    Text("\(loansCount)")
                         .font(.system(size: 18, weight: .bold))
                         .foregroundColor(.white)
                 }
@@ -162,7 +203,7 @@ struct ProfileMainView: View {
                         .font(.system(size: 14))
                         .foregroundColor(.gray)
                     Spacer()
-                    Text("\(formatCurrency(creditsRemainingDebt)) ₽")
+                    Text("\(formatCurrency(totalRemainingDebt)) ₽")
                         .font(.system(size: 16))
                         .foregroundColor(.white)
                 }
@@ -173,10 +214,12 @@ struct ProfileMainView: View {
                         .foregroundColor(.gray)
                     Spacer()
                     VStack(alignment: .trailing) {
-                        Text(nextPaymentDate)
-                            .font(.system(size: 14))
-                            .foregroundColor(.white)
-                        Text("-\(formatCurrency(nextPaymentAmount)) ₽")
+                        if let nextDate = nextLoanPayment.date {
+                            Text(formatDate(nextDate))
+                                .font(.system(size: 14))
+                                .foregroundColor(.white)
+                        }
+                        Text("-\(formatCurrency(nextLoanPayment.amount)) ₽")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(.red)
                     }
@@ -196,10 +239,10 @@ struct ProfileMainView: View {
                     .foregroundColor(.white)
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text("\(mortgages.count)")
+                    Text("\(mortgagesCount)")
                         .font(.system(size: 18, weight: .bold))
                         .foregroundColor(.white)
-                    if mortgages.count > 0 {
+                    if mortgagesCount > 0 {
                         Text("\(formatCurrency(mortgagesTotalAmount)) ₽")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.7))
@@ -364,15 +407,22 @@ struct ProfileMainView: View {
         }
     }
     
-    private func formatCurrency(_ amount: Double) -> String {
+    private func formatCurrency(_ value: Double) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSeparator = " "
         formatter.maximumFractionDigits = 0
-        return formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
+        return formatter.string(from: NSNumber(value: value)) ?? "0"
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yy"
+        return formatter.string(from: date)
+    }
+    
+    enum ImageError: Error {
+        case loadFailed
     }
 }
 
-enum ImageError: Error {
-    case loadFailed
-}

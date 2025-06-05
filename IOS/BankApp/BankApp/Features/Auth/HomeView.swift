@@ -669,8 +669,8 @@ struct CustomTextField: View {
                 .fill(
                     LinearGradient(
                         gradient: Gradient(colors: [
-                            Color(hex: "5E60BB").opacity(0.8),
-                            Color(hex: "B2F7FF").opacity(0.4)
+                            Color("5E60BB").opacity(0.8),
+                            Color("B2F7FF").opacity(0.4)
                         ]),
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
