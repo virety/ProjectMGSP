@@ -1,9 +1,3 @@
-//
-//  DepositCalculatorView.swift
-//  BankApp
-//
-//  Created by Вадим Семибратов on 05.06.2025.
-//
 import SwiftUI
 
 // MARK: - Калькулятор вклада
@@ -16,7 +10,8 @@ struct DepositCalculatorView: View {
     @State private var showResult: Bool = false
     @State private var errorMessage: String? = nil
     @State private var showSaveConfirmation: Bool = false
-    
+    @State private var userBalance: Double = 0
+
     var body: some View {
         VStack(spacing: 16) {
             // Сумма вклада
@@ -113,6 +108,7 @@ struct DepositCalculatorView: View {
                 
                 Button(action: {
                     saveDeposit()
+                    withdrawFromBalance()
                 }) {
                     Text("Сохранить вклад")
                         .bold()
@@ -140,8 +136,11 @@ struct DepositCalculatorView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .onAppear {
+            updateUserBalance()
+        }
     }
-    
+
     private func validateInputs() {
         let cleanAmount = amount.replacingOccurrences(of: " ", with: "")
         let amountValue = Double(cleanAmount) ?? 0
@@ -168,8 +167,13 @@ struct DepositCalculatorView: View {
             errorMessage = "Максимальный срок - 5 лет (60 месяцев)"
             return
         }
+        
+        if amountValue > userBalance {
+            errorMessage = "Недостаточно средств на балансе"
+            return
+        }
     }
-    
+
     private func calculateTotal() {
         let cleanAmount = amount.replacingOccurrences(of: " ", with: "")
         let rawAmount = Double(cleanAmount) ?? 0
@@ -184,9 +188,9 @@ struct DepositCalculatorView: View {
         
         // Определение ставки
         if rawAmount <= 30000 && rawMonths <= 12 {
-            baseRate = 10.0 // Короткий вклад
+            baseRate = 10.0
         } else {
-            baseRate = 16.0 // Долгосрочный вклад
+            baseRate = 16.0
         }
         
         let r = baseRate / 100 / 12
@@ -195,7 +199,7 @@ struct DepositCalculatorView: View {
         income = totalAmount - rawAmount
         showResult = true
     }
-    
+
     private func saveDeposit() {
         let cleanAmount = Double(amount.replacingOccurrences(of: " ", with: "")) ?? 0
         let term = Int(months) ?? 0
@@ -209,21 +213,40 @@ struct DepositCalculatorView: View {
         
         showSaveConfirmation = true
     }
-    
+
+    private func withdrawFromBalance() {
+        let cleanAmount = Double(amount.replacingOccurrences(of: " ", with: "")) ?? 0
+        
+        if let user = CoreDataManager.shared.fetchUser() {
+            if user.balance >= cleanAmount {
+                user.balance -= cleanAmount
+                CoreDataManager.shared.saveContext()
+                updateUserBalance()
+            } else {
+                errorMessage = "Недостаточно средств на балансе"
+            }
+        }
+    }
+
+    private func updateUserBalance() {
+        if let user = CoreDataManager.shared.fetchUser() {
+            userBalance = user.balance
+        }
+    }
+
     private func formatCurrencyInput(_ input: String) -> String {
         let digits = input.filter { $0.isNumber }
         guard let number = Double(digits) else { return "" }
-        
+
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSeparator = " "
         formatter.maximumFractionDigits = 0
-        
+
         return formatter.string(from: NSNumber(value: number)) ?? ""
     }
-    
+
     private func filterDigits(_ input: String) -> String {
         input.filter { $0.isNumber }
     }
 }
-

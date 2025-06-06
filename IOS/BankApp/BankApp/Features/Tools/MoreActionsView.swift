@@ -131,7 +131,7 @@ struct MoreActionsView: View {
     }
 
     private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { _ in
             currencyService.fetchLatestRates(context: viewContext)
         }
     }
@@ -171,7 +171,7 @@ class CurrencyService: ObservableObject {
         isLoading = true
         error = nil
         
-        let url = "https://v6.exchangerate-api.com/v6/\(apiKey)/latest/\(baseCurrency)"
+        let url = "https://v6.exchangerate-api.com/v6/deacf4eb8c4f35e2bcda9bc8/latest/\(baseCurrency)"
         
         AF.request(url).responseDecodable(of: ExchangeRatesResponse.self) { [weak self] response in
             DispatchQueue.main.async {
@@ -309,128 +309,278 @@ struct ErrorView: View {
         .padding()
     }
 }
+struct InteractiveLineChart: View {
+    let values: [(rate: Double, date: Date)]
+    @Binding var selectedIndex: Int?
+    @Binding var isSelected: Bool
+    
+    private let lineWidth: CGFloat = 3
+    private let dotSize: CGFloat = 10
+    private let shadowRadius: CGFloat = 10
+    private let animationDuration: Double = 0.8
+    
+    private var normalizedValues: [Double] {
+        guard !values.isEmpty else { return [] }
+        let rates = values.map { $0.rate }
+        let minRate = rates.min() ?? 0
+        let maxRate = rates.max() ?? 1
+        let range = maxRate - minRate
+        
+        // Усиливаем визуализацию малых изменений
+        return rates.map { rate in
+            let normalized = range > 0 ? (rate - minRate) / range : 0.5
+            return pow(normalized, 0.7)
+        }
+    }
+    
+    var body: some View {
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let height = geometry.size.height
+            
+            ZStack {
+                // Градиент под линией
+                if values.count > 1 {
+                    Path { path in
+                        for (index, value) in normalizedValues.enumerated() {
+                            let x = CGFloat(index) / CGFloat(values.count - 1) * width
+                            let y = height - CGFloat(value) * height
+                            
+                            if index == 0 {
+                                path.move(to: CGPoint(x: x, y: y))
+                            } else {
+                                path.addLine(to: CGPoint(x: x, y: y))
+                            }
+                        }
+                        path.addLine(to: CGPoint(x: width, y: height))
+                        path.addLine(to: CGPoint(x: 0, y: height))
+                        path.closeSubpath()
+                    }
+                    .fill(LinearGradient(
+                        gradient: Gradient(colors: [Color.blue.opacity(0.3), Color.blue.opacity(0.05)]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    ))
+                }
+                
+                // Основная линия графика
+                if values.count > 1 {
+                    Path { path in
+                        for (index, value) in normalizedValues.enumerated() {
+                            let x = CGFloat(index) / CGFloat(values.count - 1) * width
+                            let y = height - CGFloat(value) * height
+                            
+                            if index == 0 {
+                                path.move(to: CGPoint(x: x, y: y))
+                            } else {
+                                path.addLine(to: CGPoint(x: x, y: y))
+                            }
+                        }
+                    }
+                    .trim(from: 0, to: isSelected ? 1 : 0)
+                    .stroke(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.blue, Color.cyan]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ),
+                        style: StrokeStyle(
+                            lineWidth: lineWidth,
+                            lineCap: .round,
+                            lineJoin: .round
+                        )
+                    )
+                    .shadow(color: Color.blue.opacity(0.5), radius: shadowRadius, x: 0, y: 5)
+                    .animation(.easeInOut(duration: animationDuration), value: isSelected)
+                    
+                    // Дополнительная тонкая линия
+                    Path { path in
+                        for (index, value) in normalizedValues.enumerated() {
+                            let x = CGFloat(index) / CGFloat(values.count - 1) * width
+                            let y = height - CGFloat(value) * height
+                            
+                            if index == 0 {
+                                path.move(to: CGPoint(x: x, y: y))
+                            } else {
+                                path.addLine(to: CGPoint(x: x, y: y))
+                            }
+                        }
+                    }
+                    .stroke(
+                        Color.white.opacity(0.8),
+                        style: StrokeStyle(
+                            lineWidth: 0.5,
+                            lineCap: .round,
+                            lineJoin: .round
+                        )
+                    )
+                }
+                
+                // Точки на графике
+                ForEach(Array(values.enumerated()), id: \.offset) { index, _ in
+                    let x = CGFloat(index) / CGFloat(values.count - 1) * width
+                    let y = height - CGFloat(normalizedValues[index]) * height
+                    
+                    Circle()
+                        .fill(Color.white.opacity(0.3))
+                        .frame(width: 3, height: 3)
+                        .position(x: x, y: y)
+                }
+                
+                // Выбранная точка
+                if let index = selectedIndex, isSelected, index < values.count {
+                    let x = CGFloat(index) / CGFloat(values.count - 1) * width
+                    let y = height - CGFloat(normalizedValues[index]) * height
+                    let selectedPoint = CGPoint(x: x, y: y)
+                    
+                    Circle()
+                        .strokeBorder(
+                            LinearGradient(
+                                gradient: Gradient(colors: [Color.white, Color.cyan]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 2
+                        )
+                        .frame(width: dotSize * 2, height: dotSize * 2)
+                        .position(selectedPoint)
+                        .opacity(isSelected ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.3).repeatForever(), value: isSelected)
+                    
+                    Circle()
+                        .fill(Color.white)
+                        .frame(width: dotSize, height: dotSize)
+                        .position(selectedPoint)
+                        .shadow(color: Color.blue, radius: 5, x: 0, y: 0)
+                }
+            }
+            .drawingGroup()
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        let x = value.location.x
+                        let index = Int((x / width) * CGFloat(values.count - 1)).clamped(to: 0..<values.count)
+                        selectedIndex = index
+                        isSelected = true
+                    }
+                    .onEnded { _ in
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                isSelected = false
+                            }
+                        }
+                    }
+            )
+        }
+    }
+}
+// Вспомогательное расширение для ограничения диапазона
+extension Int {
+    func clamped(to range: Range<Int>) -> Int {
+        let lower = Swift.max(self, range.lowerBound)
+        return Swift.min(lower, range.upperBound - 1)
+    }
+}
 
+// Обновленный CurrencyCardView для лучшего отображения
 struct CurrencyCardView: View {
     let currency: CurrencyService.CurrencyData
     @State private var selectedPointIndex: Int? = nil
     @State private var isSelected: Bool = false
-
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("\(currency.flag) \(currency.currency)")
                     .font(.headline)
                     .foregroundColor(.white)
+                
                 Spacer()
-
+                
                 VStack(alignment: .trailing) {
                     Text(String(format: "%.2f ₽", currency.rate))
                         .font(.headline)
                         .foregroundColor(.white)
-                    Text(String(format: "%@%.2f%%",
-                                currency.change >= 0 ? "+" : "",
-                                currency.change))
-                        .font(.caption)
-                        .foregroundColor(currency.change >= 0 ? .green : .red)
+                    
+                    HStack(spacing: 4) {
+                        Image(systemName: currency.change >= 0 ? "arrow.up" : "arrow.down")
+                        Text(String(format: "%@%.2f%%",
+                                   currency.change >= 0 ? "+" : "",
+                                   currency.changePercent))
+                    }
+                    .font(.caption)
+                    .foregroundColor(currency.change >= 0 ? .green : .red)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 2)
+                    .background(currency.change >= 0 ? Color.green.opacity(0.2) : Color.red.opacity(0.2))
+                    .cornerRadius(4)
                 }
             }
-
+            
             InteractiveLineChart(
                 values: currency.history,
                 selectedIndex: $selectedPointIndex,
                 isSelected: $isSelected
             )
-            .frame(height: 100)
-
+            .frame(height: 120)
+            .padding(.vertical, 4)
+            
             if let index = selectedPointIndex, isSelected, index < currency.history.count {
                 let selected = currency.history[index]
                 let current = selected.rate
                 let previous = index > 0 ? currency.history[index - 1].rate : selected.rate
                 let change = current - previous
                 let percentChange = previous != 0 ? (change / previous) * 100 : 0
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Курс: \(String(format: "%.2f ₽", current))")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                    Text("Время: \(selected.date.formatted(date: .omitted, time: .shortened))")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
-                    Text(String(format: "%@%.2f ₽ (%@%.2f%%)",
-                                change >= 0 ? "+" : "",
-                                change,
-                                change >= 0 ? "+" : "",
-                                percentChange))
-                        .font(.caption2)
-                        .foregroundColor(change >= 0 ? .green : .red)
+                
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Курс:")
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.7))
+                        Text(String(format: "%.2f ₽", current))
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Изменение:")
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.7))
+                        Text(String(format: "%@%.2f ₽ (%@%.2f%%)",
+                                   change >= 0 ? "+" : "",
+                                   change,
+                                   change >= 0 ? "+" : "",
+                                   percentChange))
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(change >= 0 ? .green : .red)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Время:")
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.7))
+                        Text(selected.date.formatted(date: .omitted, time: .shortened))
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white)
+                    }
                 }
+                .padding(.top, 8)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
-            
         }
         .padding()
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white.opacity(0.08))
+                .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+        )
         .padding(.horizontal)
-    }
-}
-
-struct InteractiveLineChart: View {
-    let values: [(rate: Double, date: Date)]
-    @Binding var selectedIndex: Int?
-    @Binding var isSelected: Bool
-
-    var body: some View {
-        GeometryReader { geometry in
-            let width = geometry.size.width
-            let height = geometry.size.height
-            let maxValue = values.map { $0.rate }.max() ?? 1
-            let minValue = values.map { $0.rate }.min() ?? 0
-            let range = maxValue - minValue
-
-            let points: [CGPoint] = values.enumerated().map { index, value in
-                let x = CGFloat(index) / CGFloat(values.count - 1) * width
-                let y = range > 0 ? height - CGFloat((value.rate - minValue) / range) * height : height / 2
-                return CGPoint(x: x, y: y)
-            }
-
-            ZStack {
-                if points.count > 1 {
-                    Path { path in
-                        path.move(to: points[0])
-                        for point in points.dropFirst() {
-                            path.addLine(to: point)
-                        }
-                    }
-                    .stroke(Color.blue, lineWidth: 2)
-
-                    if let index = selectedIndex, isSelected, index < points.count {
-                        let selectedPoint = points[index]
-                        Circle()
-                            .fill(Color.red)
-                            .frame(width: 10, height: 10)
-                            .position(selectedPoint)
-                    }
-                }
-            }
-            .contentShape(Rectangle()) // позволяет детектировать касания по всей области
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { value in
-                        let x = value.location.x
-                        let index = Int((x / width) * CGFloat(values.count - 1))
-                        if index >= 0 && index < values.count {
-                            selectedIndex = index
-                            isSelected = true
-                        }
-                    }
-                    .onEnded { _ in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            isSelected = false
-                        }
-                    }
-            )
-        }
+        .animation(.spring(), value: isSelected)
     }
 }
 
