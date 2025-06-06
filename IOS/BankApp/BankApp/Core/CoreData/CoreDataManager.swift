@@ -1,10 +1,3 @@
-//
-//  CoreDataManager.swift
-//  BankApp
-//
-//  Created by Вадим Семибратов on 05.06.2025.
-//
-
 import Foundation
 import CoreData
 
@@ -28,7 +21,6 @@ class CoreDataManager {
     
     func saveMortgage(amount: Double, termYears: Int, rate: Double, monthly: Double, total: Double, overpay: Double) {
         let mortgage = Mortgage(context: context)
-        
         mortgage.amount = amount
         mortgage.termYears = Int16(termYears)
         mortgage.rate = rate
@@ -42,7 +34,6 @@ class CoreDataManager {
     
     func saveLoan(amount: Double, termMonths: Int, rate: Double, monthlyPayment: Double, totalAmount: Double) {
         let loan = Loan(context: context)
-        
         loan.amount = amount
         loan.termMonths = Int16(termMonths)
         loan.interestRate = rate
@@ -51,7 +42,6 @@ class CoreDataManager {
         loan.remainingDebt = totalAmount
         loan.date = Date()
         
-        // Calculate next payment
         let calendar = Calendar.current
         if let nextMonth = calendar.date(byAdding: .month, value: 1, to: Date()) {
             loan.nextPaymentDate = nextMonth
@@ -63,7 +53,6 @@ class CoreDataManager {
     
     func saveDeposit(amount: Double, termMonths: Int, interestRate: Double, totalInterest: Double) {
         let deposit = Deposit(context: context)
-        
         deposit.amount = amount
         deposit.termMonths = Int16(termMonths)
         deposit.interestRate = interestRate
@@ -73,12 +62,27 @@ class CoreDataManager {
         saveContext()
     }
     
-    private func saveContext() {
+    // ✅ Теперь публичный
+    func saveContext() {
         do {
             try context.save()
             print("Successfully saved to CoreData")
         } catch {
             print("Error saving context: \(error)")
+        }
+    }
+    
+    // ✅ Добавили
+    func fetchUser() -> CDUser? {
+        let request: NSFetchRequest<CDUser> = CDUser.fetchRequest()
+        request.fetchLimit = 1
+        
+        do {
+            let users = try context.fetch(request)
+            return users.first
+        } catch {
+            print("Ошибка при получении пользователя: \(error)")
+            return nil
         }
     }
 }

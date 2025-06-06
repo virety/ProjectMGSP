@@ -637,7 +637,7 @@ struct CustomTextField: View {
     var formatter: ((String) -> String)? = nil
     
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: icon)
                 .foregroundColor(color)
                 .frame(width: 20)
@@ -645,10 +645,7 @@ struct CustomTextField: View {
             ZStack(alignment: .leading) {
                 if text.isEmpty {
                     Text(placeholder)
-                        .foregroundColor(Color(.black))
-                        .padding(.leading, 4)
-                        .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 0, y: 0)
-                        .shadow(color: Color(.blue).opacity(0.4), radius: 8, x: 0, y: 0)
+                        .foregroundColor(Color.gray.opacity(0.6))
                 }
                 
                 TextField("", text: Binding(
@@ -660,30 +657,18 @@ struct CustomTextField: View {
                 .keyboardType(keyboardType)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-                .foregroundColor(.primary)
+                .foregroundColor(.white)
             }
         }
-        .padding()
+        .padding(12)
         .background(
-            RoundedRectangle(cornerRadius: 30)
-                .fill(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color("5E60BB").opacity(0.8),
-                            Color("B2F7FF").opacity(0.4)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color.white.opacity(0.1))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(color.opacity(0.5), lineWidth: 1)
                 )
-                .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
-                .padding(.horizontal, 2)
         )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

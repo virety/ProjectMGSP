@@ -11,6 +11,7 @@ struct CreditCalculatorView: View {
     @State private var showResult: Bool = false
     @State private var errorMessage: String? = nil
     @State private var showSaveConfirmation: Bool = false
+    @State private var userBalance: Double = 0
     
     var body: some View {
         VStack(spacing: 16) {
@@ -38,6 +39,7 @@ struct CreditCalculatorView: View {
                             amount = formatCurrencyInput(newValue)
                             validateInputs()
                             calculatePayment()
+                            creditToUserBalance() // Пополнение баланса
                         }
                 }
             }
@@ -70,7 +72,6 @@ struct CreditCalculatorView: View {
                 }
             }
             
-            // Сообщение об ошибке
             if let error = errorMessage {
                 Text(error)
                     .font(.subheadline)
@@ -78,7 +79,6 @@ struct CreditCalculatorView: View {
                     .padding(.top, 4)
             }
             
-            // Всплывающее окно с результатами
             if showResult {
                 VStack(spacing: 8) {
                     HStack {
@@ -115,6 +115,7 @@ struct CreditCalculatorView: View {
                 
                 Button(action: {
                     saveCredit()
+                    withdrawFromUserBalance() // Списание при оформлении
                 }) {
                     Text("Оформить кредит")
                         .bold()
@@ -141,6 +142,38 @@ struct CreditCalculatorView: View {
                 message: Text("Данные вашего кредита успешно сохранены."),
                 dismissButton: .default(Text("OK"))
             )
+        }
+        .onAppear {
+            updateUserBalance()
+        }
+    }
+    
+    private func creditToUserBalance() {
+        let cleanAmount = Double(amount.replacingOccurrences(of: " ", with: "")) ?? 0
+        guard cleanAmount >= 10000 else { return }
+        
+        if let user = CoreDataManager.shared.fetchUser() {
+            user.balance += cleanAmount
+            CoreDataManager.shared.saveContext()
+            updateUserBalance()
+        }
+    }
+    
+    private func withdrawFromUserBalance() {
+        if let user = CoreDataManager.shared.fetchUser() {
+            if user.balance >= totalAmount {
+                user.balance -= totalAmount
+                CoreDataManager.shared.saveContext()
+                updateUserBalance()
+            } else {
+                errorMessage = "Недостаточно средств на счете"
+            }
+        }
+    }
+    
+    private func updateUserBalance() {
+        if let user = CoreDataManager.shared.fetchUser() {
+            userBalance = user.balance
         }
     }
     
@@ -213,13 +246,12 @@ struct CreditCalculatorView: View {
             return
         }
         
-        // Определение ставки
         if amountValue <= 30000 && monthsValue <= 12 {
-            baseRate = 6.0 // Молодежный кредит
+            baseRate = 6.0
         } else if amountValue <= 300000 && monthsValue <= 36 {
-            baseRate = 12.0 // Средний кредит
+            baseRate = 12.0
         } else {
-            baseRate = 16.0 // Стандартный кредит
+            baseRate = 16.0
         }
         
         let monthlyRate = baseRate / 100 / 12
@@ -247,3 +279,4 @@ struct CreditCalculatorView: View {
         input.filter { $0.isNumber }
     }
 }
+

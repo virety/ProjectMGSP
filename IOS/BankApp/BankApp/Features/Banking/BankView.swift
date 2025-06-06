@@ -1,11 +1,5 @@
 import SwiftUI
-
-// MARK: - Основные модели данных
-enum TransactionType {
-    case income    // Поступление
-    case expense   // Списание
-    case transfer  // Перевод
-}
+import CoreData
 
 struct BankCard: Identifiable {
     let id = UUID()
@@ -15,20 +9,14 @@ struct BankCard: Identifiable {
     let expiry: String
     let gradientStart: Color
     let gradientEnd: Color
+    let image: UIImage?
 }
-
-struct FinancialTransaction: Identifiable {
-    let id = UUID()
-    let type: TransactionType
-    let title: String
-    let date: String
-    let amount: String
-}
-
 
 // MARK: - Главный TabView
 struct MainTabView: View {
     @State private var selectedTab: Tab = .home
+    @Environment(\.managedObjectContext) private var viewContext
+    
     @ViewBuilder
     var selectedView: some View {
         switch selectedTab {
@@ -42,9 +30,10 @@ struct MainTabView: View {
             ProfileMainView(selectedTab: $selectedTab)
         }
     }
+    
     enum Tab {
         case home
-        case terminals  // Было transactions
+        case terminals
         case cards
         case profile
     }
@@ -70,8 +59,195 @@ struct MainTabView: View {
             // Кастомный TabBar
             CustomTabBar(selectedTab: $selectedTab)
         }
+        .onAppear {
+            setupDefaultBalances()
+        }
+    }
+    
+    private func setupDefaultBalances() {
+        let request: NSFetchRequest<CDUser> = CDUser.fetchRequest()
+        
+        do {
+            let users = try viewContext.fetch(request)
+            for user in users {
+                if user.balance == 0 { // Проверяем, не установлен ли уже баланс
+                    user.balance = 10000
+                    print("Установлен баланс 10000 для пользователя \(user.firstName ?? "")")
+                }
+            }
+            try viewContext.save()
+        } catch {
+            print("Ошибка при установке балансов: \(error)")
+        }
     }
 }
+
+// MARK: - Bank Home View
+struct BankHomeView: View {
+    @FetchRequest(
+        entity: CDTransaction.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \CDTransaction.date, ascending: false)]
+    ) private var cdTransactions: FetchedResults<CDTransaction>
+
+    @FetchRequest(
+        entity: CDUser.entity(),
+        sortDescriptors: []
+    ) private var users: FetchedResults<CDUser>
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @State private var showSendMoney = false
+    @State private var showReceiveMoney = false
+    @State private var showAIView = false
+    @State private var isMoreActionsPresented = false
+    @State private var isActionButtonView = false
+    @State private var showCreateCard = false
+    
+    private func currentUserName() -> String {
+        if let user = users.first {
+            return user.firstName ?? "Пользователь"
+        }
+        return "Пользователь"
+    }
+    
+    private func formatExpiryDate(_ date: Date?) -> String {
+        guard let date = date else { return "MM/YY" }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/yy"
+        return formatter.string(from: date)
+    }
+    
+    private func createBankCard(for user: CDUser) -> BankCard {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = " "
+        let balanceString = formatter.string(from: NSNumber(value: user.balance)) ?? "10 000"
+        
+        return BankCard(
+            balance: "₽\(balanceString)",
+            info: "\(user.firstName ?? "") \(user.lastName ?? "")",
+            number: user.cardNumber ?? "**** **** **** ****",
+            expiry: formatExpiryDate(user.cardExpiry),
+            gradientStart: Color(red: 0.24, green: 0.18, blue: 0.91),
+            gradientEnd: Color(red: 0.70, green: 0.28, blue: 1.00),
+            image: user.cardImageData.flatMap { UIImage(data: $0) }
+        )
+    }
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color(red: 0.06, green: 0.04, blue: 0.15),
+                        Color(red: 0.25, green: 0.13, blue: 0.45)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+                
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Панель приветствия
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Привет, \(currentUserName())!")
+                                    .font(.title3.bold())
+                                    .foregroundColor(.white)
+                                Text("Ваш баланс: ₽\(users.first?.balance.formatted() ?? "10 000")")
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.8))
+                            }
+                            Spacer()
+                            Button(action: { showAIView = true }) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "brain.head.profile")
+                                        .font(.system(size: 18))
+                                    Text("Ассистент")
+                                        .font(.system(size: 14, weight: .medium))
+                                }
+                                .foregroundColor(.green)
+                                .padding(8)
+                                .background(Color.green.opacity(0.2))
+                                .cornerRadius(8)
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 16)
+                        
+                        // Карты пользователей
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                // Кнопка "+" ДО всех карт
+                                Button(action: {
+                                    showCreateCard = true
+                                }) {
+                                    ZStack {
+                                        Circle()
+                                            .fill(LinearGradient(
+                                                colors: [Color.purple, Color.blue],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ))
+                                            .frame(width: 60, height: 60)
+                                        
+                                        Image(systemName: "plus")
+                                            .font(.system(size: 24, weight: .bold))
+                                            .foregroundColor(.white)
+                                    }
+                                }
+                                
+                                ForEach(users, id: \.self) { user in
+                                    NavigationLink(destination: CardDetailView(card: createBankCard(for: user))) {
+                                        BankCardView(card: createBankCard(for: user))
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .sheet(isPresented: $showCreateCard) {
+                            CreateCardView()
+                        }
+
+                        
+                        // Действия
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                Button { showSendMoney = true } label: {
+                                    ActionButtonView(icon: "paperplane.fill", title: "Отправить", color: Color.blue)
+                                }
+                                
+                                Button { showReceiveMoney = true } label: {
+                                    ActionButtonView(icon: "tray.and.arrow.down.fill", title: "Получить", color: Color.green)
+                                }
+                                
+                                Button { isActionButtonView = true } label: {
+                                    ActionButtonView(icon: "qrcode.viewfinder", title: "Сканировать", color: Color.purple)
+                                }
+                                
+                                Button { isMoreActionsPresented = true } label: {
+                                    ActionButtonView(icon: "ellipsis", title: "Ещё", color: Color.orange)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .fullScreenCover(isPresented: $showSendMoney) { SendMoneyView() }
+                        .fullScreenCover(isPresented: $showReceiveMoney) { ReceiveMoneyView() }
+                        .fullScreenCover(isPresented: $isActionButtonView) { QRScannerView() }
+                        .fullScreenCover(isPresented: $isMoreActionsPresented) { MoreActionsView() }
+
+                        // История операций
+                        TransactionHistoryView()
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Остальные структуры (BankCardView, ActionButtonView, TransactionHistoryView и т.д.) остаются без изменений
 // MARK: - Компоненты TabBar
 struct CustomTabBar: View {
     @Binding var selectedTab: MainTabView.Tab
@@ -125,377 +301,51 @@ struct CustomTabBar: View {
         }
     }
 }
-
-struct TransactionRowView: View {
-    let transaction: FinancialTransaction
-    
-    private var iconName: String {
-        switch transaction.type {
-        case .income: return "arrow.down.circle.fill"
-        case .expense: return "arrow.up.circle.fill"
-        case .transfer: return "arrow.left.arrow.right.circle.fill"
-        }
-    }
-    
-    private var iconColor: Color {
-        switch transaction.type {
-        case .income: return .green
-        case .expense: return .red
-        case .transfer: return .blue
-        }
-    }
-    
-    private var gradientColors: [Color] {
-        switch transaction.type {
-        case .income: return [Color.green.opacity(0.3), Color.green.opacity(0.1)]
-        case .expense: return [Color.red.opacity(0.3), Color.red.opacity(0.1)]
-        case .transfer: return [Color.blue.opacity(0.3), Color.blue.opacity(0.1)]
-        }
-    }
-    
-    var body: some View {
-        HStack {
-            Circle()
-                .fill(iconColor.opacity(0.1))
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Image(systemName: iconName)
-                        .foregroundColor(iconColor)
-                )
-            
-            VStack(alignment: .leading, spacing: 2) {
-                Text(transaction.title)
-                    .font(.subheadline.bold())
-                    .foregroundColor(.white) // Сделано белым
-                Text(transaction.date)
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.8)) // Сделано белым (чуть тусклее)
-            }
-            
-            Spacer()
-            
-            Text(formatAmount(transaction.amount))
-                .font(.subheadline.bold())
-                .foregroundColor(transaction.type == .income ? .green : .red)
-        }
-        .padding(12)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: gradientColors),
-                startPoint: .top,
-                endPoint: .bottom // Вертикальный градиент
-            )
-        )
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
-    }
-    
-    // Сначала сумма, потом валюта
-    private func formatAmount(_ original: String) -> String {
-        // Пример: "+₽45,000" -> "+45,000 ₽"
-        let cleaned = original.replacingOccurrences(of: "₽", with: "").trimmingCharacters(in: .whitespaces)
-        if original.hasPrefix("+") {
-            return "+\(cleaned.dropFirst()) ₽"
-        } else if original.hasPrefix("-") {
-            return "-\(cleaned.dropFirst()) ₽"
-        }
-        return "\(cleaned) ₽"
-    }
-}
-
-struct SendMoneyView: View {
-    var body: some View {
-        VStack {
-            Text("Отправить деньги")
-                .font(.title)
-            // Дополнительный UI тут
-        }
-        .navigationTitle("Отправка")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct ReceiveMoneyView: View {
-    var body: some View {
-        VStack {
-            Text("Получить деньги")
-                .font(.title)
-        }
-        .navigationTitle("Получение")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-
-
-// MARK: - Bank Home View
-struct BankHomeView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    
-    // Запрос всех пользователей из Core Data (предположим, что их обычно один)
-    @FetchRequest(
-        entity: CDUser.entity(),
-        sortDescriptors: []
-    ) private var users: FetchedResults<CDUser>
-    @State private var showAIView = false
-    @State private var isMoreActionsPresented = false
-    @State private var isActionButtonView = false
-    @State private var loanAmount: Double = 0
-    @State private var loanTermMonths: Int = 12
-    @State private var loanInterestRate: Double = 12.0
-    
-    @State private var depositAmount: Double = 0
-    @State private var depositTermMonths: Int = 12
-    @State private var depositInterestRate: Double = 5.0
-    
-    @State private var showDepositSheet = false
-    @State private var showLoanSheet = false
-    @State private var showSuccessAlert = false
-    @State private var successMessage = ""
-    
-    private func currentUserName() -> String {
-        // Возьмём первого пользователя из Core Data
-        if let user = users.first {
-            let firstName = user.firstName ?? ""
-            return "\(firstName) ".trimmingCharacters(in: .whitespaces)
-        }
-        return "Пользователь"
-    }
-
-    
-    let sampleCards: [BankCard] = [
-        BankCard(
-            balance: "₽16,567.00",
-            info: "+3.5% с прошлого месяца",
-            number: "**** 1214",
-            expiry: "02/25",
-            gradientStart: Color(red: 0.24, green: 0.18, blue: 0.91),
-            gradientEnd: Color(red: 0.70, green: 0.28, blue: 1.00)
-        ),
-        BankCard(
-            balance: "₽8,432.50",
-            info: "+1.2% с прошлого месяца",
-            number: "**** 9856",
-            expiry: "11/26",
-            gradientStart: Color(red: 0.25, green: 0.55, blue: 0.95),
-            gradientEnd: Color(red: 0.47, green: 0.30, blue: 0.89)
-        ),
-        BankCard(
-            balance: "₽22,000.00",
-            info: "Новая карта",
-            number: "**** 3456",
-            expiry: "05/27",
-            gradientStart: Color(red: 0.56, green: 0.27, blue: 0.90),
-            gradientEnd: Color(red: 0.94, green: 0.33, blue: 0.93)
-        )
-    ]
-    
-    let transactions = [
-        FinancialTransaction(type: .income, title: "Зарплата", date: "Сегодня 10:00", amount: "+₽45,000"),
-        FinancialTransaction(type: .expense, title: "Супермаркет", date: "Вчера 18:22", amount: "-₽2,300"),
-        FinancialTransaction(type: .transfer, title: "Перевод другу", date: "Сегодня 13:10", amount: "-₽1,500")
-    ]
-    
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                // Градиентный фон
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color(red: 0.06, green: 0.04, blue: 0.15),
-                        Color(red: 0.25, green: 0.13, blue: 0.45)
-                    ]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
-                
-                ScrollView {
-                    VStack(spacing: 20) {
-                        // Панель приветствия
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Привет, \(currentUserName())!")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                                Text("Как дела сегодня?")
-                                    .font(.caption)
-                                    .foregroundColor(.white.opacity(0.6))
-                            }
-                            Spacer()
-                            
-                            // NavigationLink вместо Button
-                            // Вместо NavigationLink используйте:
-                            Button(action: {
-                                // Показываем AIView как модальное окно на весь экран
-                                showAIView  = true
-                            }) {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "brain.head.profile")
-                                        .font(.system(size: 18))
-                                    Text("Ассистент")
-                                        .font(.system(size: 14, weight: .medium))
-                                }
-                                .foregroundColor(.green)
-                                .padding(8)
-                                .background(Color.green.opacity(0.2))
-                                .cornerRadius(8)
-                            }
-                            .fullScreenCover(isPresented: $showAIView ) {
-                                AIView()
-                            }
-                        }
-                        .padding(.horizontal)
-                        .padding(.top, 16)
-
-                        // Карты
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                ForEach(sampleCards) { card in
-                                    NavigationLink(destination: CardDetailView(card: card)) {
-                                        BankCardView(card: card)
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
-
-                        // Действия
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-
-                                NavigationLink {
-                                    SendMoneyView()
-                                } label: {
-                                    ActionButtonView(icon: "paperplane.fill",
-                                                    title: "Отправить",
-                                                    color: Color.blue)
-                                }
-                                .buttonStyle(PlainButtonStyle())
-
-                                NavigationLink {
-                                    ReceiveMoneyView()
-                                } label: {
-                                    ActionButtonView(icon: "tray.and.arrow.down.fill",
-                                                    title: "Получить",
-                                                    color: Color.green)
-                                }
-                                .buttonStyle(PlainButtonStyle())
-
-                                // Кнопка "Сканировать QR"
-                                Button {
-                                    isActionButtonView = true
-                                } label: {
-                                    ActionButtonView(icon: "qrcode.viewfinder", title: "Сканировать", color: Color.purple)
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                .fullScreenCover(isPresented: $isActionButtonView) {
-                                    QRScannerView()
-                                }
-
-                                // Кнопка "Ещё"
-                                Button {
-                                    isMoreActionsPresented = true
-                                } label: {
-                                    ActionButtonView(icon: "ellipsis", title: "Ещё", color: Color.orange)
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                .fullScreenCover(isPresented: $isMoreActionsPresented) {
-                                    MoreActionsView()
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
-
-                        // История операций
-                        TransactionHistoryView(transactions: transactions)
-                        
-                        Spacer(minLength: 30)
-                    }
-                }
-            }
-        }
-        
-    }
-    
-    private func calculateLoan(amount: Double, termMonths: Int, rate: Double) -> (monthlyPayment: Double, totalAmount: Double) {
-        let monthlyRate = rate / 12 / 100
-        let numberOfPayments = Double(termMonths)
-        
-        let monthlyPayment = amount * (monthlyRate * pow(1 + monthlyRate, numberOfPayments)) / (pow(1 + monthlyRate, numberOfPayments) - 1)
-        let totalAmount = monthlyPayment * numberOfPayments
-        
-        return (monthlyPayment, totalAmount)
-    }
-    
-    private func saveLoan() {
-        let loanDetails = calculateLoan(amount: loanAmount, termMonths: loanTermMonths, rate: loanInterestRate)
-        CoreDataManager.shared.saveLoan(
-            amount: loanAmount,
-            termMonths: loanTermMonths,
-            rate: loanInterestRate,
-            monthlyPayment: loanDetails.monthlyPayment,
-            totalAmount: loanDetails.totalAmount
-        )
-    }
-    
-    private func calculateDeposit(amount: Double, termMonths: Int, rate: Double) -> Double {
-        let monthlyRate = rate / 12 / 100
-        let numberOfMonths = Double(termMonths)
-        
-        // Simple interest calculation
-        let totalInterest = amount * monthlyRate * numberOfMonths
-        return totalInterest
-    }
-    
-    private func saveDeposit() {
-        let totalInterest = calculateDeposit(amount: depositAmount, termMonths: depositTermMonths, rate: depositInterestRate)
-        CoreDataManager.shared.saveDeposit(
-            amount: depositAmount,
-            termMonths: depositTermMonths,
-            interestRate: depositInterestRate,
-            totalInterest: totalInterest
-        )
-    }
-}
-
-// MARK: - Дополнительные компоненты
 struct BankCardView: View {
     let card: BankCard
-    
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(
+            // Фон: либо изображение, либо градиент
+            Group {
+                if let image = card.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                } else {
                     LinearGradient(
                         colors: [card.gradientStart, card.gradientEnd],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
-                )
-                .frame(width: 300, height: 160)
-                .overlay(
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(card.balance)
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(.white)
-                        Text(card.info)
-                            .font(.caption)
-                            .foregroundColor(.white.opacity(0.8))
-                        Spacer()
-                        HStack {
-                            Text(card.number)
-                            Spacer()
-                            Text(card.expiry)
-                        }
+                }
+            }
+            .frame(width: 300, height: 160)
+            .clipped()
+            .cornerRadius(20)
+            .overlay(
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(card.balance)
+                        .font(.title2)
+                        .bold()
+                        .foregroundColor(.white)
+                    Text(card.info)
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.8))
+                    Spacer()
+                    HStack {
+                        Text(card.number)
+                        Spacer()
+                        Text(card.expiry)
                     }
-                    .padding(20)
-                )
-            
+                    .font(.caption)
+                    .foregroundColor(.white.opacity(0.8))
+                }
+                .padding(20)
+            )
+            .shadow(radius: 5)
+
+            // Кнопка "Пополнить"
             Text("Пополнить")
                 .font(.caption)
                 .foregroundColor(.white)
@@ -507,6 +357,7 @@ struct BankCardView: View {
         }
     }
 }
+
 
 struct ActionButtonView: View {
     let icon: String
@@ -554,59 +405,9 @@ struct ActionButtonView: View {
     }
 }
 
-struct TransactionHistoryView: View {
-    let transactions: [FinancialTransaction]
-    
-    var body: some View {
-        VStack(spacing: 12) {
-            HStack {
-                Text("История операций")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                Spacer()
-                NavigationLink("Смотреть все") {
-                    Text("Все операции")
-                }
-                .font(.subheadline)
-            }
-            .padding(.horizontal)
-            
-            ForEach(transactions) { transaction in
-                TransactionRowView(transaction: transaction)
-                    .padding(.horizontal)
-            }
-        }
-    }
-}
-
-// MARK: - Другие экраны
 
 
-struct TransactionsListView: View {
-    let transactions = [
-        FinancialTransaction(type: .income, title: "Зарплата", date: "Сегодня 10:00", amount: "+₽45,000"),
-        FinancialTransaction(type: .expense, title: "Супермаркет", date: "Вчера 18:22", amount: "-₽2,300"),
-        FinancialTransaction(type: .transfer, title: "Перевод другу", date: "Сегодня 13:10", amount: "-₽1,500"),
-        FinancialTransaction(type: .income, title: "Кэшбэк", date: "30 мая", amount: "+₽320"),
-        FinancialTransaction(type: .expense, title: "Кофейня", date: "30 мая", amount: "-₽260"),
-    ]
-    
-    var body: some View {
-        ZStack {
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea() // 👈 Это главное — фон на весь экран
 
-            ScrollView {
-                ForEach(transactions) { transaction in
-                    TransactionRowView(transaction: transaction)
-                        .padding(.horizontal)
-                        .padding(.vertical, 8)
-                }
-            }
-        }
-        .navigationTitle("Операции")
-    }
-}
 
 // MARK: - Расширения
 extension Color {
@@ -620,25 +421,6 @@ extension Color {
         let b = Double(rgbValue & 0x0000FF) / 255.0
         
         self.init(red: r, green: g, blue: b)
-    }
-}
-struct AllTransactionsView: View {
-    let transactions: [FinancialTransaction]  // Те же данные, что и в TransactionHistoryView
-    
-    var body: some View {
-        ZStack {
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea()
-            
-            ScrollView {
-                ForEach(transactions) { transaction in
-                    TransactionRowView(transaction: transaction)
-                        .padding(.horizontal)
-                        .padding(.vertical, 8)
-                }
-            }
-        }
-        .navigationTitle("Все операции")
     }
 }
 // MARK: - Preview
