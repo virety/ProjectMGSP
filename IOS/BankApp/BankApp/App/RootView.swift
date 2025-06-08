@@ -9,14 +9,28 @@ import SwiftUI
 
 struct RootView: View {
     @State private var isAuthenticated = false
-
+    @State private var showSplash = true
+    
     var body: some View {
         Group {
-            if isAuthenticated {
-                MainTabView()
+            if showSplash {
+                SplashView()
+                    .transition(.opacity)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            withAnimation {
+                                showSplash = false
+                            }
+                        }
+                    }
             } else {
-                HomeView(isAuthenticated: $isAuthenticated)
+                if isAuthenticated {
+                    MainTabView()
+                } else {
+                    HomeView(isAuthenticated: $isAuthenticated)
+                }
             }
         }
     }
 }
+

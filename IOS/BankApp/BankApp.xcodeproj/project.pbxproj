@@ -35,9 +35,30 @@
 		9C28F9B12DEC8CBF0093AEC3 /* BankAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BankAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9C7929262DF2F229002B5E2B /* Exceptions for "BankApp" folder in "BankAppTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/Common/Developmen.xcconfig,
+			);
+			target = 9C28F9A62DEC8CBF0093AEC3 /* BankAppTests */;
+		};
+		9C7929272DF2F229002B5E2B /* Exceptions for "BankApp" folder in "BankAppUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/Common/Developmen.xcconfig,
+			);
+			target = 9C28F9B02DEC8CBF0093AEC3 /* BankAppUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9C28F99C2DEC8CBD0093AEC3 /* BankApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9C7929262DF2F229002B5E2B /* Exceptions for "BankApp" folder in "BankAppTests" target */,
+				9C7929272DF2F229002B5E2B /* Exceptions for "BankApp" folder in "BankAppUITests" target */,
+			);
 			path = BankApp;
 			sourceTree = "<group>";
 		};
@@ -288,6 +309,8 @@
 /* Begin XCBuildConfiguration section */
 		9C28F9B92DEC8CBF0093AEC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -339,6 +362,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -352,6 +379,8 @@
 		};
 		9C28F9BA2DEC8CBF0093AEC3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -398,6 +427,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -410,6 +443,8 @@
 		};
 		9C28F9BC2DEC8CBF0093AEC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -422,6 +457,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_OUTPUT_FORMAT = XML;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -437,6 +473,8 @@
 		};
 		9C28F9BD2DEC8CBF0093AEC3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -449,6 +487,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_OUTPUT_FORMAT = XML;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,6 +503,8 @@
 		};
 		9C28F9BF2DEC8CBF0093AEC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -482,6 +523,8 @@
 		};
 		9C28F9C02DEC8CBF0093AEC3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -500,6 +543,8 @@
 		};
 		9C28F9C22DEC8CBF0093AEC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -516,6 +561,8 @@
 		};
 		9C28F9C32DEC8CBF0093AEC3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9C28F99C2DEC8CBD0093AEC3 /* BankApp */;
+			baseConfigurationReferenceRelativePath = Views/Common/Developmen.xcconfig;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

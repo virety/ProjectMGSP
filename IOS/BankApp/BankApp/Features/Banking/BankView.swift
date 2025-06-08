@@ -155,9 +155,10 @@ struct BankHomeView: View {
                                 Text("Привет, \(currentUserName())!")
                                     .font(.title3.bold())
                                     .foregroundColor(.white)
-                                Text("Ваш баланс: ₽\(users.first?.balance.formatted() ?? "10 000")")
+                                Text("Ваш баланс: ₽\(String(format: "%.2f", users.first?.balance ?? 10000))")
                                     .font(.caption)
                                     .foregroundColor(.white.opacity(0.8))
+
                             }
                             Spacer()
                             Button(action: { showAIView = true }) {
@@ -172,6 +173,10 @@ struct BankHomeView: View {
                                 .background(Color.green.opacity(0.2))
                                 .cornerRadius(8)
                             }
+                            .fullScreenCover(isPresented: $showAIView ) {
+                                AIView()
+                            }
+                            
                         }
                         .padding(.horizontal)
                         .padding(.top, 16)

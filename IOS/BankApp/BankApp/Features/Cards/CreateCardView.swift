@@ -6,6 +6,7 @@ struct CreateCardView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var cardName = ""
+    @State private var userName = ""  // Добавляем отдельное поле для имени пользователя
     @State private var cardNumber = ""
     
     private let issueDate = Date()
@@ -149,7 +150,8 @@ struct CreateCardView: View {
 
     private func createCard() {
         let newUser = CDUser(context: viewContext)
-        newUser.firstName = cardName
+        newUser.firstName = userName  // Используем userName вместо cardName
+        newUser.cardName = cardName
         newUser.cardNumber = cardNumber.replacingOccurrences(of: " ", with: "")
         newUser.cardExpiry = expiryDate
         newUser.balance = 0

@@ -4,6 +4,7 @@ import Foundation
 import CoreData
 
 struct PersistenceController {
+    
     func resetAuthState(context: NSManagedObjectContext) {
         let fetchRequest: NSFetchRequest<CDUser> = CDUser.fetchRequest()
         do {
@@ -43,6 +44,7 @@ struct PersistenceController {
 }
 
 struct HomeView: View {
+    @State private var backgroundImageName: String = "default_background"
     @Binding var isAuthenticated: Bool
     @Environment(\.managedObjectContext) private var viewContext
     @State private var currentUser: CDUser?
@@ -79,7 +81,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("space_background")
+                Image(backgroundImageName)
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
@@ -172,30 +174,51 @@ struct HomeView: View {
             Text(timeGreeting)
                 .font(.system(size: 36, weight: .bold))
                 .foregroundColor(.white)
-            
+                .shadow(color: .black, radius: 3, x: 0, y: 0)
+                .overlay(
+                    Text(timeGreeting)
+                        .font(.system(size: 36, weight: .bold))
+                        .foregroundColor(.white)
+                        .blur(radius: 1)
+                )
             if let name = userName {
                 Text(name)
-                    .font(.system(size: 28, weight: .semibold))
+                    .font(.system(size: 36, weight: .semibold))
                     .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.7), radius: 3, x: 0, y: 1)
                     .padding(.top, 8)
+                    .padding(.horizontal, 12)
+                    .cornerRadius(8)
             }
-            
+
             Spacer().frame(height: 100)
             
             if userExists {
                 VStack(spacing: 20) {
-                    Button(action: { showGreeting = false }) {
+                    Button(action: { showGreeting = false })
+                    {
                         Text("Выберите способ входа")
-                            .font(.system(size: 18))
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.blue.opacity(0.7))
-                        .cornerRadius(10)                    }
+                            .font(.system(size: 18, weight: .medium))
+                        
+                        
+                            .foregroundColor(.white)// Лунный серый
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                            .background(
+                            Capsule()
+                            .fill(Color.blue.opacity(0.5)) // Полупрозрачный фиолетовый фон
+                            .overlay(
+                            Capsule()
+                        .stroke(Color(red: 0.85, green: 0.85, blue: 0.88).opacity(0.3), lineWidth: 1) // Светлая обводка
+                                            )
+                        .shadow(color: Color.purple.opacity(0.7), radius: 8, x: 0, y: 4) // Фиолетовое свечение
+                        .shadow(color: Color.black.opacity(0.2), radius: 2, x: 0, y: 1))
+                    }
                     
                     Button(action: { showRegistration = true }) {
                         Text("Создать другой аккаунт?")
                             .font(.system(size: 16))
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(.white)
                     }
                 }
             } else {
@@ -252,14 +275,33 @@ struct HomeView: View {
         }
         .padding(.horizontal, 40)
     }
+    private func randomImage(from category: String) -> String {
+        let imagesByCategory = [
+            "День": ["1", "2","3","4","5","6","7"],
+            "Ночь": ["1", "2", "3","4", "5"]
+        ]
+        
+        guard let images = imagesByCategory[category] else { return "default_background" }
+        return images.randomElement() ?? "default_background"
+    }
+
     
     private func updateGreeting() {
         let hour = Calendar.current.component(.hour, from: Date())
-        timeGreeting = switch hour {
-        case 6..<12: "Доброе утро,"
-        case 12..<18: "Добрый день,"
-        case 18..<23: "Добрый вечер,"
-        default: "Доброй ночи,"
+        
+        switch hour {
+        case 6..<12:
+            timeGreeting = "Доброе утро!"
+            backgroundImageName = randomImage(from: "День")
+        case 12..<18:
+            timeGreeting = "Добрый день!"
+            backgroundImageName = randomImage(from: "День")
+        case 18..<23:
+            timeGreeting = "Добрый вечер!"
+            backgroundImageName = randomImage(from: "День")
+        default:
+            timeGreeting = "Доброй ночи!"
+            backgroundImageName = randomImage(from: "Ночь")
         }
     }
 

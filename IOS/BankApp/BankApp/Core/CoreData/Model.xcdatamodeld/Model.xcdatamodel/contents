@@ -14,10 +14,6 @@
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPost" inverseName="comments" inverseEntity="CDPost"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="comments" inverseEntity="CDUser"/>
     </entity>
-    <entity name="CDLike" representedClassName="CDLike" syncable="YES" codeGenerationType="class">
-        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPost" inverseName="likes" inverseEntity="CDPost"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="posts" inverseEntity="CDUser"/>
-    </entity>
     <entity name="CDPost" representedClassName="CDPost" syncable="YES" codeGenerationType="class">
         <attribute name="avatar" optional="YES" attributeType="String"/>
         <attribute name="confidence" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -29,7 +25,6 @@
         <attribute name="rightCurrency" optional="YES" attributeType="String"/>
         <attribute name="status" optional="YES" attributeType="String"/>
         <relationship name="comments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDComment" inverseName="post" inverseEntity="CDComment"/>
-        <relationship name="likes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDLike" inverseName="post" inverseEntity="CDLike"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="likes" inverseEntity="CDUser"/>
     </entity>
     <entity name="CDTransaction" representedClassName="CDTransaction" syncable="YES" codeGenerationType="class">
@@ -63,7 +58,7 @@
         <attribute name="status" optional="YES" attributeType="String"/>
         <relationship name="comments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDComment" inverseName="user" inverseEntity="CDComment"/>
         <relationship name="likes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPost" inverseName="user" inverseEntity="CDPost"/>
-        <relationship name="posts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDLike" inverseName="user" inverseEntity="CDLike"/>
+        <relationship name="loan" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Loan" inverseName="user" inverseEntity="Loan"/>
     </entity>
     <entity name="CurrencyHistory" representedClassName="CurrencyHistory" syncable="YES" codeGenerationType="class">
         <attribute name="currencyCode" optional="YES" attributeType="String"/>
@@ -87,6 +82,7 @@
         <attribute name="remainingDebt" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="termMonths" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="totalAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="loan" inverseEntity="CDUser"/>
     </entity>
     <entity name="Mortgage" representedClassName="Mortgage" syncable="YES" codeGenerationType="class">
         <attribute name="amount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
