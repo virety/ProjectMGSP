@@ -1,9 +1,0 @@
-IOS/BankApp/BankApp.xcodeproj/project.xcworkspace/xcuserdata/
-IOS/BankApp/BankApp.xcodeproj/project.xcworkspace/xcshareddata/
-    .DS_Store
-    migrations
-    .idea
-    .venv
-    *.pyc
-    __pycache__
-    .db
