@@ -1,0 +1,14 @@
+<entity name="CDTransaction" representedClassName="CDTransaction" syncable="YES" codeGenerationType="class">
+    <attribute name="amount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+    <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+    <attribute name="title" optional="YES" attributeType="String"/>
+    <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    <attribute name="userId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+    <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="transactions" inverseEntity="CDUser"/>
+</entity>
+
+<entity name="CDUser" representedClassName="CDUser" syncable="YES" codeGenerationType="class">
+    <attribute name="name" optional="YES" attributeType="String"/>
+    <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTransaction" inverseName="user" inverseEntity="CDTransaction"/>
+</entity> 
