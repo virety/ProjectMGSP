@@ -1,0 +1,102 @@
+.nyota-services {
+  margin: 64px auto 0 auto;
+  max-width: 1200px;
+  text-align: center;
+}
+
+.nyota-services h2 {
+  font-size: 2.4rem;
+  margin-bottom: 44px;
+  color: var(--white);
+  letter-spacing: 2px;
+}
+
+.nyota-services__cards {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: nowrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .nyota-services__cards {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 18px;
+  }
+  .nyota-service-card {
+    min-width: 180px;
+    max-width: 100%;
+  }
+}
+
+.nyota-service-card {
+  background: rgba(24, 17, 77, 0.92);
+  border: 2px solid var(--primary-color);
+  border-radius: 32px;
+  padding: 40px 32px 32px 32px;
+  min-width: 250px;
+  max-width: 260px;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 32px 0 rgba(87, 87, 170, 0.22);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nyota-service-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 40px 0 rgba(87, 87, 170, 0.25);
+}
+
+.nyota-service-card__icon {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--c1) 100%);
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  box-shadow: 0 0 16px 2px var(--primary-color);
+  color: var(--i);
+}
+
+.nyota-service-card__title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--white);
+  margin-bottom: 12px;
+  font-family: 'Orbitron', 'Montserrat', 'Arial', sans-serif;
+}
+
+.nyota-service-card__desc {
+  color: var(--text-color);
+  font-size: 1.05rem;
+  margin-bottom: 28px;
+}
+
+.nyota-service-card__btn {
+  border: 2px solid var(--primary-color);
+  background: transparent;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  padding: 10px 32px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nyota-service-card__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nyota-service-card__btn:not(:disabled):hover {
+  background: var(--primary-color);
+  color: var(--white);
+} 

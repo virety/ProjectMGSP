@@ -1,0 +1,132 @@
+.nyota-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px 0 48px;
+  background: rgba(24, 17, 77, 0.85);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 16px 0 rgba(30, 20, 80, 0.18);
+  min-height: 90px;
+  backdrop-filter: blur(3px);
+}
+
+.nyota-header__underline {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1.5px;
+  background: #5a5fa3;
+  border-radius: 2px;
+  z-index: 3;
+  box-shadow: 0 6px 18px 2px #5a5fa3;
+  filter: blur(0.1px);
+}
+
+.nyota-header__side {
+  display: flex;
+  align-items: center;
+}
+
+.nyota-header__side--left {
+  display: flex;
+  align-items: center;
+  flex: 0.7;
+  justify-content: flex-end;
+  /* gap: 56px; */
+}
+
+.nyota-header__side--right {
+  gap: 30px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.nyota-header__center {
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 320px;
+}
+
+.nyota-header__bank {
+  font-weight: 700;
+  font-size: 3rem;
+  margin-bottom: 25px;
+  margin-left: 65px;
+  color: #6c74c9;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px #6c74c9, 0 0 24px #18114D;
+  font-family: 'Orbitron', 'Montserrat', 'Arial', sans-serif;
+  text-align: center;
+}
+
+.nyota-header__avatar {
+  width: 54px;
+  height: 54px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px 2px var(--primary-light);
+  margin: 0 auto 4px auto;
+  margin-bottom: 18px;
+}
+
+.nyota-header__user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 15px;
+}
+
+.nyota-header__cabinet {
+  color: var(--text-color);
+  font-size: 0.85rem;
+  margin: 0;
+  text-align: center;
+  font-family: 'Montserrat', 'Arial', sans-serif;
+  font-weight: 700;
+}
+
+.nyota-header__link {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: color 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.nyota-header__link:hover {
+  color: var(--primary-color);
+}
+
+body {
+  padding-top: 100px;
+}
+
+.header-link-services {
+  left: 100px;
+}
+
+.header-link-products {
+  margin-left: 70px;
+  margin-right: 70px;
+}
+
+.header-link-mobile {
+  margin-left: 0px;
+}
+
+.header-link-cabinet {
+  margin-left: 32px;
+} 

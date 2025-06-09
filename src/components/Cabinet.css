@@ -1,0 +1,63 @@
+.cabinet-page {
+  min-height: 400px;
+  padding: 48px 32px 32px 32px;
+  background: rgba(24, 17, 77, 0.98);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(87, 87, 170, 0.22);
+  color: var(--white);
+  max-width: 420px;
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cabinet-page h2 {
+  font-size: 2rem;
+  margin-bottom: 32px;
+  color: var(--c1);
+  font-weight: 700;
+}
+.cabinet-balance-card {
+  background: linear-gradient(135deg, #524CA1 0%, #18114D 100%);
+  border-radius: 16px;
+  padding: 24px 32px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 16px 0 var(--primary-color);
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+}
+.cabinet-balance-label {
+  font-size: 1.1rem;
+  color: #b3caeb;
+  margin-bottom: 8px;
+}
+.cabinet-balance-amount {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.cabinet-cards-list {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.cabinet-card {
+  background: rgba(87, 87, 170, 0.18);
+  border-radius: 12px;
+  padding: 18px 22px;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 2px 8px 0 var(--primary-color);
+}
+.cabinet-card-title {
+  font-size: 1.05rem;
+  color: var(--c1);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.cabinet-card-balance {
+  font-size: 1.2rem;
+  color: var(--white);
+  font-weight: 700;
+} 
