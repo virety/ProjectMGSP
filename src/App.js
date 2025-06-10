@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
+import HeaderCabinet from "./components/HeaderCabinet";
 import Services from "./components/Services";
 import Products from "./components/Products";
 import Hero from "./components/Hero";
@@ -17,7 +18,11 @@ function App() {
     setShowModal(false);
   };
 
-  if (isCabinet) return <><Header isCabinet={isCabinet} onLogout={handleLogout} /><Cabinet onLogout={handleLogout} /></>;
+  const handleReturnToMain = () => {
+    setIsCabinet(false);
+  };
+
+  if (isCabinet) return <><HeaderCabinet onLogout={handleLogout} /><Cabinet onLogout={handleLogout} onReturnToMain={handleReturnToMain} /></>;
 
   return (
     <div className="app-background">
@@ -25,7 +30,6 @@ function App() {
         if (!isCabinet) { setAuthTab("login"); setShowModal(true); }
       }} onLogout={handleLogout} />
       <Hero
-        onLoginClick={() => { setAuthTab("login"); setShowModal(true); }}
         onRegisterClick={() => { setAuthTab("register"); setShowModal(true); }}
       />
       <main>
@@ -34,6 +38,10 @@ function App() {
         <Products />
       </main>
       <ModalAuth show={showModal} onClose={() => setShowModal(false)} onSuccess={() => { setIsCabinet(true); setShowModal(false); }} tab={authTab} setTab={setAuthTab} />
+      <footer className="nyota-footer">
+        <div className="nyota-footer-line"></div>
+        Nyota Bank © 2024 — Космические финансы для каждого
+      </footer>
     </div>
   );
 }

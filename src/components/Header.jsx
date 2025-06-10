@@ -2,6 +2,8 @@ import React from "react";
 import "./Header.css";
 import { FaUserAstronaut } from "react-icons/fa";
 
+const USER_NAME = "Анна";
+
 const Header = ({ isCabinet, onCabinetClick, onLogout }) => {
   return (
     <header className="nyota-header">
@@ -19,7 +21,7 @@ const Header = ({ isCabinet, onCabinetClick, onLogout }) => {
             <div className="nyota-header__avatar">
               <FaUserAstronaut size={33} color="#fff" />
             </div>
-            <span className="nyota-header__cabinet">Выйти</span>
+            <span className="nyota-header__cabinet">{USER_NAME}</span>
           </div>
         ) : (
           <div className="nyota-header__user header-link-cabinet" onClick={onCabinetClick} style={{cursor: 'pointer'}}>
