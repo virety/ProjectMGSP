@@ -1,0 +1,119 @@
+.modal-carddetails-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(24, 17, 77, 0.75);
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s;
+}
+
+.modal-carddetails {
+  position: relative;
+  background: linear-gradient(135deg, #18114D 0%, #524CA1 100%);
+  border-radius: 28px;
+  box-shadow: 0 8px 32px 0 rgba(87, 87, 170, 0.22);
+  padding: 44px 38px 32px 38px;
+  min-width: 370px;
+  max-width: 95vw;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.modal-carddetails-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+  text-align: center;
+  z-index: 2;
+}
+.modal-carddetails-card {
+  width: 320px;
+  height: 180px;
+  border-radius: 20px;
+  box-shadow: 0 6px 24px 0 #6c74c9;
+  position: relative;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 24px 18px 24px;
+}
+.modal-carddetails-chip {
+  width: 44px;
+  height: 34px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 8px;
+  position: absolute;
+  left: 24px;
+  top: 24px;
+}
+.modal-carddetails-number {
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.modal-carddetails-valid {
+  font-size: 0.95rem;
+  color: #261f5e;
+  margin-bottom: 8px;
+}
+.modal-carddetails-balance {
+  font-size: 1.1rem;
+  color: #261f5e;
+  font-weight: 600;
+}
+.modal-carddetails-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.modal-carddetails-actions button {
+  background:  #261f5e;
+  color: #524CA1;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 22px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px 0 #261f5e;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+.modal-carddetails-actions button:hover {
+  background: #524CA1;
+  color: #261f5e;
+}
+.modal-carddetails-close {
+  margin-top: 8px;
+  background: transparent;
+  color: #524CA1;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 2;
+}
+.modal-carddetails-close:hover {
+  color: #fff;
+}
+.modal-carddetails-bg {
+  position: absolute;
+  left: -60px; right: -60px; bottom: -60px;
+  height: 180px;
+  background: radial-gradient(circle at 60% 40%, #1b184a 0%, #524CA1 100%);
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(12px);
+  pointer-events: none;
+} 
