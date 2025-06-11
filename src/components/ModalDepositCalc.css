@@ -1,0 +1,221 @@
+.modal-depositcalc-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-depositcalc {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-depositcalc-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.modal-depositcalc-close:hover {
+  color: #524CA1;
+}
+
+.modal-depositcalc-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.modal-depositcalc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-depositcalc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-depositcalc-field label {
+  font-size: 14px;
+  color: #666;
+}
+
+.modal-depositcalc-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.modal-depositcalc-input {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #333;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.modal-depositcalc-input:focus {
+  outline: none;
+  border-color: #524CA1;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(82, 76, 161, 0.1);
+}
+
+.modal-depositcalc-input::-webkit-inner-spin-button,
+.modal-depositcalc-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modal-depositcalc-currency {
+  position: absolute;
+  right: 15px;
+  color: #666;
+  font-size: 16px;
+}
+
+.modal-depositcalc-slider {
+  width: 100%;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  outline: none;
+  margin: 10px 0;
+  -webkit-appearance: none;
+}
+
+.modal-depositcalc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #524CA1;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+}
+
+.modal-depositcalc-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background: #6c74c9;
+}
+
+.modal-depositcalc-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.modal-depositcalc-rate {
+  color: #524CA1;
+  font-size: 14px;
+  margin-top: -10px;
+  font-weight: 500;
+}
+
+.modal-depositcalc-result {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.modal-depositcalc-total {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.modal-depositcalc-profit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #28a745;
+  font-size: 16px;
+}
+
+.modal-depositcalc-profit::before {
+  content: "↑";
+  font-size: 20px;
+}
+
+.modal-depositcalc-submit {
+  background: #524CA1;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.modal-depositcalc-submit:hover {
+  background: #6c74c9;
+  transform: translateY(-2px);
+}
+
+.modal-depositcalc-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modal-depositcalc-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.modal-depositcalc-success h2 {
+  color: #524CA1;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.modal-depositcalc-success p {
+  color: #666;
+  font-size: 16px;
+}
+
+.modal-depositcalc-bg {
+  position: absolute;
+  left: -60px; right: -60px; bottom: -60px;
+  height: 180px;
+  background: radial-gradient(circle at 60% 40%, #e0e3ff 0%, #f0f2ff 100%);
+  z-index: 1;
+  border-radius: 50%;
+  filter: blur(12px);
+  pointer-events: none;
+} 

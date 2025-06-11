@@ -11,7 +11,6 @@ const mainCard = {
   balance: "353,45 ₽",
   currency: "RUB",
   icon: "💳",
-  status: "2 D",
   color: "linear-gradient(135deg, #6c74c9 0%, #18114D 100%)",
   expiryDate: "12/25"
 };
@@ -23,8 +22,8 @@ const actions = [
 const quickActions = [
   { icon: "📱", label: "Перевести по номеру телефона" },
   { icon: "📄", label: "Перевести по реквизитам" },
-  { icon: "💳", label: "Оплатить мобильный" },
-  { icon: "🔍", label: "Распознать квитанцию" }
+  { icon: "💳", label: "Пополнить баланс телефона" },
+  { icon: "🔍", label: "Снять наличные" }
 ];
 
 const operations = [
@@ -58,11 +57,16 @@ function getGreeting(name) {
   return `Добрый вечер, ${name}!`;
 }
 
-const Cabinet = () => {
+const Cabinet = ({ onLogout }) => {
   const [tab, setTab] = useState("traty");
   const [showModal, setShowModal] = useState(false);
   const [showCard, setShowCard] = useState(false);
+  const [activeProducts, setActiveProducts] = useState([]);
   const total = operations.reduce((sum, op) => sum + op.value, 0);
+
+  const handleProductActivation = (product) => {
+    setActiveProducts(prev => [...prev, product]);
+  };
 
   return (
     <div className="cabinet-layout">
@@ -75,23 +79,25 @@ const Cabinet = () => {
               <div className="sidebar-card-type">{mainCard.type}</div>
               <div className="sidebar-card-number">{mainCard.number}</div>
             </div>
-            <div className="sidebar-card-status">{mainCard.status}</div>
           </div>
         </div>
-        <div className="sidebar-actions">
-          {actions.map((action, idx) => (
-            <div className="sidebar-action-block" key={idx}>
-              <div className="sidebar-action">
-                <div className="sidebar-action-circle">+</div>
-                <div className="sidebar-action-label">{action.label}</div>
+
+        {activeProducts.length > 0 && (
+          <div className="sidebar-products">
+            {activeProducts.map(product => (
+              <div key={product.id} className="sidebar-product">
+                <div className="sidebar-product-name">{product.name}</div>
+                <div className="sidebar-product-balance">{product.balance}</div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
         <button className="sidebar-new-btn" onClick={() => setShowModal(true)}>
-          Новый счет или продукт
+          <span className="cabinet-new-product-plus">+</span>
+          <div className="new">Новый счёт или продукт</div>
         </button>
-        <ModalNewProduct show={showModal} onClose={() => setShowModal(false)} />
+        <ModalNewProduct show={showModal} onClose={() => setShowModal(false)} onProductActivate={handleProductActivation} />
         <ModalCardDetails show={showCard} onClose={() => setShowCard(false)} card={mainCard} />
       </aside>
       <main className="cabinet-main">
@@ -110,7 +116,6 @@ const Cabinet = () => {
             <div className="cabinet-operations-header">
               <span className={tab === "traty" ? "active" : ""} onClick={() => setTab("traty")}>Траты</span>
               <span className={tab === "popoln" ? "active" : ""} onClick={() => setTab("popoln")}>Пополнения</span>
-              <span className="cabinet-operations-link">Операции в июне &gt;</span>
             </div>
             <div className="cabinet-operations-content">
               <div className="cabinet-operations-list">

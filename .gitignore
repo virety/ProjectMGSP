@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -21,3 +22,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+=======
+IOS/BankApp/BankApp.xcodeproj/project.xcworkspace/xcuserdata/
+IOS/BankApp/BankApp.xcodeproj/project.xcworkspace/xcshareddata/
+    .DS_Store
+    migrations
+    .idea
+    .venv
+    *.pyc
+    __pycache__
+    .db
+>>>>>>> ad6c98d5d25ab444ddba15428d2ef2d847c6dd5f

@@ -36,7 +36,7 @@
 }
 
 .card-number {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   letter-spacing: 2px;
   margin-bottom: 60px;
 }
@@ -71,6 +71,13 @@
 .card-balance span {
   font-size: 1rem;
   color: #d4bdea;
+}
+
+.sidebar-new-btn div {
+  color: #ede3f7;
+  margin-top: -22px;
+  font-family: 'Orbitron', 'Montserrat', 'Arial', sans-serif;
+  font-size: 1.1rem;
 }
 
 .card-nav-btn {
@@ -719,4 +726,228 @@
 .savings-goal-amount {
   font-size: 0.9rem;
   color: #666;
+}
+
+.cabinet {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cabinet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.cabinet-welcome h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.cabinet-welcome p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.cabinet-assistant {
+  background: #524CA1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.cabinet-assistant:hover {
+  background: #6c74c9;
+  transform: translateY(-2px);
+}
+
+.cabinet-main {
+  display: grid;
+  gap: 2rem;
+}
+
+.cabinet-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.cabinet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.cabinet-card.main {
+  background: linear-gradient(135deg, #524CA1 0%, #6c74c9 100%);
+  color: white;
+}
+
+.cabinet-card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.cabinet-card-type {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.cabinet-card-number {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cabinet-card-balance {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.cabinet-products {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cabinet-products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.cabinet-products-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.cabinet-new-product {
+  background: #524CA1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.cabinet-new-product:hover {
+  background: #6c74c9;
+  transform: translateY(-2px);
+}
+
+.cabinet-new-product-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.cabinet-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.cabinet-menu {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cabinet-menu-section {
+  margin-bottom: 1.5rem;
+}
+
+.cabinet-menu-section:last-child {
+  margin-bottom: 0;
+}
+
+.cabinet-menu-section h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.cabinet-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.cabinet-menu-item {
+  background: #f8f9fa;
+  border: none;
+  padding: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.cabinet-menu-item:hover {
+  background: #524CA1;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.cabinet-menu-icon {
+  font-size: 1.5rem;
+}
+
+.sidebar-products {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-product {
+  background: #f5f7ff;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.sidebar-product:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(108, 116, 201, 0.1);
+}
+
+.sidebar-product-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #524CA1;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-product-balance {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #524CA1;
 } 

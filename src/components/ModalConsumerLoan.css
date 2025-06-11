@@ -1,0 +1,167 @@
+.modal-consumer-loan {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-consumer-loan-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1001;
+}
+
+.modal-consumer-loan h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-consumer-loan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-consumer-loan-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-consumer-loan-field label {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.modal-consumer-loan-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.modal-consumer-loan-input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #333;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.modal-consumer-loan-input-group input:focus {
+  outline: none;
+  border-color: #524CA1;
+  background: white;
+}
+
+.modal-consumer-loan-currency {
+  position: absolute;
+  right: 12px;
+  color: #666;
+  font-size: 16px;
+}
+
+.modal-consumer-loan-slider {
+  width: 100%;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+  margin: 10px 0;
+}
+
+.modal-consumer-loan-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #524CA1;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-consumer-loan-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.modal-consumer-loan-range {
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  font-size: 14px;
+}
+
+.modal-consumer-loan-rate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.modal-consumer-loan-rate-value {
+  font-weight: 600;
+  color: #524CA1;
+}
+
+.modal-consumer-loan-result {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.modal-consumer-loan-result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+}
+
+.modal-consumer-loan-result-value {
+  font-weight: 600;
+  color: #524CA1;
+}
+
+.modal-consumer-loan-submit {
+  background: #524CA1;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-consumer-loan-submit:hover {
+  background: #6c74c9;
+}
+
+.modal-consumer-loan-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+} 

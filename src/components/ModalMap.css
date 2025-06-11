@@ -1,0 +1,231 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding-top: 80px;
+}
+
+.map-modal {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 80vh;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6f42c1;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.modal-close:hover {
+  color: #5a32a3;
+}
+
+.map-modal h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.map-container {
+  display: flex;
+  gap: 20px;
+  height: calc(80vh - 100px);
+}
+
+.map {
+  flex: 1;
+  position: relative;
+  border-radius: 15px;
+  overflow: auto;
+  background: #f8f9fa;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.map-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-width: 800px;
+  min-height: 600px;
+}
+
+.map-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-location {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.location-dot {
+  width: 12px;
+  height: 12px;
+  background: #6f42c1;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
+}
+
+.terminal-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.marker-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.terminal-marker.atm .marker-dot {
+  background: #28a745;
+}
+
+.terminal-marker.branch .marker-dot {
+  background: #6f42c1;
+}
+
+.terminal-marker.selected .marker-dot {
+  transform: scale(1.2);
+}
+
+.marker-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6f42c1;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.terminal-marker:hover .marker-label {
+  opacity: 1;
+  background: white;
+  color: #6f42c1;
+}
+
+.terminals-list {
+  width: 300px;
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.terminals-list h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.terminals {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.terminal-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #f8f9fa;
+}
+
+.terminal-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.terminal-item.selected {
+  background: #6f42c1;
+  color: white;
+}
+
+.terminal-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(111, 66, 193, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #6f42c1;
+}
+
+.terminal-item.selected .terminal-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.terminal-info {
+  flex: 1;
+}
+
+.terminal-info h4 {
+  margin: 0 0 5px;
+  font-size: 14px;
+}
+
+.terminal-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.terminal-item.selected .terminal-info p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.distance {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #6f42c1;
+  font-weight: 500;
+}
+
+.terminal-item.selected .distance {
+  color: white;
+} 

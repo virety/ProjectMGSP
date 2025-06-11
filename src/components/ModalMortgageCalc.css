@@ -1,0 +1,215 @@
+.modal-mortgagecalc-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-mortgagecalc {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-mortgagecalc-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.modal-mortgagecalc-close:hover {
+  color: #524CA1;
+}
+
+.modal-mortgagecalc-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.modal-mortgagecalc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-mortgagecalc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-mortgagecalc-field label {
+  font-size: 14px;
+  color: #666;
+}
+
+.modal-mortgagecalc-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.modal-mortgagecalc-input {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #333;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.modal-mortgagecalc-input:focus {
+  outline: none;
+  border-color: #524CA1;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(82, 76, 161, 0.1);
+}
+
+.modal-mortgagecalc-input::-webkit-inner-spin-button,
+.modal-mortgagecalc-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modal-mortgagecalc-currency {
+  position: absolute;
+  right: 15px;
+  color: #666;
+  font-size: 16px;
+}
+
+.modal-mortgagecalc-percent {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.modal-mortgagecalc-slider {
+  width: 100%;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  outline: none;
+  margin: 10px 0;
+  -webkit-appearance: none;
+}
+
+.modal-mortgagecalc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #524CA1;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+}
+
+.modal-mortgagecalc-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background: #6c74c9;
+  -webkit-appearance: none;
+}
+
+.modal-mortgagecalc-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.modal-mortgagecalc-rate {
+  color: #524CA1;
+  font-size: 14px;
+  margin-top: -10px;
+  font-weight: 500;
+}
+
+.modal-mortgagecalc-error {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+.modal-mortgagecalc-result {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.modal-mortgagecalc-loan-amount,
+.modal-mortgagecalc-payment {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.modal-mortgagecalc-loan-amount:last-child,
+.modal-mortgagecalc-payment:last-child {
+  margin-bottom: 0;
+}
+
+.modal-mortgagecalc-submit {
+  background: #524CA1;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.modal-mortgagecalc-submit:hover {
+  background: #6c74c9;
+  transform: translateY(-2px);
+}
+
+.modal-mortgagecalc-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modal-mortgagecalc-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.modal-mortgagecalc-success h2 {
+  color: #524CA1;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.modal-mortgagecalc-success p {
+  color: #666;
+  font-size: 16px;
+}

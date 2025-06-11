@@ -1,0 +1,106 @@
+.modal-creditchoice-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(24, 17, 77, 0.75);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-creditchoice {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f2ff 100%);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-creditchoice-title {
+  font-size: 1.5rem;
+  color: #18114D;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.modal-creditchoice-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-creditchoice-option {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #e0e0ff;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-creditchoice-option:hover {
+  transform: translateY(-2px);
+  border-color: #6c74c9;
+  box-shadow: 0 4px 12px rgba(108, 116, 201, 0.1);
+}
+
+.modal-creditchoice-option-icon {
+  font-size: 2rem;
+  color: #6c74c9;
+}
+
+.modal-creditchoice-option-content {
+  flex: 1;
+}
+
+.modal-creditchoice-option-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #18114D;
+  margin-bottom: 0.25rem;
+}
+
+.modal-creditchoice-option-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.modal-creditchoice-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #6c74c9;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.modal-creditchoice-close:hover {
+  color: #524CA1;
+}
+
+.modal-creditchoice-bg {
+  position: absolute;
+  left: -60px; right: -60px; bottom: -60px;
+  height: 180px;
+  background: radial-gradient(circle at 60% 40%, #7874aa 0%, #524CA1 100%);
+  z-index: 1;
+  border-radius: 50%;
+  filter: blur(12px);
+  pointer-events: none;
+} 

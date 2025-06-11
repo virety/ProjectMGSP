@@ -1,0 +1,153 @@
+.modal-savingsgoal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-savingsgoal {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.modal-savingsgoal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.modal-savingsgoal-close:hover {
+  color: #524CA1;
+}
+
+.modal-savingsgoal-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.modal-savingsgoal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-savingsgoal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-savingsgoal-field label {
+  font-size: 14px;
+  color: #666;
+}
+
+.modal-savingsgoal-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.modal-savingsgoal-input {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #333;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.modal-savingsgoal-input:focus {
+  outline: none;
+  border-color: #524CA1;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(82, 76, 161, 0.1);
+}
+
+.modal-savingsgoal-input::-webkit-inner-spin-button,
+.modal-savingsgoal-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modal-savingsgoal-currency {
+  position: absolute;
+  right: 15px;
+  color: #666;
+  font-size: 16px;
+}
+
+.modal-savingsgoal-submit {
+  background: #524CA1;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.modal-savingsgoal-submit:hover {
+  background: #6c74c9;
+  transform: translateY(-2px);
+}
+
+.modal-savingsgoal-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modal-savingsgoal-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.modal-savingsgoal-success h2 {
+  color: #524CA1;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.modal-savingsgoal-success p {
+  color: #666;
+  font-size: 16px;
+}
+
+.modal-savingsgoal-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(108, 116, 201, 0.1) 0%, rgba(82, 76, 161, 0.1) 100%);
+  z-index: -1;
+} 
