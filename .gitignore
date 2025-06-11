@@ -1,9 +1,45 @@
-IOS/BankApp/BankApp.xcodeproj/project.xcworkspace/xcuserdata/
-IOS/BankApp/BankApp.xcodeproj/project.xcworkspace/xcshareddata/
-    .DS_Store
-    migrations
-    .idea
-    .venv
-    *.pyc
-    __pycache__
-    .db
+# --- Python / Django ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+backend_venv/ # Наше виртуальное окружение
+
+# --- База данных ---
+*.sqlite3
+db.sqlite3
+*.sql
+
+# --- Локальные настройки ---
+.env
+*.local
+
+# --- macOS ---
+.DS_Store
+
+# --- iOS / Xcode ---
+#
+# gitignore contributors: remember to keep this file platform-agnostic
+#
+# Swift Package Manager
+#
+# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+# *.xcodeproj
+# Package.xcworkspace
+#
+# Xcode
+#
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.app
+*.dSYM/
+*.xcscheme
+xcuserdata/
+# Подробный .gitignore для iOS можно будет добавить позже, если понадобится 
+# Local environment variables
+.env
