@@ -1,2 +1,0 @@
-release: python manage.py migrate
-web: gunicorn nyota_bank.wsgi:application --bind 0.0.0.0:$PORT 
