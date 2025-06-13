@@ -50,6 +50,9 @@ class User(AbstractUser):
     pin_code = models.CharField(max_length=128, blank=True)
     avatar = models.URLField(blank=True) # Assuming avatar is a URL to an image
     
+    # Добавляем общий баланс пользователя для iOS совместимости
+    total_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00, help_text="Total balance across all cards and deposits")
+    
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
@@ -65,6 +68,19 @@ class User(AbstractUser):
     def get_default_card(self):
         # The default card is the first one created.
         return self.cards.order_by('card_issue_date').first()
+    
+    def update_total_balance(self):
+        """Update total balance based on all cards and active deposits"""
+        from django.db.models import Sum
+        
+        # Sum all card balances
+        cards_balance = self.cards.aggregate(Sum('balance'))['balance__sum'] or 0
+        
+        # Sum all active deposits
+        deposits_balance = self.deposits.aggregate(Sum('amount'))['amount__sum'] or 0
+        
+        self.total_balance = cards_balance + deposits_balance
+        self.save(update_fields=['total_balance'])
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.phone_number})"
@@ -129,6 +145,9 @@ class Deposit(models.Model):
     interest_rate = models.DecimalField(max_digits=5, decimal_places=2) # e.g., 5.75 for 5.75%
     term_months = models.IntegerField()
     start_date = models.DateField(auto_now_add=True)
+    
+    # Добавляем поле для расчета доходности (совместимость с iOS)
+    total_interest = models.DecimalField(max_digits=15, decimal_places=2, default=0, help_text="Total interest earned")
 
     def __str__(self):
         return f"Deposit of {self.amount} for {self.user.phone_number}"
@@ -146,6 +165,10 @@ class Loan(models.Model):
     next_payment_date = models.DateField()
     is_active = models.BooleanField(default=True)
     
+    # Добавляем поля для системы погашения (совместимость с iOS)
+    late_payments = models.IntegerField(default=0, help_text="Number of late payments")
+    next_payment_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Amount of next payment")
+    
     def __str__(self):
         return f"Loan of {self.total_amount} for {self.user.phone_number}"
 
@@ -161,6 +184,11 @@ class Mortgage(models.Model):
     monthly_payment = models.DecimalField(max_digits=10, decimal_places=2)
     issue_date = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    
+    # Добавляем поля для системы погашения (совместимость с iOS)
+    late_payments = models.IntegerField(default=0, help_text="Number of late payments")
+    central_bank_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0, help_text="Central bank rate for calculations")
+    overpayment = models.DecimalField(max_digits=15, decimal_places=2, default=0, help_text="Total overpayment amount")
 
     def __str__(self):
         return f"Mortgage for {self.user.phone_number}"
