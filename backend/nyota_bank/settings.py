@@ -180,36 +180,4 @@ if not DEBUG:
     X_FRAME_OPTIONS = 'DENY'
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-
-# Настройка логирования для продакшена
-# Это отправит ошибки в логи Railway даже при DEBUG=False
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': ('%(asctime)s [%(levelname)s] %(module)s '
-                       '%(message)s')
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['console'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    }
-} 
+    SECURE_HSTS_PRELOAD = True 
