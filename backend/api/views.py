@@ -117,6 +117,7 @@ class TransferView(generics.CreateAPIView):
                 # Determine recipient
                 recipient_user = None
                 recipient_card = None
+                is_phone_transfer = False
 
                 # Check if identifier is a card number
                 if re.match(r'^\d{16}$', target_card_number):
@@ -128,6 +129,7 @@ class TransferView(generics.CreateAPIView):
                 
                 # If not a card, check if it's a phone number
                 if recipient_card is None:
+                    is_phone_transfer = True
                     try:
                         recipient_user = User.objects.get(phone_number=target_card_number)
                         # Find the recipient's default card, or just any card if no default is set
@@ -140,6 +142,10 @@ class TransferView(generics.CreateAPIView):
                 # Check for transfer to self
                 if sender_card == recipient_card:
                     return Response({"detail": "Cannot transfer to the same card."}, status=status.HTTP_400_BAD_REQUEST)
+                
+                # Check for transfer to self by phone number only
+                if is_phone_transfer and request.user == recipient_user:
+                    return Response({"detail": "Cannot transfer to yourself."}, status=status.HTTP_400_BAD_REQUEST)
                 
                 # Perform the transfer
                 sender_card.balance -= amount
