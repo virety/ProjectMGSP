@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=nyota_bank_db
+      - POSTGRES_USER=nyota_bank_user
+      - POSTGRES_PASSWORD=very_strong_password
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DB_NAME=nyota_bank_db
+      - DB_USER=nyota_bank_user
+      - DB_PASSWORD=very_strong_password
+      - DB_HOST=db
+      - DB_PORT=5432
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - SECRET_KEY=your-secret-key-here
+      - DEBUG=True
+    env_file:
+      - backend/.env
+
+  celery:
+    build: ./backend
+    command: celery -A nyota_bank worker -l info
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend
+      - redis
+
+volumes:
+  postgres_data: 
