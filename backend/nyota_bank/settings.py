@@ -51,10 +51,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
+
+    # Сторонние приложения
     'rest_framework',
     'rest_framework.authtoken',
-    'corsheaders',  # Добавляем CORS для веб-фронтенда
+    'corsheaders',
+
+    # Ваши приложения
+    'api',
 ]
 
 AUTH_USER_MODEL = 'api.User'
