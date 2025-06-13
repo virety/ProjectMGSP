@@ -116,19 +116,20 @@ class CardSerializer(serializers.ModelSerializer):
 class DepositSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deposit
-        fields = ['id', 'amount', 'interest_rate', 'term_months', 'start_date']
-        read_only_fields = ['interest_rate', 'start_date']
+        fields = ['id', 'amount', 'interest_rate', 'term_months', 'start_date', 'total_interest']
+        read_only_fields = ['interest_rate', 'start_date', 'total_interest']
 
 class LoanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loan
         fields = [
             'id', 'total_amount', 'term_months', 'interest_rate', 
-            'monthly_payment', 'issue_date', 'next_payment_date', 'remaining_debt'
+            'monthly_payment', 'issue_date', 'next_payment_date', 'remaining_debt',
+            'late_payments', 'next_payment_amount'
         ]
         read_only_fields = [
             'interest_rate', 'monthly_payment', 'issue_date', 
-            'next_payment_date', 'remaining_debt'
+            'next_payment_date', 'remaining_debt', 'late_payments', 'next_payment_amount'
         ]
         
     def validate(self, data):
@@ -141,7 +142,12 @@ class LoanSerializer(serializers.ModelSerializer):
 class MortgageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mortgage
-        fields = '__all__'
+        fields = [
+            'id', 'property_cost', 'initial_payment', 'total_amount', 'term_years',
+            'interest_rate', 'monthly_payment', 'issue_date', 'is_active',
+            'late_payments', 'central_bank_rate', 'overpayment'
+        ]
+        read_only_fields = ['late_payments', 'central_bank_rate', 'overpayment']
 
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -152,8 +158,8 @@ class ApplicationSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'phone_number', 'first_name', 'last_name', 'middle_name', 'email', 'avatar']
-        read_only_fields = ['phone_number']
+        fields = ['id', 'phone_number', 'first_name', 'last_name', 'middle_name', 'email', 'avatar', 'total_balance']
+        read_only_fields = ['phone_number', 'total_balance']
         extra_kwargs = {
             'first_name': {'allow_blank': False},
             'last_name': {'allow_blank': False},
