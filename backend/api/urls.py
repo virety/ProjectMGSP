@@ -4,7 +4,7 @@ from .views import (
     UserRegistrationView,
     UserProfileView,
     CardViewSet,
-    TransactionViewSet,
+    TransactionListView,
     LoanViewSet,
     MortgageViewSet,
     NotificationViewSet,
@@ -22,7 +22,6 @@ from .views import (
 router = DefaultRouter()
 router.register(r'users', UserProfileView, basename='user')
 router.register(r'cards', CardViewSet)
-router.register(r'transactions', TransactionViewSet)
 router.register(r'loans', LoanViewSet)
 router.register(r'mortgages', MortgageViewSet)
 router.register(r'notifications', NotificationViewSet)
@@ -36,6 +35,7 @@ router.register(r'deposits', DepositViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
+    path('transactions/', TransactionListView.as_view(), name='transaction-list'),
     path('test/', TestView.as_view(), name='test-view'), # Наш тестовый эндпоинт
     path('send-verification-code/', send_verification_code, name='send-verification-code'),
     path('verify-phone-number/', verify_phone_number, name='verify-phone-number'),
