@@ -50,11 +50,6 @@ import os
 
 # Create your views here.
 
-def health_check(request):
-    """Simple health check endpoint"""
-    from django.http import JsonResponse
-    return JsonResponse({"status": "ok", "message": "API is running"})
-
 class ObtainAuthTokenView(ObtainAuthToken):
     """
     Custom view to obtain auth token, using phone_number.
