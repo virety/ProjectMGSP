@@ -1,0 +1,105 @@
+/* Большие экраны (больше 1920px) */
+@media screen and (min-width: 1921px) {
+  .hero-section {
+    max-width: 1920px;
+  }
+}
+
+/* Десктопы (1200px - 1920px) */
+@media screen and (max-width: 1920px) {
+  .hero-section {
+    max-width: 100%;
+  }
+  
+  .hero-planet {
+    margin-left: 600px;
+    width: 400px;
+    height: 400px;
+  }
+}
+
+/* Ноутбуки (992px - 1199px) */
+@media screen and (max-width: 1199px) {
+  .hero-content {
+    max-width: 800px;
+  }
+  
+  .hero-planet {
+    margin-left: 400px;
+    width: 350px;
+    height: 350px;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+  }
+}
+
+/* Планшеты (768px - 991px) */
+@media screen and (max-width: 991px) {
+  .hero-content {
+    max-width: 600px;
+  }
+  
+  .hero-planet {
+    margin-left: 300px;
+    width: 300px;
+    height: 300px;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.3rem;
+  }
+}
+
+/* Большие телефоны (576px - 767px) */
+@media screen and (max-width: 767px) {
+  .hero-content {
+    max-width: 100%;
+  }
+  
+  .hero-planet {
+    margin-left: 200px;
+    width: 250px;
+    height: 250px;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Телефоны (до 575px) */
+@media screen and (max-width: 575px) {
+  .hero-planet {
+    margin-left: 100px;
+    width: 200px;
+    height: 200px;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .hero-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+} 

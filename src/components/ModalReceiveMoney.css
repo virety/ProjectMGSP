@@ -1,0 +1,128 @@
+.modal-receive-money-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(14, 10, 43, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 2200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInReceive 0.3s ease-out;
+}
+
+@keyframes fadeInReceive {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-receive-money {
+    position: relative;
+    background: linear-gradient(145deg, #1f175e, #100a2e);
+    border-radius: 20px;
+    padding: 28px 32px;
+    width: 400px;
+    max-width: 95vw;
+    font-family: 'Montserrat', sans-serif;
+    color: #e9e6ff;
+    border: 1px solid rgba(82, 76, 161, 0.4);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+.modal-receive-money-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.modal-receive-money-close:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.modal-receive-money-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+}
+
+.qr-code-container-money {
+    margin: 20px 0;
+    padding: 25px;
+    background-color: white;
+    border-radius: 16px;
+    display: inline-block;
+}
+
+.qr-code-icon-money {
+    font-size: 140px;
+    color: #100a2e;
+}
+
+.qr-code-container-money p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.card-details-container {
+    margin-top: 25px;
+}
+
+.details-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #a9a2c2;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.details-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.details-wrapper textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid #3a327a;
+    color: #dcd9f0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    resize: none;
+    padding: 10px 45px 10px 14px;
+}
+
+.details-wrapper textarea:focus {
+    outline: none;
+    border-color: #8c66ff;
+}
+
+.details-wrapper button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #a9a2c2;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.2s;
+}
+
+.details-wrapper button:hover {
+    color: #fff;
+} 

@@ -1,0 +1,205 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 100000;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+
+.exchange-rates-modal {
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  background: rgba(24, 17, 77, 0.98);
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  color: #fff;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.exchange-rates-header {
+  margin-bottom: 20px;
+}
+
+.exchange-rates-header h2 {
+  font-size: 1.6rem;
+  margin-bottom: 14px;
+  color: #fff;
+}
+
+.exchange-rates-filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.period-filter {
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.period-button {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.period-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.period-button.active {
+  background: #6c74c9;
+}
+
+.exchange-rates-content {
+  display: flex;
+  gap: 20px;
+  height: calc(100% - 90px);
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.exchange-rates-graph {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.exchange-rates-graph > canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100%;
+}
+
+.exchange-rates-sidebar {
+  width: 250px;
+  min-width: 250px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Добавим стили для скроллбара */
+.exchange-rates-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.exchange-rates-sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.exchange-rates-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.exchange-rates-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.top-currencies {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-currencies h3 {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.currency-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 8px;
+}
+
+.currency-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.currency-item.active {
+  background: rgba(108, 116, 201, 0.2);
+}
+
+.currency-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.currency-code {
+  font-weight: 600;
+  color: #fff;
+}
+
+.currency-name {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.currency-change {
+  font-weight: 600;
+}
+
+.currency-change.positive {
+  color: #4CAF50;
+}
+
+.currency-change.negative {
+  color: #f44336;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.modal-close:hover {
+  opacity: 1;
+} 

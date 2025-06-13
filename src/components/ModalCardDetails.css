@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap');
+
+.modal-carddetails-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(14, 10, 43, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-carddetails {
+  position: relative;
+  background: linear-gradient(145deg, #1f175e, #100a2e);
+  border-radius: 24px;
+  padding: 28px;
+  width: 480px;
+  max-width: 90vw;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid rgba(82, 76, 161, 0.4);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+}
+
+/* 3D Scene for Card Flip */
+.scene {
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1.586;
+  perspective: 1000px;
+}
+
+.card {
+  width: 90%;
+  height: 80%;
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 15px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  color: white;
+  overflow: hidden;
+}
+.card__face::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%, rgba(0,0,0,0.4) 100%);
+  z-index: 1;
+}
+.card__face > * {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.card__face--back {
+  transform: rotateY(180deg);
+  background-color: #333;
+}
+
+/* Card Front Styles */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-weight: 700;
+}
+
+.card-bank-name { font-size: 1.1rem; }
+.card-type-icon { font-size: 2rem; opacity: 0.8; }
+
+.card-chip {
+  width: 40px;
+  height: 30px;
+  background: linear-gradient(135deg, #ffeec2, #d4af37);
+  border-radius: 5px;
+  align-self: flex-start;
+}
+
+.card-number {
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 25px 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.card-holder, .card-expiry {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.card-holder span:last-child, .card-expiry span:last-child {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.card-label {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
+/* Card Back Styles */
+.card-mag-stripe {
+  position: absolute;
+  top: 25px;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: black;
+  z-index: 1;
+}
+
+.card-sig-cvv-line {
+  margin-top: 80px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 0 15px;
+}
+.card-signature-box {
+  flex-grow: 1;
+  height: 35px;
+  background: #fff;
+  border-radius: 4px;
+}
+.card-cvv {
+  background: #ddd;
+  color: black;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 1px;
+  font-weight: 700;
+  min-width: 50px;
+  text-align: center;
+}
+.card-cvv .card-label { color: #555; }
+
+/* Info and Actions */
+.modal-carddetails-info {
+  text-align: left;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.info-balance {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance-label {
+  font-size: 0.8rem;
+  color: #a9a2c2;
+  font-weight: 500;
+}
+
+.balance-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.currency {
+  font-weight: 500;
+  color: #a9a2c2;
+  margin-left: 5px;
+}
+
+.change-bg-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-light);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.change-bg-btn:hover {
+  background: var(--c1);
+  transform: translateY(-1px);
+}
+
+.modal-carddetails-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.card-action-btn {
+  background: rgba(82, 76, 161, 0.4);
+  color: #e2e0f0;
+  border: 1px solid rgba(82, 76, 161, 0.6);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-action-btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(82, 76, 161, 0.4);
+}
+
+.card-action-btn svg {
+  font-size: 1.3rem;
+}
+
+.card-action-btn.danger {
+  color: #ff8a8a;
+  border-color: rgba(255, 138, 138, 0.4);
+}
+
+.card-action-btn.danger:hover {
+  background: #ff5252;
+  color: #fff;
+  border-color: #ff5252;
+  box-shadow: 0 4px 15px rgba(255, 82, 82, 0.5);
+}
+
+.modal-carddetails-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.modal-carddetails-close:hover {
+  color: #fff;
+} 

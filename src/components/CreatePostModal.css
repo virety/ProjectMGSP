@@ -1,0 +1,415 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+  padding: 80px 20px;
+  overflow-y: auto;
+}
+
+.create-post-modal {
+  background: #18114D;
+  padding: 0;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  color: white;
+  overflow: hidden;
+  margin: auto;
+  max-height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.modal-header h2 {
+  margin: 0 0 20px 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.user-status {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+/* Статусы */
+.status-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.status-btn {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.status-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.status-btn.active {
+  background: rgba(108, 116, 201, 0.2);
+  border-color: rgba(108, 116, 201, 0.5);
+  color: #6c74c9;
+}
+
+/* Аватары */
+.avatar-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.avatar-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.avatar-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.avatar-btn.active {
+  background: rgba(108, 116, 201, 0.2);
+  border-color: rgba(108, 116, 201, 0.5);
+  transform: scale(1.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.create-post-form {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-section h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.currency-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.currency-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  text-align: left;
+}
+
+.currency-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.currency-btn.active {
+  background: rgba(108, 116, 201, 0.2);
+  border-color: rgba(108, 116, 201, 0.5);
+}
+
+.currency-code {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.currency-name {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.prediction-options {
+  display: flex;
+  gap: 16px;
+}
+
+.prediction-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.prediction-btn.active.рост {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: rgba(76, 175, 80, 0.5);
+  color: #4CAF50;
+}
+
+.prediction-btn.active.падение {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: rgba(244, 67, 54, 0.5);
+  color: #f44336;
+}
+
+.confidence-slider {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.confidence-slider input[type="range"] {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  appearance: none;
+}
+
+.confidence-slider input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #6c74c9;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.confidence-slider input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.confidence-value {
+  min-width: 60px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.form-section textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-section textarea:focus {
+  outline: none;
+  border-color: rgba(108, 116, 201, 0.5);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: #6c74c9;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 16px;
+}
+
+.submit-btn:hover {
+  background: #8086d9;
+  transform: translateY(-2px);
+}
+
+.currency-select {
+  position: relative;
+}
+
+.currency-select select {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='rgba(255, 255, 255, 0.7)'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 24px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.currency-select select:hover {
+  background-color: rgba(108, 116, 201, 0.1);
+  border-color: rgba(108, 116, 201, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.currency-select select:focus {
+  outline: none;
+  border-color: rgba(108, 116, 201, 0.5);
+  background-color: rgba(108, 116, 201, 0.15);
+  box-shadow: 0 4px 12px rgba(108, 116, 201, 0.2);
+}
+
+.currency-select::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50px;
+  border-radius: 0 14px 14px 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(108, 116, 201, 0.1));
+}
+
+.currency-select select option {
+  background-color: #1a1550;
+  color: white;
+  padding: 16px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.currency-select select option:hover,
+.currency-select select option:focus {
+  background-color: rgba(108, 116, 201, 0.2);
+}
+
+/* Стилизация для Firefox */
+.currency-select select {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(108, 116, 201, 0.5) rgba(255, 255, 255, 0.1);
+}
+
+/* Стилизация для Chrome */
+.currency-select select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.currency-select select::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.currency-select select::-webkit-scrollbar-thumb {
+  background: rgba(108, 116, 201, 0.5);
+  border-radius: 4px;
+}
+
+.currency-select select::-webkit-scrollbar-thumb:hover {
+  background: rgba(108, 116, 201, 0.7);
+} 

@@ -1,0 +1,128 @@
+.bottom-info {
+  background: rgba(24, 17, 77, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 60px 0 40px;
+  color: rgba(255, 255, 255, 0.7);
+  position: relative;
+  z-index: 1;
+}
+
+.bottom-info-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.bottom-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.bottom-info-section h3 {
+  color: #6344f9;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(99, 68, 249, 0.3);
+}
+
+.bottom-info-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bottom-info-section ul li {
+  margin-bottom: 12px;
+}
+
+.bottom-info-section ul li a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.bottom-info-section ul li a:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.bottom-info-apps {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.app-store-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.app-store-link:hover {
+  color: #6344f9;
+  transform: translateY(-2px);
+}
+
+.app-store-link img {
+  height: 24px;
+  width: auto;
+}
+
+.bottom-info-social {
+  display: flex;
+  gap: 20px;
+}
+
+.bottom-info-social a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 24px;
+  transition: all 0.2s ease;
+}
+
+.bottom-info-social a:hover {
+  color: #6344f9;
+  transform: translateY(-2px);
+}
+
+.bottom-info-legal {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 30px;
+  text-align: center;
+}
+
+.bottom-info-copyright {
+  color: #6344f9;
+  font-size: 1.08rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px rgba(99, 68, 249, 0.3);
+}
+
+.bottom-info-contacts {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .bottom-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bottom-info-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .bottom-info {
+    padding: 40px 0 30px;
+  }
+} 

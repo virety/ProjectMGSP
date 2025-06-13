@@ -1,0 +1,269 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(24, 17, 77, 0.75);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.map-modal {
+  background: linear-gradient(135deg, #18114D 0%, #524CA1 100%);
+  padding: 2rem;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(87, 87, 170, 0.22);
+  width: 90%;
+  max-width: 900px;
+  height: 70vh;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+.map-modal h2 {
+  font-size: 1.4rem;
+  color: #fff;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.map-container {
+  display: flex;
+  gap: 1.5rem;
+  height: calc(100% - 4rem);
+}
+
+.map {
+  flex: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(108, 116, 201, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.terminals-list {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+
+.terminals-list h3 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.terminals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.terminal-item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.terminal-item:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.terminal-item.selected {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.terminal-icon {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.terminal-info h4 {
+  font-size: 0.95rem;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.terminal-info p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.distance {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  display: block;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  color: #fff;
+}
+
+/* Стили для кастомизации карты */
+.ymaps-2-1-79-map {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.ymaps-balloon {
+  padding: 1rem;
+  background: #18114D;
+  color: #fff;
+  border-radius: 12px;
+}
+
+.ymaps-balloon h3 {
+  color: #fff;
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.ymaps-balloon p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Кастомные скроллбары */
+.terminals-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminals-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.terminals-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.terminals-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.map-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-width: 800px;
+  min-height: 600px;
+}
+
+.map-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-location {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.location-dot {
+  width: 12px;
+  height: 12px;
+  background: #6f42c1;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
+}
+
+.terminal-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.marker-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.terminal-marker.atm .marker-dot {
+  background: #28a745;
+}
+
+.terminal-marker.branch .marker-dot {
+  background: #6f42c1;
+}
+
+.terminal-marker.selected .marker-dot {
+  transform: scale(1.2);
+}
+
+.marker-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6f42c1;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.terminal-marker:hover .marker-label {
+  opacity: 1;
+  background: white;
+  color: #6f42c1;
+} 

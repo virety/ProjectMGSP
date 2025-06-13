@@ -1,0 +1,389 @@
+.forum {
+  min-height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+  background: #18114D;
+  padding: 30px;
+  color: #fff;
+  width: 61%;
+}
+
+.forum-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 0 10px;
+}
+
+.forum-back-btn,
+.forum-new-post-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.forum-back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.forum-new-post-btn {
+  background: linear-gradient(145deg, #6c5eea, #373186);
+}
+
+.forum-new-post-btn:hover {
+  background: linear-gradient(145deg, #b371f7, #8355b3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(140, 102, 255, 0.3);
+}
+
+.forum-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.forum-title h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.forum-title-icon {
+  font-size: 1.5rem;
+}
+
+/* Инструменты форума (поиск и фильтры) */
+.forum-tools {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.search-bar {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus-within {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-light);
+}
+
+.search-icon {
+  color: #a09dbd;
+  margin-right: 10px;
+}
+
+.search-bar input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  padding: 12px 0;
+}
+
+.search-bar input::placeholder {
+  color: #a09dbd;
+}
+
+.filter-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-toggle.active {
+  background: rgba(108, 116, 201, 0.2);
+  color: #6c74c9;
+}
+
+/* Панель фильтров */
+.filters-panel {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 0 10px 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.filters-panel select {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.confidence-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.confidence-filter span {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Контент форума */
+.forum-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 10px;
+}
+
+.forum-post {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.author-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.author-role {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.post-date {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.post-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-prediction {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.prediction-pair {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.prediction-type {
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.prediction-type.рост {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+
+.prediction-type.падение {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+}
+
+.prediction-confidence {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.post-description {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.post-stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-btn {
+  background: none;
+  border: none;
+  color: #a09dbd;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.stat-btn:hover {
+  color: #fff;
+}
+
+.stat-btn.like-btn.liked {
+  color: var(--primary-color);
+}
+
+.stat-btn.like-btn.liked:hover {
+  color: #e384ff;
+}
+
+.post-details-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 12px;
+  color: #6c74c9;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.post-details-btn:hover {
+  background: rgba(108, 116, 201, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Секция комментариев */
+.comments-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.comment {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.comment-author {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.comment-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.comment-date {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.add-comment {
+  display: flex;
+  gap: 12px;
+}
+
+.add-comment input {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 0.9rem;
+}
+
+.add-comment button {
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: #6c74c9;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-comment button:hover {
+  background: #8086d9;
+  transform: translateY(-2px);
+} 

@@ -1,0 +1,196 @@
+.modal-send-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(14, 10, 43, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 2300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-send {
+    position: relative;
+    background: linear-gradient(145deg, #1f175e, #100a2e);
+    border-radius: 20px;
+    padding: 28px 32px;
+    width: 420px;
+    max-width: 95vw;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    border: 1px solid rgba(82, 76, 161, 0.4);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.modal-send-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+.modal-send-close:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.modal-send-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0 0 24px 0;
+    text-align: center;
+    color: #e9e6ff;
+}
+
+.modal-send-balance {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #a9a2c2;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.send-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #a9a2c2;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid #3a327a;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #8c66ff;
+    box-shadow: 0 0 10px rgba(140, 102, 255, 0.3);
+}
+
+/* Style for the select dropdown arrow */
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a9a2c2' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 1em;
+}
+
+.amount-input-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.amount-input-wrapper input {
+    flex-grow: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+
+.max-button {
+    padding: 0 15px;
+    border: 1px solid #3a327a;
+    background-color: rgba(0, 0, 0, 0.25);
+    color: #a9a2c2;
+    font-weight: 600;
+    cursor: pointer;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.max-button:hover {
+    background-color: #8c66ff;
+    color: white;
+}
+.amount-input-wrapper input:focus + .max-button {
+    border-color: #8c66ff;
+}
+
+.send-button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #a55eea, #764ba2);
+    color: white;
+    margin-top: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.send-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(140, 102, 255, 0.4);
+}
+
+.send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Hide number input spinners */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.modal-send-error {
+    color: #ff8a8a;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 16px;
+}
+
+.send-success {
+    text-align: center;
+}
+.send-success h3 {
+    font-size: 1.5rem;
+    color: #4ade80;
+    margin-bottom: 12px;
+}
+.send-success p {
+    color: #dcd9f0;
+    margin-bottom: 24px;
+} 

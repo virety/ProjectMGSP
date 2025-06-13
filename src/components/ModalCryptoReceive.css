@@ -1,0 +1,107 @@
+.modal-receive-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(14, 10, 43, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 2300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+  
+.modal-receive {
+    position: relative;
+    background: linear-gradient(145deg, #1f175e, #100a2e);
+    border-radius: 20px;
+    padding: 24px;
+    width: 420px;
+    max-width: 90vw;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    border: 1px solid rgba(82, 76, 161, 0.4);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+    text-align: center;
+}
+  
+.modal-receive-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-receive-close:hover {
+    color: #fff;
+}
+  
+.modal-receive-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 24px 0;
+}
+  
+.qr-code-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+  
+.qr-code-icon {
+    font-size: 140px;
+    color: #100a2e;
+}
+
+.qr-code-container p {
+    color: #333;
+    font-weight: 500;
+    margin: 12px 0 0;
+}
+  
+.wallet-address-container {
+    text-align: left;
+}
+  
+.address-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #a9a2c2;
+    margin-bottom: 8px;
+}
+  
+.address-wrapper {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(82, 76, 161, 0.6);
+}
+  
+.address-wrapper input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: #fff;
+    padding: 12px;
+    font-size: 0.9rem;
+    font-family: 'Source Code Pro', monospace;
+}
+  
+.address-wrapper button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0 12px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+.address-wrapper button:hover {
+    color: var(--primary-color);
+} 

@@ -1,0 +1,400 @@
+.cabinet-profile {
+  display: flex;
+  min-height: 100vh;
+  background: #18114D;
+}
+
+.cabinet-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #18114D;
+  width: 100%;
+}
+
+.profile-sidebar {
+  width: 200px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.profile-settings-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #6c74c9 0%, #524CA1 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(108, 116, 201, 0.2);
+}
+
+.profile-settings-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(108, 116, 201, 0.3);
+  filter: brightness(1.1);
+}
+
+.profile-settings-btn svg {
+  font-size: 1.2rem;
+}
+
+.profile-settings-menu {
+  margin-top: 1rem;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.profile-settings-menu.expanded {
+  max-height: 500px;
+}
+
+.profile-settings-menu.collapsed {
+  max-height: 0;
+}
+
+.profile-settings-item {
+  padding: 1rem;
+  margin: 0.5rem 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.profile-settings-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+  border-color: rgba(108, 116, 201, 0.5);
+}
+
+.profile-settings-item svg {
+  font-size: 1.2rem;
+  color: #6c74c9;
+}
+
+/* Стили для кнопок навигации */
+.nav-button {
+  padding: 0.8rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.nav-button:hover {
+  background: rgba(108, 116, 201, 0.2);
+  border-color: rgba(108, 116, 201, 0.5);
+  transform: translateY(-2px);
+}
+
+.nav-button.active {
+  background: linear-gradient(135deg, #6c74c9 0%, #524CA1 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(108, 116, 201, 0.2);
+}
+
+.nav-button svg {
+  font-size: 1.2rem;
+}
+
+/* Остальные стили остаются без изменений */
+.profile-main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.profile-header {
+  background: linear-gradient(145deg, rgba(31, 23, 94, 0.7), rgba(16, 10, 46, 0.7));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(82, 76, 161, 0.4);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  height: 160px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6c74c9 0%, #18114D 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 2rem;
+  color: #fff;
+  margin: 0;
+}
+
+.profile-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.profile-product-card {
+  background: linear-gradient(145deg, rgba(36, 37, 119, 0.5), rgba(16, 10, 46, 0.5));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(82, 76, 161, 0.3);
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.profile-product-card:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(145deg, rgba(40, 30, 120, 0.6), rgba(20, 12, 56, 0.6));
+  border-color: rgba(140, 102, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.profile-product-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-product-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(108, 116, 201, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #6c74c9;
+}
+
+.profile-product-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.profile-product-details {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.profile-product-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-product-detail:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.detail-value {
+  font-weight: 500;
+}
+
+/* Сохраняем стили для модальных окон */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.settings-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.settings-menu button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(145deg, rgba(81, 88, 168, 0.589), rgba(82, 76, 161, 0.2));
+  border: 1px solid rgba(108, 116, 201, 0.2);
+  border-radius: 12px;
+  color: #dcd9f0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+.settings-menu button:last-child {
+  margin-bottom: 0;
+}
+
+.settings-menu button:hover {
+  background: linear-gradient(145deg, rgba(108, 116, 201, 0.3), rgba(82, 76, 161, 0.4));
+  border-color: rgba(140, 102, 255, 0.5);
+  color: #fff;
+  transform: translateX(4px);
+}
+
+.settings-menu button svg {
+  font-size: 1.3rem;
+  color: #a9a2c2;
+  transition: color 0.2s;
+}
+
+.settings-menu button:hover svg {
+  color: #fff;
+}
+
+.sidebar-new-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #6c74c9 0%, #18114D 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.sidebar-new-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+}
+
+.cabinet-header__nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cabinet-header__nav-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cabinet-header__nav-btn.active {
+  background: linear-gradient(135deg, #6c74c9 0%, #524CA1 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(108, 116, 201, 0.3);
+}
+
+.cabinet-header__nav-btn svg {
+  font-size: 1.1rem;
+}
+
+.cabinet-quick-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.cabinet-quick-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  width: 200px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cabinet-quick-action:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.cabinet-quick-icon {
+  font-size: 28px;
+  color: #fff;
+  line-height: 1;
+}
+
+.cabinet-quick-label {
+  font-size: 14px;
+  color: #e0e0e0;
+} 

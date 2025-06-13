@@ -1,0 +1,122 @@
+.modal-topup-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(14, 10, 43, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 2200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-topup {
+  position: relative;
+  background: linear-gradient(145deg, #1f175e, #100a2e);
+  border-radius: 20px;
+  padding: 28px;
+  width: 420px;
+  max-width: 90vw;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  border: 1px solid rgba(82, 76, 161, 0.4);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.modal-topup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-topup-close:hover {
+  color: #fff;
+}
+
+.modal-topup-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.modal-topup-card-name {
+  font-size: 1rem;
+  color: #a9a2c2;
+  margin-bottom: 24px;
+}
+
+.topup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.topup-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #dcd9f0;
+}
+
+.topup-input-wrapper {
+  position: relative;
+}
+
+.topup-input {
+  width: 100%;
+  padding: 14px 40px 14px 16px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(82, 76, 161, 0.6);
+  color: #fff;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.topup-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.topup-currency {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #a9a2c2;
+}
+
+.topup-error {
+  color: #ff8a8a;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: -8px 0;
+}
+
+.topup-submit-btn {
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--primary-light);
+  color: white;
+  margin-top: 8px;
+}
+
+.topup-submit-btn:hover {
+  background: var(--c1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(82, 76, 161, 0.4);
+} 
