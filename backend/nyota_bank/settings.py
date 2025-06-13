@@ -67,9 +67,9 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # CORS должен быть первым
+    # 'corsheaders.middleware.CorsMiddleware',  # Temporarily disabled for debugging
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Для статических файлов
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',  # Temporarily disabled for debugging
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
