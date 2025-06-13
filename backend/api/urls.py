@@ -2,7 +2,6 @@ from django.urls import path, include
 from rest_framework_nested import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from .views import (
-    health_check,
     UserRegistrationView,
     ObtainAuthTokenView,
     UserProfileView,
@@ -56,7 +55,6 @@ posts_router = routers.NestedSimpleRouter(router, r'forum/posts', lookup='post')
 posts_router.register(r'comments', ForumCommentViewSet, basename='forum-post-comments')
 
 urlpatterns = [
-    path('health/', health_check, name='health-check'),
     path('', include(router.urls)),
     path('', include(posts_router.urls)),
     path('register/', UserRegistrationView.as_view(), name='register'),
