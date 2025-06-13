@@ -40,7 +40,7 @@ if not DEBUG:
 
 # Application definition
 AUTHENTICATION_BACKENDS = [
-    'api.backends.PhoneNumberBackend',
+    # 'api.backends.PhoneNumberBackend', # Temporarily disabled for debugging
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework.authtoken',
-    'corsheaders',  # Добавляем CORS для веб-фронтенда
+    # 'corsheaders',  # Temporarily disabled for debugging
 ]
 
 AUTH_USER_MODEL = 'api.User'
