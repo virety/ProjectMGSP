@@ -40,7 +40,7 @@ if not DEBUG:
 
 # Application definition
 AUTHENTICATION_BACKENDS = [
-    # 'api.backends.PhoneNumberBackend', # Temporarily disabled for debugging
+    'api.backends.PhoneNumberBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'corsheaders',  # Temporarily disabled for debugging
+    'corsheaders',  # Добавляем CORS для веб-фронтенда
 ]
 
 AUTH_USER_MODEL = 'api.User'
@@ -67,9 +67,9 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-    # 'corsheaders.middleware.CorsMiddleware',  # Temporarily disabled for debugging
+    'corsheaders.middleware.CorsMiddleware',  # CORS должен быть первым
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',  # Temporarily disabled for debugging
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Для статических файлов
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -176,10 +176,4 @@ if not DEBUG:
     X_FRAME_OPTIONS = 'DENY'
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-
-# Logging configuration for debugging (No longer needed)
-# LOGGING = {
-#     'version': 1,
-# ...
-# } 
+    SECURE_HSTS_PRELOAD = True 

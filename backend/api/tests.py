@@ -56,7 +56,7 @@ class TransferAPITest(APITestCase):
         )
 
         # URL for the transfer endpoint
-        self.transfer_url = reverse('transfer')
+        self.transfer_url = reverse('transfers')
 
     def test_successful_transfer_by_card_number(self):
         """
@@ -64,8 +64,8 @@ class TransferAPITest(APITestCase):
         """
         self.client.force_authenticate(user=self.user_alice)
         data = {
-            "sender_card_number": self.alice_card_1.card_number,
-            "recipient_identifier": self.bob_card_1.card_number,
+            "source_card_id": self.alice_card_1.id,
+            "target_card_number": self.bob_card_1.card_number,
             "amount": "150.50"
         }
         response = self.client.post(self.transfer_url, data)
@@ -85,8 +85,8 @@ class TransferAPITest(APITestCase):
         """
         self.client.force_authenticate(user=self.user_alice)
         data = {
-            "sender_card_number": self.alice_card_1.card_number,
-            "recipient_identifier": self.user_bob.phone_number,
+            "source_card_id": self.alice_card_1.id,
+            "target_card_number": self.user_bob.phone_number,
             "amount": "100"
         }
         response = self.client.post(self.transfer_url, data)
@@ -104,8 +104,8 @@ class TransferAPITest(APITestCase):
         """
         self.client.force_authenticate(user=self.user_alice)
         data = {
-            "sender_card_number": self.alice_card_1.card_number,
-            "recipient_identifier": self.bob_card_1.card_number,
+            "source_card_id": self.alice_card_1.id,
+            "target_card_number": self.bob_card_1.card_number,
             "amount": "2000.00" # More than Alice has
         }
         response = self.client.post(self.transfer_url, data)
@@ -123,8 +123,8 @@ class TransferAPITest(APITestCase):
         """
         self.client.force_authenticate(user=self.user_alice)
         data = {
-            "sender_card_number": self.alice_card_1.card_number,
-            "recipient_identifier": self.alice_card_1.card_number,
+            "source_card_id": self.alice_card_1.id,
+            "target_card_number": self.alice_card_1.card_number,
             "amount": "10.00"
         }
         response = self.client.post(self.transfer_url, data)
@@ -136,8 +136,8 @@ class TransferAPITest(APITestCase):
         """
         self.client.force_authenticate(user=self.user_alice)
         data = {
-            "sender_card_number": self.alice_card_1.card_number,
-            "recipient_identifier": self.user_alice.phone_number,
+            "source_card_id": self.alice_card_1.id,
+            "target_card_number": self.user_alice.phone_number,
             "amount": "10.00"
         }
         response = self.client.post(self.transfer_url, data)
@@ -149,8 +149,8 @@ class TransferAPITest(APITestCase):
         """
         self.client.force_authenticate(user=self.user_alice)
         data = {
-            "sender_card_number": self.alice_card_1.card_number,
-            "recipient_identifier": self.alice_card_2.card_number,
+            "source_card_id": self.alice_card_1.id,
+            "target_card_number": self.alice_card_2.card_number,
             "amount": "200.00"
         }
         response = self.client.post(self.transfer_url, data)
