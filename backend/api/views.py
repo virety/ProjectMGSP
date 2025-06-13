@@ -1596,4 +1596,15 @@ class CardImageUploadView(APIView):
             print(f"Error processing card image: {e}")
 
 
+# Add this new view for debugging
+class TestView(APIView):
+    """
+    A simple view for testing if the application is running.
+    """
+    permission_classes = [permissions.AllowAny] # No authentication needed
+
+    def get(self, request, *args, **kwargs):
+        return Response({"status": "ok", "message": "Nyota Bank API is running!"}, status=status.HTTP_200_OK)
+
+
 
