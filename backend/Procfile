@@ -1,2 +1,2 @@
-web: python manage.py migrate --run-syncdb && python manage.py collectstatic --noinput && gunicorn nyota_bank.wsgi:application --bind 0.0.0.0:$PORT --log-file -
-release: python manage.py migrate --run-syncdb 
+release: python manage.py migrate
+web: gunicorn nyota_bank.wsgi:application --bind 0.0.0.0:$PORT 
