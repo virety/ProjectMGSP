@@ -504,6 +504,29 @@ class CurrencyViewSet(viewsets.ReadOnlyModelViewSet):
                 'message': f'Failed to update currency rates: {str(e)}'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @action(detail=False, methods=['post'], url_path='create-historical-data')
+    def create_historical_data(self, request):
+        """Create historical currency data for testing"""
+        try:
+            from django.core.management import call_command
+            from io import StringIO
+            
+            # Capture command output
+            out = StringIO()
+            call_command('create_historical_data', stdout=out)
+            output = out.getvalue()
+            
+            return Response({
+                'status': 'success',
+                'message': 'Historical data created successfully',
+                'output': output
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                'status': 'error',
+                'message': f'Failed to create historical data: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     @action(detail=True, methods=['get'], url_path='history')
     def get_history(self, request, pk=None):
         """Get historical data for a specific currency"""
