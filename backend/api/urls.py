@@ -14,6 +14,7 @@ from .views import (
     DepositCreateView,
     CardCreateView,
     ApplicationUpdateView,
+    AdminApplicationListView,
     TransferView,
     CurrencyViewSet,
     ForumPostViewSet,
@@ -74,6 +75,7 @@ urlpatterns = [
     path('card/apply/', CardCreateView.as_view(), name='card-apply'),
     
     # Admin application management
+    path('admin/applications/', AdminApplicationListView.as_view(), name='admin-applications-list'),
     path('admin/applications/<uuid:pk>/update/', ApplicationUpdateView.as_view(), name='admin-application-update'),
     
     # AI Chat endpoints

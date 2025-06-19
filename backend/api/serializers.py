@@ -155,6 +155,20 @@ class ApplicationSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('user', 'status', 'rejection_reason')
 
+class AdminApplicationSerializer(serializers.ModelSerializer):
+    """Расширенный сериализатор для админ-панели с информацией о пользователе"""
+    user_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    user_phone = serializers.CharField(source='user.phone_number', read_only=True)
+    application_type_display = serializers.CharField(source='get_application_type_display', read_only=True)
+    
+    class Meta:
+        model = Application
+        fields = [
+            'id', 'user', 'user_name', 'user_phone', 'application_type', 
+            'application_type_display', 'status', 'details', 'rejection_reason', 
+            'created_at', 'updated_at'
+        ]
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

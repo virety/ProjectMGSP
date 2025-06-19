@@ -18,6 +18,7 @@ from .serializers import (
     UserProfileSerializer,
     TransferSerializer,
     ApplicationSerializer,
+    AdminApplicationSerializer,
     CurrencySerializer,
     ForumPostSerializer,
     ForumCommentSerializer,
@@ -224,13 +225,44 @@ class ApplicationUpdateView(APIView):
             app_type = application.application_type
 
             if app_type == 'LOAN':
-                Loan.objects.create(user=user, amount=details['amount'], term=details['term'], interest_rate=Decimal('5.0')) # Example interest rate
+                Loan.objects.create(
+                    user=user, 
+                    total_amount=details['amount'], 
+                    remaining_debt=details['amount'],
+                    term_months=details['term'], 
+                    interest_rate=Decimal('5.0'),
+                    monthly_payment=Decimal(str(details['amount'])) / details['term'],
+                    next_payment_date=date.today() + timedelta(days=30)
+                )
             elif app_type == 'MORTGAGE':
-                Mortgage.objects.create(user=user, property_cost=details['property_cost'], initial_payment=details['initial_payment'], term_years=details['term_years'])
+                total_amount = details['property_cost'] - details['initial_payment']
+                monthly_payment = total_amount / (details['term_years'] * 12)
+                Mortgage.objects.create(
+                    user=user, 
+                    property_cost=details['property_cost'], 
+                    initial_payment=details['initial_payment'], 
+                    total_amount=total_amount,
+                    term_years=details['term_years'],
+                    interest_rate=Decimal('7.0'),
+                    monthly_payment=monthly_payment
+                )
             elif app_type == 'DEPOSIT':
-                Deposit.objects.create(user=user, amount=details['amount'], term_months=details['term_months'])
+                Deposit.objects.create(
+                    user=user, 
+                    amount=details['amount'], 
+                    term_months=details['term_months'],
+                    interest_rate=Decimal('6.5')
+                )
             elif app_type == 'CARD':
-                Card.objects.create(user=user, card_number=Card.generate_card_number(), cvv=Card.generate_cvv(), expiration_date=Card.generate_expiration_date())
+                Card.objects.create(
+                    user=user, 
+                    card_name="Nyota Card",
+                    card_number=Card.generate_card_number(), 
+                    cvv=Card.generate_cvv(), 
+                    card_expiry_date=Card.generate_expiration_date(),
+                    gradient_start_hex="#4158D0",
+                    gradient_end_hex="#C850C0"
+                )
 
             application.status = 'APPROVED'
             application.rejection_reason = None
@@ -244,6 +276,17 @@ class ApplicationUpdateView(APIView):
         application.save()
         serializer = ApplicationSerializer(application)
         return Response(serializer.data)
+
+class AdminApplicationListView(generics.ListAPIView):
+    """
+    API endpoint для получения всех заявок на рассмотрении (только для админов)
+    """
+    serializer_class = AdminApplicationSerializer
+    permission_classes = [permissions.IsAdminUser]
+    
+    def get_queryset(self):
+        # Возвращаем только заявки со статусом PENDING
+        return Application.objects.filter(status='PENDING').select_related('user').order_by('-created_at')
 
 class LoanCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
