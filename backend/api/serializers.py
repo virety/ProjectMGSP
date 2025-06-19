@@ -16,10 +16,11 @@ class CurrencyHistorySerializer(serializers.ModelSerializer):
 class CurrencySerializer(serializers.ModelSerializer):
     history = serializers.SerializerMethodField()
     change_percent = serializers.SerializerMethodField()
+    rate = serializers.SerializerMethodField()
 
     class Meta:
         model = Currency
-        fields = ['code', 'name', 'flag_emoji', 'change_percent', 'history']
+        fields = ['code', 'name', 'flag_emoji', 'change_percent', 'rate', 'history']
 
     def get_history(self, obj):
         # Limit history to the last 30 days for performance
@@ -43,6 +44,13 @@ class CurrencySerializer(serializers.ModelSerializer):
 
         change = ((latest_rate - previous_rate) / previous_rate) * 100
         return round(float(change), 4)
+    
+    def get_rate(self, obj):
+        # Get the latest rate for this currency
+        latest_history = obj.history.order_by('-timestamp').first()
+        if latest_history:
+            return float(latest_history.rate)
+        return 0.0
 
 class AuthTokenSerializer(serializers.Serializer):
     phone_number = serializers.CharField(label=_("Phone Number"))

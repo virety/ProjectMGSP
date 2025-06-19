@@ -504,6 +504,174 @@ class CurrencyViewSet(viewsets.ReadOnlyModelViewSet):
                 'message': f'Failed to update currency rates: {str(e)}'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @action(detail=True, methods=['get'], url_path='history')
+    def get_history(self, request, pk=None):
+        """Get historical data for a specific currency"""
+        try:
+            currency = self.get_object()
+            period = request.query_params.get('period', 'week')
+            
+            from datetime import datetime, timedelta
+            from django.utils import timezone
+            
+            # Определяем период и количество точек данных
+            now = timezone.now()
+            if period == 'day':
+                # 24 точки за последние 24 часа
+                start_time = now - timedelta(hours=24)
+                history = CurrencyHistory.objects.filter(
+                    currency=currency,
+                    timestamp__gte=start_time
+                ).order_by('timestamp')
+                
+                # Группируем по часам
+                points = []
+                for i in range(24):
+                    hour_start = start_time + timedelta(hours=i)
+                    hour_end = hour_start + timedelta(hours=1)
+                    
+                    hour_data = history.filter(
+                        timestamp__gte=hour_start,
+                        timestamp__lt=hour_end
+                    ).first()
+                    
+                    if hour_data:
+                        points.append({
+                            'timestamp': hour_start.strftime('%H:00'),
+                            'rate': float(hour_data.rate)
+                        })
+                    else:
+                        # Если нет данных за этот час, используем последнее известное значение
+                        last_rate = history.filter(timestamp__lt=hour_start).last()
+                        rate = float(last_rate.rate) if last_rate else 0
+                        points.append({
+                            'timestamp': hour_start.strftime('%H:00'),
+                            'rate': rate
+                        })
+                        
+            elif period == 'week':
+                # 7 точек за последнюю неделю
+                start_time = now - timedelta(days=7)
+                history = CurrencyHistory.objects.filter(
+                    currency=currency,
+                    timestamp__gte=start_time
+                ).order_by('timestamp')
+                
+                points = []
+                days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+                for i in range(7):
+                    day_start = start_time + timedelta(days=i)
+                    day_end = day_start + timedelta(days=1)
+                    
+                    day_data = history.filter(
+                        timestamp__gte=day_start,
+                        timestamp__lt=day_end
+                    ).last()  # Берем последнее значение за день
+                    
+                    if day_data:
+                        points.append({
+                            'timestamp': days[day_start.weekday()],
+                            'rate': float(day_data.rate)
+                        })
+                    else:
+                        last_rate = history.filter(timestamp__lt=day_start).last()
+                        rate = float(last_rate.rate) if last_rate else 0
+                        points.append({
+                            'timestamp': days[day_start.weekday()],
+                            'rate': rate
+                        })
+                        
+            elif period == 'month':
+                # 30 точек за последний месяц
+                start_time = now - timedelta(days=30)
+                history = CurrencyHistory.objects.filter(
+                    currency=currency,
+                    timestamp__gte=start_time
+                ).order_by('timestamp')
+                
+                points = []
+                for i in range(30):
+                    day_start = start_time + timedelta(days=i)
+                    day_end = day_start + timedelta(days=1)
+                    
+                    day_data = history.filter(
+                        timestamp__gte=day_start,
+                        timestamp__lt=day_end
+                    ).last()
+                    
+                    if day_data:
+                        points.append({
+                            'timestamp': str(i + 1),
+                            'rate': float(day_data.rate)
+                        })
+                    else:
+                        last_rate = history.filter(timestamp__lt=day_start).last()
+                        rate = float(last_rate.rate) if last_rate else 0
+                        points.append({
+                            'timestamp': str(i + 1),
+                            'rate': rate
+                        })
+                        
+            elif period == 'year':
+                # 12 точек за последний год
+                start_time = now - timedelta(days=365)
+                history = CurrencyHistory.objects.filter(
+                    currency=currency,
+                    timestamp__gte=start_time
+                ).order_by('timestamp')
+                
+                points = []
+                months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 
+                         'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
+                
+                for i in range(12):
+                    month_start = start_time + timedelta(days=i * 30)
+                    month_end = month_start + timedelta(days=30)
+                    
+                    month_data = history.filter(
+                        timestamp__gte=month_start,
+                        timestamp__lt=month_end
+                    ).last()
+                    
+                    if month_data:
+                        points.append({
+                            'timestamp': months[month_start.month - 1],
+                            'rate': float(month_data.rate)
+                        })
+                    else:
+                        last_rate = history.filter(timestamp__lt=month_start).last()
+                        rate = float(last_rate.rate) if last_rate else 0
+                        points.append({
+                            'timestamp': months[month_start.month - 1],
+                            'rate': rate
+                        })
+            
+            # Если нет исторических данных, создаем заглушку
+            if not points:
+                current_rate = float(currency.current_rate) if hasattr(currency, 'current_rate') else 90.0
+                if period == 'day':
+                    points = [{'timestamp': f'{i}:00', 'rate': current_rate} for i in range(24)]
+                elif period == 'week':
+                    days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+                    points = [{'timestamp': day, 'rate': current_rate} for day in days]
+                elif period == 'month':
+                    points = [{'timestamp': str(i + 1), 'rate': current_rate} for i in range(30)]
+                elif period == 'year':
+                    months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
+                    points = [{'timestamp': month, 'rate': current_rate} for month in months]
+            
+            return Response({
+                'currency': currency.code,
+                'period': period,
+                'data': points
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response({
+                'status': 'error',
+                'message': f'Failed to get currency history: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class ForumPostViewSet(viewsets.ModelViewSet):
     """
     API endpoint for forum posts.
