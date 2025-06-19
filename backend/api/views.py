@@ -202,15 +202,13 @@ class TransferView(generics.CreateAPIView):
                     user=request.user,
                     title=f"Transfer to {recipient_user.get_full_name()}",
                     amount=-amount,
-                    transaction_type=0, # Expense
-                    category="Переводы"
+                    transaction_type=0 # Expense
                 )
                 Transaction.objects.create(
                     user=recipient_user,
                     title=f"Transfer from {request.user.get_full_name()}",
                     amount=amount,
-                    transaction_type=1, # Income
-                    category="Переводы"
+                    transaction_type=1 # Income
                 )
                 logger.info("Transaction records created")
                 
