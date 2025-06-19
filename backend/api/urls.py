@@ -37,6 +37,11 @@ from .views import (
     UserAnalyticsView,
     ProfileImageUploadView,
     CardImageUploadView,
+    # User products views
+    UserProductsView,
+    UserLoansView,
+    UserDepositsView,
+    UserMortgagesView,
 )
 
 # Main router for top-level resources
@@ -98,4 +103,10 @@ urlpatterns = [
     path('crypto/transfer/', CryptoTransferView.as_view(), name='crypto-transfer'),
     path('crypto/portfolio/', CryptoPortfolioView.as_view(), name='crypto-portfolio'),
     path('crypto/initialize/', CryptoInitializeView.as_view(), name='crypto-initialize'),
+    
+    # User products endpoints
+    path('user/products/', UserProductsView.as_view(), name='user-products'),
+    path('user/loans/', UserLoansView.as_view(), name='user-loans'),
+    path('user/deposits/', UserDepositsView.as_view(), name='user-deposits'),
+    path('user/mortgages/', UserMortgagesView.as_view(), name='user-mortgages'),
 ] 

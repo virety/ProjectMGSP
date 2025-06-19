@@ -1672,4 +1672,110 @@ class CardImageUploadView(APIView):
             print(f"Error processing card image: {e}")
 
 
+class UserProductsView(APIView):
+    """
+    API endpoint для получения всех продуктов пользователя (кредиты, депозиты, ипотека)
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        try:
+            user = request.user
+            
+            # Получаем кредиты
+            loans = Loan.objects.filter(user=user)
+            loans_data = [
+                {
+                    'id': str(loan.id),
+                    'type': 'Кредит',
+                    'name': 'Потребительский',
+                    'balance': f"{loan.remaining_debt:,.0f} ₽",
+                    'rate': f"{loan.interest_rate}%",
+                    'monthlyPayment': f"{loan.monthly_payment:,.0f} ₽",
+                    'nextPayment': loan.next_payment_date.strftime('%d.%m.%Y'),
+                    'isActive': loan.is_active
+                }
+                for loan in loans
+            ]
+            
+            # Получаем депозиты
+            deposits = Deposit.objects.filter(user=user)
+            deposits_data = [
+                {
+                    'id': str(deposit.id),
+                    'type': 'Вклад',
+                    'name': 'Накопительный',
+                    'balance': f"{deposit.amount:,.0f} ₽",
+                    'rate': f"{deposit.interest_rate}%",
+                    'endDate': (deposit.start_date + timedelta(days=deposit.term_months * 30)).strftime('%d.%m.%Y'),
+                    'termMonths': deposit.term_months
+                }
+                for deposit in deposits
+            ]
+            
+            # Получаем ипотеки
+            mortgages = Mortgage.objects.filter(user=user)
+            mortgages_data = [
+                {
+                    'id': str(mortgage.id),
+                    'type': 'Ипотека',
+                    'name': 'Квартира',
+                    'balance': f"{mortgage.total_amount:,.0f} ₽",
+                    'rate': f"{mortgage.interest_rate}%",
+                    'monthlyPayment': f"{mortgage.monthly_payment:,.0f} ₽",
+                    'propertyCost': f"{mortgage.property_cost:,.0f} ₽",
+                    'termYears': mortgage.term_years,
+                    'isActive': mortgage.is_active
+                }
+                for mortgage in mortgages
+            ]
+            
+            return Response({
+                'deposits': deposits_data,
+                'loans': loans_data,
+                'mortgages': mortgages_data,
+                'total_products': len(loans_data) + len(deposits_data) + len(mortgages_data)
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response(
+                {'error': f'Failed to get user products: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class UserLoansView(generics.ListAPIView):
+    """
+    API endpoint для получения кредитов пользователя
+    """
+    serializer_class = LoanSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return Loan.objects.filter(user=self.request.user)
+
+
+class UserDepositsView(generics.ListAPIView):
+    """
+    API endpoint для получения депозитов пользователя
+    """
+    serializer_class = DepositSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return Deposit.objects.filter(user=self.request.user)
+
+
+class UserMortgagesView(generics.ListAPIView):
+    """
+    API endpoint для получения ипотек пользователя
+    """
+    serializer_class = MortgageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return Mortgage.objects.filter(user=self.request.user)
+
+
 
