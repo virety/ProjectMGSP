@@ -103,7 +103,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ('id', 'user', 'title', 'amount', 'transaction_type', 'timestamp')
+        fields = ('id', 'user', 'title', 'amount', 'transaction_type', 'timestamp', 'comment')
 
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -201,6 +201,7 @@ class TransferSerializer(serializers.Serializer):
     source_card_id = serializers.UUIDField()
     target_card_number = serializers.CharField(max_length=100)
     amount = serializers.DecimalField(max_digits=15, decimal_places=2)
+    comment = serializers.CharField(max_length=500, required=False, allow_blank=True)
 
     def validate_amount(self, value):
         if value <= 0:

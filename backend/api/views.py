@@ -102,6 +102,7 @@ class TransferView(generics.CreateAPIView):
             
             target_card_number = serializer.validated_data['target_card_number']
             amount = serializer.validated_data['amount']
+            comment = serializer.validated_data.get('comment', '')
             logger.info(f"Transfer details - source: {source_card_id}, target: {target_card_number}, amount: {amount}")
 
             with transaction.atomic():
@@ -202,13 +203,15 @@ class TransferView(generics.CreateAPIView):
                     user=request.user,
                     title=f"Transfer to {recipient_user.get_full_name()}",
                     amount=-amount,
-                    transaction_type=0 # Expense
+                    transaction_type=0, # Expense
+                    comment=comment
                 )
                 Transaction.objects.create(
                     user=recipient_user,
                     title=f"Transfer from {request.user.get_full_name()}",
                     amount=amount,
-                    transaction_type=1 # Income
+                    transaction_type=1, # Income
+                    comment=comment
                 )
                 logger.info("Transaction records created")
                 
