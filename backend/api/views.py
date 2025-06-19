@@ -129,17 +129,26 @@ class TransferView(generics.CreateAPIView):
                 recipient_card = None
                 is_phone_transfer = False
 
-                # Check if identifier is a card number
-                logger.info(f"Checking if {target_card_number} is card number (16 digits)")
-                if re.match(r'^\d{16}$', target_card_number):
+                # Check if identifier is a card number (with or without spaces)
+                logger.info(f"Checking if {target_card_number} is card number")
+                # Remove spaces and check if it's 16 digits
+                card_number_clean = target_card_number.replace(' ', '')
+                if re.match(r'^\d{16}$', card_number_clean):
                     logger.info("Recognized as card number, looking for card")
                     try:
+                        # Try to find card by the exact format first
                         recipient_card = Card.objects.get(card_number=target_card_number)
                         recipient_user = recipient_card.owner
                         logger.info(f"Found recipient card: {recipient_card.card_name}, owner: {recipient_user.get_full_name()}")
                     except Card.DoesNotExist:
-                        logger.info("Card not found, will try as phone number")
-                        pass # It's not a card number, will check if it's a phone number
+                        try:
+                            # Try to find card by clean number (without spaces)
+                            recipient_card = Card.objects.get(card_number=card_number_clean)
+                            recipient_user = recipient_card.owner
+                            logger.info(f"Found recipient card by clean number: {recipient_card.card_name}, owner: {recipient_user.get_full_name()}")
+                        except Card.DoesNotExist:
+                            logger.info("Card not found with both formats, will try as phone number")
+                            pass # It's not a card number, will check if it's a phone number
                 
                 # If not a card, check if it's a phone number
                 if recipient_card is None:
