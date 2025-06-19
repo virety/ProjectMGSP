@@ -288,33 +288,6 @@ class AdminApplicationListView(generics.ListAPIView):
         # Возвращаем только заявки со статусом PENDING
         return Application.objects.filter(status='PENDING').select_related('user').order_by('-created_at')
 
-class CreateAdminUserView(APIView):
-    """
-    ВРЕМЕННЫЙ endpoint для создания админа - удалить после использования!
-    """
-    permission_classes = [permissions.AllowAny]  # Открытый доступ ВРЕМЕННО
-    
-    def post(self, request):
-        # Защита - только если админа еще нет
-        if User.objects.filter(is_superuser=True).exists():
-            return Response({'error': 'Admin already exists'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Создаем суперпользователя
-        admin_user = User.objects.create_superuser(
-            phone_number='+79999999999',
-            password='admin123456',
-            first_name='Admin',
-            last_name='Nyota',
-            email='admin@nyota.com'
-        )
-        
-        return Response({
-            'message': 'Admin user created successfully',
-            'phone': '+79999999999',
-            'password': 'admin123456',
-            'user_id': admin_user.id
-        }, status=status.HTTP_201_CREATED)
-
 class LoanCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -1433,19 +1406,19 @@ class ProfileImageUploadView(APIView):
             
             # Save new image
             user.profile_image = image_file
-            
-            # Also update the avatar URL field for consistency with the serializer
-            image_url = request.build_absolute_uri(f'/media/profiles/{image_file.name}')
-            user.avatar = image_url
-            
             user.save()
             
             # Process image (resize if needed)
             self._process_profile_image(user.profile_image.path)
             
+            # Update avatar URL field for consistency
+            avatar_url = request.build_absolute_uri(user.profile_image.url)
+            user.avatar = avatar_url
+            user.save()
+            
             return Response({
                 'message': 'Profile image updated successfully',
-                'image_url': request.build_absolute_uri(user.profile_image.url)
+                'image_url': avatar_url
             }, status=status.HTTP_200_OK)
             
         except Exception as e:
@@ -1464,9 +1437,9 @@ class ProfileImageUploadView(APIView):
                 if os.path.exists(image_path):
                     os.remove(image_path)
                 
-                # Clear database field
+                # Clear database fields
                 user.profile_image = None
-                user.avatar = ''  # Clear avatar URL as well
+                user.avatar = ""
                 user.save()
                 
                 return Response({
@@ -1764,6 +1737,200 @@ class UserMortgagesView(generics.ListAPIView):
     
     def get_queryset(self):
         return Mortgage.objects.filter(user=self.request.user)
+
+
+class AdminUserListView(generics.ListAPIView):
+    """
+    API endpoint для получения списка всех пользователей (только для админов)
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
+    
+    def get_queryset(self):
+        queryset = User.objects.all().order_by('-date_joined')
+        
+        # Поиск по имени или телефону
+        search = self.request.query_params.get('search', None)
+        if search:
+            queryset = queryset.filter(
+                Q(first_name__icontains=search) | 
+                Q(last_name__icontains=search) | 
+                Q(phone_number__icontains=search)
+            )
+        
+        return queryset
+
+
+class AdminUpdateUserBalanceView(APIView):
+    """
+    API endpoint для изменения баланса пользователя (только для админов)
+    """
+    permission_classes = [permissions.IsAdminUser]
+    
+    def post(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Пользователь не найден'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        card_id = request.data.get('card_id')
+        amount = request.data.get('amount')
+        operation = request.data.get('operation', 'set')  # 'set', 'add', 'subtract'
+        
+        if not card_id:
+            return Response(
+                {'error': 'ID карты обязателен'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if amount is None:
+            return Response(
+                {'error': 'Сумма обязательна'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            amount = Decimal(str(amount))
+        except (ValueError, TypeError):
+            return Response(
+                {'error': 'Некорректная сумма'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            card = Card.objects.get(id=card_id, owner=user)
+        except Card.DoesNotExist:
+            return Response(
+                {'error': 'Карта не найдена или не принадлежит пользователю'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        old_balance = card.balance
+        
+        if operation == 'set':
+            card.balance = amount
+        elif operation == 'add':
+            card.balance += amount
+        elif operation == 'subtract':
+            card.balance -= amount
+            if card.balance < 0:
+                card.balance = Decimal('0.00')
+        else:
+            return Response(
+                {'error': 'Некорректная операция. Используйте: set, add, subtract'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        card.save()
+        
+        # Обновляем общий баланс пользователя
+        user.update_total_balance()
+        
+        # Создаем транзакцию для истории
+        transaction_title = f"Админ: {operation} баланса"
+        Transaction.objects.create(
+            user=user,
+            title=transaction_title,
+            amount=amount if operation != 'set' else (amount - old_balance),
+            transaction_type=1 if (operation == 'add' or (operation == 'set' and amount > old_balance)) else 0
+        )
+        
+        return Response({
+            'message': 'Баланс успешно обновлен',
+            'old_balance': str(old_balance),
+            'new_balance': str(card.balance),
+            'operation': operation,
+            'amount': str(amount)
+        }, status=status.HTTP_200_OK)
+
+
+class AdminCardManagementView(APIView):
+    """
+    API endpoint для управления картами пользователей (только для админов)
+    """
+    permission_classes = [permissions.IsAdminUser]
+    
+    def get(self, request, user_id):
+        """Получить все карты пользователя"""
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Пользователь не найден'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        cards = Card.objects.filter(owner=user)
+        serializer = CardSerializer(cards, many=True)
+        
+        return Response({
+            'user': {
+                'id': user.id,
+                'name': f"{user.first_name} {user.last_name}",
+                'phone': user.phone_number
+            },
+            'cards': serializer.data
+        }, status=status.HTTP_200_OK)
+    
+    def post(self, request, user_id):
+        """Блокировать/разблокировать карту"""
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Пользователь не найден'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        card_id = request.data.get('card_id')
+        action = request.data.get('action')  # 'block' или 'unblock'
+        
+        if not card_id:
+            return Response(
+                {'error': 'ID карты обязателен'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if action not in ['block', 'unblock']:
+            return Response(
+                {'error': 'Действие должно быть block или unblock'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            card = Card.objects.get(id=card_id, owner=user)
+        except Card.DoesNotExist:
+            return Response(
+                {'error': 'Карта не найдена или не принадлежит пользователю'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        if action == 'block':
+            card.is_blocked = True
+            message = f"Карта {card.card_number[-4:]} заблокирована"
+        else:
+            card.is_blocked = False
+            message = f"Карта {card.card_number[-4:]} разблокирована"
+        
+        card.save()
+        
+        # Создаем транзакцию для истории
+        Transaction.objects.create(
+            user=user,
+            title=f"Админ: карта {action}ed",
+            amount=Decimal('0.00'),
+            transaction_type=0
+        )
+        
+        return Response({
+            'message': message,
+            'card_id': str(card.id),
+            'is_blocked': card.is_blocked
+        }, status=status.HTTP_200_OK)
 
 
 

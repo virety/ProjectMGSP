@@ -15,7 +15,6 @@ from .views import (
     CardCreateView,
     ApplicationUpdateView,
     AdminApplicationListView,
-    CreateAdminUserView,
     TransferView,
     CurrencyViewSet,
     ForumPostViewSet,
@@ -42,6 +41,10 @@ from .views import (
     UserLoansView,
     UserDepositsView,
     UserMortgagesView,
+    # Admin management views
+    AdminUserListView,
+    AdminUpdateUserBalanceView,
+    AdminCardManagementView,
 )
 
 # Main router for top-level resources
@@ -84,9 +87,6 @@ urlpatterns = [
     path('admin/applications/', AdminApplicationListView.as_view(), name='admin-applications-list'),
     path('admin/applications/<uuid:pk>/update/', ApplicationUpdateView.as_view(), name='admin-application-update'),
     
-    # ВРЕМЕННЫЙ endpoint для создания админа
-    path('create-admin/', CreateAdminUserView.as_view(), name='create-admin'),
-    
     # AI Chat endpoints
     path('ai/chat/', AIChatMessageView.as_view(), name='ai-chat-message'),
     
@@ -109,4 +109,9 @@ urlpatterns = [
     path('user/loans/', UserLoansView.as_view(), name='user-loans'),
     path('user/deposits/', UserDepositsView.as_view(), name='user-deposits'),
     path('user/mortgages/', UserMortgagesView.as_view(), name='user-mortgages'),
+    
+    # Admin management endpoints
+    path('admin/users/', AdminUserListView.as_view(), name='admin-users-list'),
+    path('admin/users/<int:user_id>/balance/', AdminUpdateUserBalanceView.as_view(), name='admin-update-balance'),
+    path('admin/users/<int:user_id>/cards/', AdminCardManagementView.as_view(), name='admin-card-management'),
 ] 
