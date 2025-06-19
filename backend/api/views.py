@@ -154,6 +154,10 @@ class TransferView(generics.CreateAPIView):
                 sender_card.save()
                 recipient_card.save()
 
+                # Update total balance for both users
+                request.user.update_total_balance()
+                recipient_user.update_total_balance()
+
                 # Create transaction records
                 Transaction.objects.create(
                     user=request.user,
