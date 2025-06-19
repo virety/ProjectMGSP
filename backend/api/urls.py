@@ -45,7 +45,6 @@ from .views import (
     AdminUserListView,
     AdminUpdateUserBalanceView,
     AdminCardManagementView,
-    DebugCardsView,
 )
 
 # Main router for top-level resources
@@ -115,7 +114,4 @@ urlpatterns = [
     path('admin/users/', AdminUserListView.as_view(), name='admin-users-list'),
     path('admin/users/<int:user_id>/balance/', AdminUpdateUserBalanceView.as_view(), name='admin-update-balance'),
     path('admin/users/<int:user_id>/cards/', AdminCardManagementView.as_view(), name='admin-card-management'),
-    
-    # Debug endpoints
-    path('debug/cards/', DebugCardsView.as_view(), name='debug-cards'),
 ] 

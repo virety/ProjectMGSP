@@ -1893,31 +1893,6 @@ class AdminUpdateUserBalanceView(APIView):
         }, status=status.HTTP_200_OK)
 
 
-class DebugCardsView(APIView):
-    """
-    Debug endpoint для просмотра всех карт в системе
-    """
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get(self, request):
-        """Получить все карты в системе для отладки"""
-        cards = Card.objects.all()
-        cards_data = []
-        for card in cards:
-            cards_data.append({
-                'id': str(card.id),
-                'card_number': card.card_number,
-                'card_name': card.card_name,
-                'owner': card.owner.get_full_name(),
-                'owner_phone': card.owner.phone_number,
-                'balance': str(card.balance),
-                'is_active': card.is_active
-            })
-        
-        return Response({
-            'total_cards': len(cards_data),
-            'cards': cards_data
-        }, status=status.HTTP_200_OK)
 
 class AdminCardManagementView(APIView):
     """
