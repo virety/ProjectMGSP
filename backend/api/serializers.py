@@ -171,12 +171,20 @@ class AdminApplicationSerializer(serializers.ModelSerializer):
         
     def get_credit_score(self, obj):
         """Получить кредитный рейтинг пользователя"""
-        from .models import CreditLogicManager
         try:
+            # Импортируем CreditLogicManager из правильного места
+            from .credit_logic import CreditLogicManager
             credit_manager = CreditLogicManager()
-            return credit_manager.get_credit_score(obj.user)
+            score = credit_manager.calculate_credit_score(obj.user)
+            return score
+        except ImportError:
+            return "N/A"
+        except AttributeError:
+            return "N/A"
         except Exception as e:
-            return "Ошибка расчета"
+            # Логируем ошибку для отладки, но не ломаем API
+            print(f"Error calculating credit score: {e}")
+            return "Ошибка"
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
