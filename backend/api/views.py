@@ -318,19 +318,12 @@ class CreateAdminUserView(APIView):
 class LoanCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.credit_logic_manager = CreditLogicManager()
-
     def post(self, request):
         user = request.user
         data = request.data
         
-        # Check credit score
-        credit_score = self.credit_logic_manager.get_credit_score(user)
-        if credit_score < 650:
-             return Response({'error': f'Loan application denied. Your credit score is {credit_score}, which is below the minimum of 650.'}, status=status.HTTP_400_BAD_REQUEST)
-
+        # Убираем проверку кредитного рейтинга - пусть админ принимает решение
+        
         application_data = {
             'user': user.id,
             'application_type': 'LOAN',
@@ -351,18 +344,11 @@ class LoanCreateView(APIView):
 class MortgageCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.credit_logic_manager = CreditLogicManager()
-
     def post(self, request):
         user = request.user
         data = request.data
         
-        # Check credit score
-        credit_score = self.credit_logic_manager.get_credit_score(user)
-        if credit_score < 700: # Higher requirement for mortgages
-             return Response({'error': f'Mortgage application denied. Your credit score is {credit_score}, which is below the minimum of 700.'}, status=status.HTTP_400_BAD_REQUEST)
+        # Убираем проверку кредитного рейтинга - пусть админ принимает решение
 
         application_data = {
             'user': user.id,
@@ -450,16 +436,12 @@ class CardCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        data = request.data
+        # Для карты не нужны дополнительные данные - просто создаем заявку
         application_data = {
             'user': request.user.id,
             'application_type': 'CARD',
             'status': 'PENDING',
-            'details': {
-                'card_number': data.get('card_number'),
-                'cvv': data.get('cvv'),
-                'expiration_date': data.get('expiration_date'),
-            }
+            'details': {}  # Для карты нет специальных деталей
         }
         
         serializer = ApplicationSerializer(data=application_data)

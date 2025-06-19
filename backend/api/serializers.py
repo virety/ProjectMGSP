@@ -160,14 +160,23 @@ class AdminApplicationSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.get_full_name', read_only=True)
     user_phone = serializers.CharField(source='user.phone_number', read_only=True)
     application_type_display = serializers.CharField(source='get_application_type_display', read_only=True)
-    
+    credit_score = serializers.SerializerMethodField()
+
     class Meta:
         model = Application
         fields = [
-            'id', 'user', 'user_name', 'user_phone', 'application_type', 
-            'application_type_display', 'status', 'details', 'rejection_reason', 
-            'created_at', 'updated_at'
+            'id', 'user_name', 'user_phone', 'application_type', 'application_type_display', 
+            'status', 'details', 'rejection_reason', 'created_at', 'updated_at', 'credit_score'
         ]
+        
+    def get_credit_score(self, obj):
+        """Получить кредитный рейтинг пользователя"""
+        from .models import CreditLogicManager
+        try:
+            credit_manager = CreditLogicManager()
+            return credit_manager.get_credit_score(obj.user)
+        except Exception as e:
+            return "Ошибка расчета"
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
