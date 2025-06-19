@@ -179,7 +179,10 @@ class TransferView(generics.CreateAPIView):
 
         except Exception as e:
             # Log the exception e for debugging
-            return Response({"detail": "Произошла внутренняя ошибка при выполнении перевода."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Transfer error: {str(e)}", exc_info=True)
+            return Response({"detail": f"Произошла внутренняя ошибка при выполнении перевода: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class AdminCreditScoreCheck(APIView):
     permission_classes = [permissions.IsAdminUser]
