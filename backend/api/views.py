@@ -226,7 +226,7 @@ class ApplicationUpdateView(APIView):
 
             if app_type == 'LOAN':
                 Loan.objects.create(
-                    user=user, 
+                    owner=user, 
                     total_amount=details['amount'], 
                     remaining_debt=details['amount'],
                     term_months=details['term'], 
@@ -238,7 +238,7 @@ class ApplicationUpdateView(APIView):
                 total_amount = details['property_cost'] - details['initial_payment']
                 monthly_payment = total_amount / (details['term_years'] * 12)
                 Mortgage.objects.create(
-                    user=user, 
+                    owner=user, 
                     property_cost=details['property_cost'], 
                     initial_payment=details['initial_payment'], 
                     total_amount=total_amount,
@@ -248,14 +248,14 @@ class ApplicationUpdateView(APIView):
                 )
             elif app_type == 'DEPOSIT':
                 Deposit.objects.create(
-                    user=user, 
+                    owner=user, 
                     amount=details['amount'], 
                     term_months=details['term_months'],
                     interest_rate=Decimal('6.5')
                 )
             elif app_type == 'CARD':
                 Card.objects.create(
-                    user=user, 
+                    owner=user, 
                     card_name="Nyota Card",
                     card_number=Card.generate_card_number(), 
                     cvv=Card.generate_cvv(), 
