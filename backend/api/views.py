@@ -100,23 +100,23 @@ class TransferView(generics.CreateAPIView):
             serializer.is_valid(raise_exception=True)
             source_card_id = serializer.validated_data['source_card_id']
             
-            logger.info(f"Looking for source card: {source_card_id}")
-            try:
-                source_card = Card.objects.select_for_update().get(id=source_card_id, owner=request.user)
-                logger.info(f"Found source card: {source_card.card_name}, balance: {source_card.balance}")
-            except Card.DoesNotExist:
-                logger.error(f"Source card not found: {source_card_id}")
-                return Response({"error": "Source card not found or you are not the owner."}, status=status.HTTP_404_NOT_FOUND)
-
-            if not source_card.is_active:
-                logger.error(f"Source card is blocked: {source_card_id}")
-                return Response({"error": "Source card is blocked."}, status=status.HTTP_403_FORBIDDEN)
-
             target_card_number = serializer.validated_data['target_card_number']
             amount = serializer.validated_data['amount']
-            logger.info(f"Transfer details - target: {target_card_number}, amount: {amount}")
+            logger.info(f"Transfer details - source: {source_card_id}, target: {target_card_number}, amount: {amount}")
 
             with transaction.atomic():
+                # Get and lock the source card inside transaction
+                logger.info(f"Looking for source card: {source_card_id}")
+                try:
+                    source_card = Card.objects.select_for_update().get(id=source_card_id, owner=request.user)
+                    logger.info(f"Found source card: {source_card.card_name}, balance: {source_card.balance}")
+                except Card.DoesNotExist:
+                    logger.error(f"Source card not found: {source_card_id}")
+                    return Response({"error": "Source card not found or you are not the owner."}, status=status.HTTP_404_NOT_FOUND)
+
+                if not source_card.is_active:
+                    logger.error(f"Source card is blocked: {source_card_id}")
+                    return Response({"error": "Source card is blocked."}, status=status.HTTP_403_FORBIDDEN)
                 # Get the sender's card
                 sender_card = source_card
 
