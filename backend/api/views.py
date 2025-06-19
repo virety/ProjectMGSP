@@ -288,6 +288,33 @@ class AdminApplicationListView(generics.ListAPIView):
         # Возвращаем только заявки со статусом PENDING
         return Application.objects.filter(status='PENDING').select_related('user').order_by('-created_at')
 
+class CreateAdminUserView(APIView):
+    """
+    ВРЕМЕННЫЙ endpoint для создания админа - удалить после использования!
+    """
+    permission_classes = [permissions.AllowAny]  # Открытый доступ ВРЕМЕННО
+    
+    def post(self, request):
+        # Защита - только если админа еще нет
+        if User.objects.filter(is_superuser=True).exists():
+            return Response({'error': 'Admin already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Создаем суперпользователя
+        admin_user = User.objects.create_superuser(
+            phone_number='+79999999999',
+            password='admin123456',
+            first_name='Admin',
+            last_name='Nyota',
+            email='admin@nyota.com'
+        )
+        
+        return Response({
+            'message': 'Admin user created successfully',
+            'phone': '+79999999999',
+            'password': 'admin123456',
+            'user_id': admin_user.id
+        }, status=status.HTTP_201_CREATED)
+
 class LoanCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 

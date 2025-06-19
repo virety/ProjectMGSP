@@ -15,6 +15,7 @@ from .views import (
     CardCreateView,
     ApplicationUpdateView,
     AdminApplicationListView,
+    CreateAdminUserView,
     TransferView,
     CurrencyViewSet,
     ForumPostViewSet,
@@ -77,6 +78,9 @@ urlpatterns = [
     # Admin application management
     path('admin/applications/', AdminApplicationListView.as_view(), name='admin-applications-list'),
     path('admin/applications/<uuid:pk>/update/', ApplicationUpdateView.as_view(), name='admin-application-update'),
+    
+    # ВРЕМЕННЫЙ endpoint для создания админа
+    path('create-admin/', CreateAdminUserView.as_view(), name='create-admin'),
     
     # AI Chat endpoints
     path('ai/chat/', AIChatMessageView.as_view(), name='ai-chat-message'),
