@@ -488,6 +488,22 @@ class CurrencyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CurrencySerializer
     permission_classes = [permissions.AllowAny] # Data is public
 
+    @action(detail=False, methods=['post'], url_path='update-rates')
+    def update_rates(self, request):
+        """Update currency exchange rates from external API"""
+        try:
+            from .services.currency_service import CurrencyAPIService
+            CurrencyAPIService.update_currency_history()
+            return Response({
+                'status': 'success',
+                'message': 'Currency rates updated successfully'
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                'status': 'error',
+                'message': f'Failed to update currency rates: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class ForumPostViewSet(viewsets.ModelViewSet):
     """
     API endpoint for forum posts.
