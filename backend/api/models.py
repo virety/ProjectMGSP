@@ -99,7 +99,6 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
     transaction_type = models.SmallIntegerField(choices=TRANSACTION_TYPES, default=0)
-    comment = models.TextField(blank=True, null=True, help_text="Комментарий к транзакции")
 
     def __str__(self):
         return f'{self.title} ({self.get_transaction_type_display()}) - {self.amount}'

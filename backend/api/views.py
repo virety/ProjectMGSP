@@ -199,19 +199,26 @@ class TransferView(generics.CreateAPIView):
 
                 # Create transaction records
                 logger.info("Creating transaction records")
+                
+                # Формируем title с комментарием если он есть
+                sender_title = f"Transfer to {recipient_user.get_full_name()}"
+                recipient_title = f"Transfer from {request.user.get_full_name()}"
+                
+                if comment:
+                    sender_title += f" | {comment}"
+                    recipient_title += f" | {comment}"
+                
                 Transaction.objects.create(
                     user=request.user,
-                    title=f"Transfer to {recipient_user.get_full_name()}",
+                    title=sender_title,
                     amount=-amount,
-                    transaction_type=0, # Expense
-                    comment=comment
+                    transaction_type=0 # Expense
                 )
                 Transaction.objects.create(
                     user=recipient_user,
-                    title=f"Transfer from {request.user.get_full_name()}",
+                    title=recipient_title,
                     amount=amount,
-                    transaction_type=1, # Income
-                    comment=comment
+                    transaction_type=1 # Income
                 )
                 logger.info("Transaction records created")
                 

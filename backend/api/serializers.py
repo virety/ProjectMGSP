@@ -103,7 +103,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ('id', 'user', 'title', 'amount', 'transaction_type', 'timestamp', 'comment')
+        fields = ('id', 'user', 'title', 'amount', 'transaction_type', 'timestamp')
 
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
