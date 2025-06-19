@@ -91,22 +91,31 @@ class TransferView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        source_card_id = serializer.validated_data['source_card_id']
+        import logging
+        logger = logging.getLogger(__name__)
         
         try:
-            source_card = Card.objects.select_for_update().get(id=source_card_id, owner=request.user)
-        except Card.DoesNotExist:
-            return Response({"error": "Source card not found or you are not the owner."}, status=status.HTTP_404_NOT_FOUND)
+            logger.info(f"Transfer request data: {request.data}")
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            source_card_id = serializer.validated_data['source_card_id']
+            
+            logger.info(f"Looking for source card: {source_card_id}")
+            try:
+                source_card = Card.objects.select_for_update().get(id=source_card_id, owner=request.user)
+                logger.info(f"Found source card: {source_card.card_name}, balance: {source_card.balance}")
+            except Card.DoesNotExist:
+                logger.error(f"Source card not found: {source_card_id}")
+                return Response({"error": "Source card not found or you are not the owner."}, status=status.HTTP_404_NOT_FOUND)
 
-        if not source_card.is_active:
-            return Response({"error": "Source card is blocked."}, status=status.HTTP_403_FORBIDDEN)
+            if not source_card.is_active:
+                logger.error(f"Source card is blocked: {source_card_id}")
+                return Response({"error": "Source card is blocked."}, status=status.HTTP_403_FORBIDDEN)
 
-        target_card_number = serializer.validated_data['target_card_number']
-        amount = serializer.validated_data['amount']
+            target_card_number = serializer.validated_data['target_card_number']
+            amount = serializer.validated_data['amount']
+            logger.info(f"Transfer details - target: {target_card_number}, amount: {amount}")
 
-        try:
             with transaction.atomic():
                 # Get the sender's card
                 sender_card = source_card
@@ -121,23 +130,32 @@ class TransferView(generics.CreateAPIView):
                 is_phone_transfer = False
 
                 # Check if identifier is a card number
+                logger.info(f"Checking if {target_card_number} is card number (16 digits)")
                 if re.match(r'^\d{16}$', target_card_number):
+                    logger.info("Recognized as card number, looking for card")
                     try:
                         recipient_card = Card.objects.get(card_number=target_card_number)
                         recipient_user = recipient_card.owner
+                        logger.info(f"Found recipient card: {recipient_card.card_name}, owner: {recipient_user.get_full_name()}")
                     except Card.DoesNotExist:
+                        logger.info("Card not found, will try as phone number")
                         pass # It's not a card number, will check if it's a phone number
                 
                 # If not a card, check if it's a phone number
                 if recipient_card is None:
+                    logger.info("Treating as phone number")
                     is_phone_transfer = True
                     try:
                         recipient_user = User.objects.get(phone_number=target_card_number)
+                        logger.info(f"Found recipient user by phone: {recipient_user.get_full_name()}")
                         # Find the recipient's default card, or just any card if no default is set
                         recipient_card = Card.objects.filter(owner=recipient_user).first() 
                         if not recipient_card:
+                                logger.error(f"Recipient {recipient_user.get_full_name()} has no cards")
                                 return Response({"detail": "Recipient does not have a card to receive funds."}, status=status.HTTP_400_BAD_REQUEST)
+                        logger.info(f"Using recipient card: {recipient_card.card_name}")
                     except User.DoesNotExist:
+                        logger.error(f"No user found with phone: {target_card_number}")
                         return Response({"detail": "Recipient not found."}, status=status.HTTP_404_NOT_FOUND)
                 
                 # Check for transfer to self
@@ -149,16 +167,21 @@ class TransferView(generics.CreateAPIView):
                     return Response({"detail": "Cannot transfer to yourself."}, status=status.HTTP_400_BAD_REQUEST)
                 
                 # Perform the transfer
+                logger.info(f"Performing transfer: {amount} from {sender_card.balance}")
                 sender_card.balance -= amount
                 recipient_card.balance += amount
                 sender_card.save()
                 recipient_card.save()
+                logger.info("Card balances updated")
 
                 # Update total balance for both users
+                logger.info("Updating total balances")
                 request.user.update_total_balance()
                 recipient_user.update_total_balance()
+                logger.info("Total balances updated")
 
                 # Create transaction records
+                logger.info("Creating transaction records")
                 Transaction.objects.create(
                     user=request.user,
                     title=f"Transfer to {recipient_user.get_full_name()}",
@@ -171,6 +194,7 @@ class TransferView(generics.CreateAPIView):
                     amount=amount,
                     transaction_type=1 # Income
                 )
+                logger.info("Transaction records created")
                 
                 return Response({
                     "detail": "Transfer successful.",
@@ -179,8 +203,6 @@ class TransferView(generics.CreateAPIView):
 
         except Exception as e:
             # Log the exception e for debugging
-            import logging
-            logger = logging.getLogger(__name__)
             logger.error(f"Transfer error: {str(e)}", exc_info=True)
             return Response({"detail": f"Произошла внутренняя ошибка при выполнении перевода: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
