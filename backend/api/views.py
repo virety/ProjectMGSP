@@ -1433,6 +1433,11 @@ class ProfileImageUploadView(APIView):
             
             # Save new image
             user.profile_image = image_file
+            
+            # Also update the avatar URL field for consistency with the serializer
+            image_url = request.build_absolute_uri(f'/media/profiles/{image_file.name}')
+            user.avatar = image_url
+            
             user.save()
             
             # Process image (resize if needed)
@@ -1461,6 +1466,7 @@ class ProfileImageUploadView(APIView):
                 
                 # Clear database field
                 user.profile_image = None
+                user.avatar = ''  # Clear avatar URL as well
                 user.save()
                 
                 return Response({
