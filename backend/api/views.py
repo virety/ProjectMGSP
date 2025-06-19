@@ -135,19 +135,26 @@ class TransferView(generics.CreateAPIView):
                 card_number_clean = target_card_number.replace(' ', '')
                 if re.match(r'^\d{16}$', card_number_clean):
                     logger.info("Recognized as card number, looking for card")
+                    
+                    # Debug: Log all existing cards
+                    all_cards = Card.objects.all()
+                    logger.info(f"All cards in database: {[(card.card_number, card.owner.get_full_name()) for card in all_cards]}")
+                    
                     try:
                         # Try to find card by the exact format first
+                        logger.info(f"Searching for exact match: '{target_card_number}'")
                         recipient_card = Card.objects.get(card_number=target_card_number)
                         recipient_user = recipient_card.owner
                         logger.info(f"Found recipient card: {recipient_card.card_name}, owner: {recipient_user.get_full_name()}")
                     except Card.DoesNotExist:
                         try:
                             # Try to find card by clean number (without spaces)
+                            logger.info(f"Searching for clean number: '{card_number_clean}'")
                             recipient_card = Card.objects.get(card_number=card_number_clean)
                             recipient_user = recipient_card.owner
                             logger.info(f"Found recipient card by clean number: {recipient_card.card_name}, owner: {recipient_user.get_full_name()}")
                         except Card.DoesNotExist:
-                            logger.info("Card not found with both formats, will try as phone number")
+                            logger.warning(f"Card not found with both formats: '{target_card_number}' and '{card_number_clean}', will try as phone number")
                             pass # It's not a card number, will check if it's a phone number
                 
                 # If not a card, check if it's a phone number
